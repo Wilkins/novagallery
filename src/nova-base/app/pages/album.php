@@ -38,7 +38,7 @@ if(!file_exists(IMAGES_DIR.'/'.$album)) {
   exit;
 }
 
-$gallery = new novaGallery(IMAGES_DIR.'/'.$album, true, $fileListMaxCacheAge);
+$gallery = new Gallery(IMAGES_DIR.'/'.$album);
 $parentPage = $gallery->parentAlbum($album);
 if($parentPage){
   $parentPage = 'album/'.$parentPage;

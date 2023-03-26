@@ -4,6 +4,12 @@
 // More protection for album & image names
 
 // pass only allowed sizes
+/*
+echo "Size : $size<br>\n";
+echo "Allow : ".implode(',', Site::config('allowedImageSizes'))."<br>\n";
+echo "Image : $image<br>\n";
+echo "Album: $album<br>\n";
+*/
 if(in_array($size, Site::config('allowedImageSizes'))){
   Image::render($album, $image, $size, Site::config('imageCache'), true);
 } else {

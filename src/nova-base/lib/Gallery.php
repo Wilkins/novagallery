@@ -9,81 +9,68 @@
  * to disable cache just set maxCacheAge to 'false' on initialization
  **/
 
-class novaGallery {
+class Gallery {
   
   protected $dir = '';
   protected $images = [];
   protected $albums = [];
-  protected $onlyWithImages = true;
-  protected $maxCacheAge = 60;
-  protected $cacheDir = 'cache';
-  protected $cacheFile = 'files.php';
+  protected $processed = false;
+  protected $recursive = false;
 
-  function __construct($dir, $onlyWithImages = true, $maxCacheAge = 60){
-      //echo "NovaGallery::construct";
-      $debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-      //echo $debug[0]['file'].':'.$debug[0]['line']."<br>\n";
+  public function __construct($dir, $recursive = false)
+  {
     $this->dir = $dir;
-    $this->maxCacheAge = $maxCacheAge;
-    $this->onlyWithImages = $onlyWithImages;
+    $this->recursive = $recursive;
+    $this->listAlbums();
+    $this->processImages();
+      //if ($this->recursive) {
+        //  $this->processAlbums();
+      //}
+    //$this->process();
 
-    if(!$this->maxCacheAge || !$this->readCache($dir, $maxCacheAge)){
-      $this->images = $this->getImages($dir);
-      $this->albums = $this->getAlbums($dir);
-      if($maxCacheAge) {
-        $this->writeCache($dir);
+  }
+
+/*
+  public function process(): void
+  {
+      $this->removeEmptyAlbums2();
+  }
+*/
+
+  protected function listAlbums(): void
+  {
+    $dirs = glob($this->dir.'/'."*", GLOB_ONLYDIR);
+    //echo "glob($this->dir/*)<br>\n";
+    $this->albums = $this->fileList($dirs);
+    unset($this->albums["@eaDir"]);
+   //   print_R($this->albums);
+  }
+/*
+  protected function processAlbums(): void
+  {
+      foreach ($this->albums as $album => $image) {
+          $this->albums[$album] = new Gallery($this->dir.'/'.$album, true);
       }
-    }
-
-    if($onlyWithImages){
-       //$this->albums = $this->removeEmptyAlbums($this->albums);
-       $this->removeEmptyAlbums2();
-    }
-
-    //echo "Dir : $dir<br>\n";
-    //echo "getFirstImage : ".$this->getFirstImage()."<br>\n";
-
+      $this->processed = true;
   }
-
-  protected function getAlbums($dir){
-    $dirs = glob($dir.'/'."*", GLOB_ONLYDIR);
-    echo "glob($dir/*)<br>\n";
-      //echo "getAlbums($dir)<br>\n";
-    $albumList = $this->fileList($dirs);
-    //print_R($albumList);
-    $albums = array();
-    unset($albumList["$this->cacheDir"]); // remove cache dir from album list
-        unset($albumList["@eaDir"]); // remove cache dir from album list
-    $start = microtime(true);
-    if (!isset($GLOBALS['total'])) {
-        $GLOBALS['total'] = 0;
-    }
-    foreach ($albumList as $album => $image) {
-
-      $albums[$album] = $this->getImages($dir.'/'.$album);
-    }
-    $GLOBALS['total'] += (microtime(true) - $start);;
-    //echo "Total : ".$GLOBALS['total']." secondes<br>\n";
-    return $albums;
-  }
-
-  protected function getImages($dir){
-      //echo "getImages()<br>\n";
-      $images = glob($dir.'/*{jpg,jpeg,JPG,JPEG,png,PNG}', GLOB_BRACE );
-      echo "glob($dir/*{jpg,jpeg,JPG,JPEG,png,PNG})<br>\n";
-      //echo "getImages($dir)<br>\n";
-    return $this->fileList($images, false);
+*/
+  protected function processImages(): void
+  {
+      $images = glob($this->dir.'/*{jpg,jpeg,JPG,JPEG,png,PNG}', GLOB_BRACE );
+      //echo "glob($this->dir/*{jpg,jpeg,JPG,JPEG,png,PNG})<br>\n";
+      $this->images = $this->fileList($images, false);
   }
 
 
   // create array of files or dirs without path & with last modification date
-  protected function fileList($list, $withCaptureDate = false){
-    $fileList = array();
+  protected function fileList($list, $withCaptureDate = false): array
+  {
+    $fileList = [];
     foreach ($list as $element) {
       if($withCaptureDate){ // add modification date if requested
         $value = $this->getImageCaptureDate($element);
       } else {
-        $value = array(); // else add as array for sub files
+        $value = []; // else add as array for sub files
       }
       $element = strrchr($element, '/');
       $element = substr($element, 1);
@@ -92,7 +79,8 @@ class novaGallery {
     return $fileList;
   }
 
-  protected function getImageCaptureDate($file){
+  protected function getImageCaptureDate($file)
+  {
     if(!file_exists($file)) { return false;  }
 
     if(preg_match('/\.(JPEG|jpeg|JPG|jpg|png|PNG)$/', $file) === 0){
@@ -138,7 +126,8 @@ class novaGallery {
     return $date;
   }
 
-  protected function timestampFromExif($string){
+  protected function timestampFromExif($string): string
+  {
     if (!(preg_match('/\d\d\d\d:\d\d:\d\d \d\d:\d\d:\d\d/', $string))) {
       return $string; // wrong date
     }
@@ -153,7 +142,8 @@ class novaGallery {
     return $iTimestamp;
   }
 
-  protected function shuffle_assoc($array) {
+  protected function shuffle_assoc($array): array
+  {
         $keys = array_keys($array);
         shuffle($keys);
 
@@ -164,7 +154,8 @@ class novaGallery {
         return $new;
   }
   
-  protected function order($list, $order){
+  protected function order($list, $order): array
+  {
     switch ($order) {
       case 'oldest':
         asort($list);
@@ -187,7 +178,8 @@ class novaGallery {
   // solution based on http://www.marcokrings.de/arrays-sortieren-mit-umlauten/
   protected function orderByName($list){
     // swap key (name) value (timestamp) for order operations
-    $nameList = array();
+    $nameList = [];
+    //print_R($list);
     foreach ($list as $album => $value) {
       array_push($nameList, $album);
     }
@@ -195,8 +187,8 @@ class novaGallery {
     // sort based on http://www.marcokrings.de/arrays-sortieren-mit-umlauten/
     $aOriginal = $nameList;
     if (count($aOriginal) == 0) { return $aOriginal; }
-    $aModified = array();
-    $aReturn   = array();
+    $aModified = [];
+    $aReturn   = [];
     $aSearch   = array("Ä","ä","Ö","ö","Ü","ü","ß","-");
     $aReplace  = array("A","a","O","o","U","u","ss"," ");
     foreach($aOriginal as $key => $val) {
@@ -208,7 +200,7 @@ class novaGallery {
     }
 
     // swap back to have a orderd list with the correct key (album) value (timestamp) format
-    $orderedList = array();
+    $orderedList = [];
     foreach ($aReturn as $value) {
       $orderedList[$value] = $list[$value];
 
@@ -219,27 +211,46 @@ class novaGallery {
 
   public function getFirstImage()
   {
+      //echo "getFirstImage()<br>\n";
       //print_R($this->images);
       if (count($this->images)) {
+          //echo "Image trouvée<br>\n";
+          //echo array_key_first($this->images);
             return array_key_first($this->images);
       }
       if (count($this->albums)) {
-          //print_R($this->albums);
           foreach ($this->albums as $album => $images) {
-                return $album.'/'.array_key_first($images);
+              //echo "DIR :".$this->dir."/".$album."<br>\n";
+              if (! $this->albums[$album]) {
+                  $this->albums[$album] = new Gallery($this->dir . '/' . $album);
+              }
+              $firstPhoto = $this->albums[$album]->getFirstImage();
+              if ($firstPhoto) {
+                  //echo "album trouvé<br>\n";
+                  //echo "$firstPhoto<br>\n";
+                  return $album.'/'.$firstPhoto;
+              } else {
+                  //echo "<br>remove $this->dir/$album<br> \n";
+                  unset($this->albums[$album]);
+
+              }
           }
+          //print_R($this->albums);
       }
+      //$this->
+      //unset ($this->albums)
+      //echo "<br>remove $this->dir<br> \n";
       return false;
 
   }
 
 
   protected function removeEmptyAlbums2(){
-      echo "removeEmptyAlbums2<br>\n";
+     // echo "removeEmptyAlbums2<br>\n";
     foreach ($this->albums as $album => $modDate) {
       if(!$this->hasImages($album)){
         // return false; // free version
-        $subAlbum = new novaGallery($this->dir.'/'.$album, false, $this->maxCacheAge); // only for version with sub albums
+        $subAlbum = new Gallery($this->dir.'/'.$album, true); // only for version with sub albums
           //echo "REMOVE EMPTY ALBUM<br>\n";
           $firstImage = $subAlbum->getFirstImage();
           //echo "album $album<br>\n";
@@ -252,66 +263,17 @@ class novaGallery {
     //return $this->albums;
   }
 
-  protected function removeEmptyAlbums($albums){
-    foreach ($albums as $album => $modDate) {
-      if(!$this->hasImages($album)){
-        // return false; // free version
-        $subAlbum = new novaGallery($this->dir.'/'.$album, $this->onlyWithImages, $this->maxCacheAge); // only for version with sub albums
-          //echo "REMOVE EMPTY ALBUM<br>\n";
-        if(!$subAlbum->hasAlbums()){ // only for version with sub albums
-          unset($albums[$album]); // only for version with sub albums
-        }
-      }
-    }
-    return $albums;
-  }
+  public function getAlbums($order = 'default'){
 
-  
-  protected function readCache($dir, $maxAge){
-    $cacheFile = $dir.'/'.$this->cacheDir.'/'.$this->cacheFile;
-    if(file_exists($cacheFile)){
-      $age = time() - filemtime($cacheFile);
-      if($age > $maxAge) {
-        return false;
-      }
-
-      $content = file($cacheFile);
-      unset($content[0]); // Remove first security line (<?php die();)
-      $content = implode($content); // Regenerate JSON
-      $content = json_decode($content, true);
-      $this->images = $content['images'];
-      $this->albums = $content['albums'];
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  protected function writeCache($dir){
-    $cacheDir =  $dir.'/'.$this->cacheDir;
-    if(!file_exists($cacheDir)){
-      mkdir($cacheDir, 0777, true);
-    }
-    $cacheFile = $cacheDir.'/'.$this->cacheFile;
-    $content = ['images' => $this->images, 'albums' => $this->albums];
-    $content = json_encode($content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK );
-    $data = '<?php die(); ?>'.PHP_EOL;
-    $data .= $content;
-    file_put_contents($cacheFile, $data, LOCK_EX); // LOCK_EX flag prevents that anyone else is writing to the file at the same time
-    return true; // only true because if cache doesn't work, it also work (just only without cache)
-  }
-
-
-  public function albums($order = 'default'){
-
+      //print_r($this->albums);
     // order images in albums
-    $orderedImages = array();
+    $orderedImages = [];
     foreach ($this->albums as $album => $images) {
       $orderedImages[$album] = $this->order($images, $order);
     }
 
     // order albums based on first image
-    $orderedAlbums = array();
+    $orderedAlbums = [];
       // create array with albums and timestamp of first image
     foreach ($orderedImages as $album => $images) {
       if(!empty($images)){
@@ -322,7 +284,7 @@ class novaGallery {
     }
     $orderedAlbums = $this->order($orderedAlbums, $order);
       // create array with all albums and all images orderd
-    $albums = array();
+    $albums = [];
     foreach ($orderedAlbums as $album => $value) {
       $albums[$album] = $orderedImages[$album];
     }
@@ -337,41 +299,24 @@ class novaGallery {
 
 
   public function coverImage($album, $order = 'default'){
-      echo "coverImage";
     if($this->hasImages($album)){
-        echo "hasImage <br>\n";
-      $images = $this->order($this->albums["$album"], $order);  
+      $images = $this->order($this->albums["$album"], $order);
       reset($images);
       return key($images);
     }
 
-    $subGallery = new novaGallery($this->dir.'/'.$album, false, $this->maxCacheAge);
+    $subGallery = new Gallery($this->dir.'/'.$album);
     
     $coverImage2 = $subGallery->getFirstImage();
-    echo "coverImage2 : $coverImage2<br>\n";
+   // if (!$coverImage2) {
+        //unset($this->albums[$album]);
+    //}
     return $coverImage2;
-    echo "coverImage2 : ".$coverImage2."<br>\n";
-    if($subGallery->hasAlbums()){
-        echo "SUB GALLERY<br>\n";
-      $albums = $subGallery->albums($order);
-      $firstAlbum = array_key_first($albums);
-      $coverImage = $subGallery->coverImage($firstAlbum, $order);
-      if($coverImage){
-        return $firstAlbum.'/'.$coverImage;
-      } else {
-        return $firstAlbum;
-      }
-    }
-    // else return false
-    return false;
+
   }
 
   public function hasAlbums(){
-    if(empty($this->albums)){
-      return false;
-    } else {
-      return true;
-    }
+    return !empty($this->albums);
   }
 
   public function hasImages($album = false){
@@ -382,12 +327,7 @@ class novaGallery {
       $imageList = &$this->images;
     }
 
-    // check if empty
-    if(empty($imageList)){
-      return false;
-    } else {
-      return true;
-    }
+    return !empty($imageList);
   }
   
   public function parentAlbum($album){

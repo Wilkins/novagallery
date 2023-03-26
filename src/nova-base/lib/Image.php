@@ -24,6 +24,7 @@ class Image {
     // set path & name vars    
     self::$filePath = IMAGES_DIR.'/'.$album;
     self::$original = self::$filePath.'/'.$image;
+    //echo "original ; ".self::$original."\n";
     self::$cache = $cache;
     self::$cacheDirRoot = self::$filePath.'/cache';
     self::$cacheDir = self::$cacheDirRoot.'/'.$size;
@@ -123,14 +124,16 @@ class Image {
   public static function render($album, $image, $size = false, $cache = true, $hide404image = true){
     self::initialize($album, $image, $size, $cache);
 
+    //exit;
     // check of original exisits
     if(!file_exists(self::$original)){
       self::notFound($hide404image);
       exit;  
       }
-        
     // if no size, stream original file
     if(!$size){
+        echo "ici";
+        exit;
       $img = new GImage\Image();
       $img  ->load(self::$original)
             ->output();
@@ -154,7 +157,7 @@ class Image {
     $img = new GImage\Image();
     $img  ->load(self::$original)
           ->setQuality(IMAGES_QUALITY);
-    
+
 
     if(self::$width && !self::$height){
       // resize to width
@@ -172,6 +175,8 @@ class Image {
       $img  ->output();
       exit;
     }
+    //print_r($img->output());
+    exit;
 
     $img  ->preserve()
           ->output()
