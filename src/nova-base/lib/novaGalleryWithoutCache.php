@@ -26,15 +26,43 @@ class novaGalleryWithoutCache {
 
   protected function listAlbums(): void
   {
-    $dirs = glob($this->dir.'/'."*", GLOB_ONLYDIR);
-    $this->albums = $this->fileList($dirs);
+      $start = microtime(true);
+      $dirs = FileSystem::listDirectories($this->dir);
+      echo "FileSystem::listDirectories($this->dir/*}) (".(microtime(true)-$start)." sec)<br>\n";
+      echo "<pre>";
+      print_R($dirs);
+      echo "</pre>";
+      /*
+      $start = microtime(true);
+      $dirs = FileSystem::listDirectories2($this->dir);
+      echo "FileSystem::listDirectories2($this->dir/*}) (".(microtime(true)-$start)." sec)<br>\n";
+      echo "<pre>";
+      print_R($dirs);
+      echo "</pre>";
+*/
+      /*
+      */
+      $start = microtime(true);
+      $dirs = glob($this->dir.'/'."*", GLOB_ONLYDIR);
+      echo "glob($this->dir/*}) (".(microtime(true)-$start)." sec)<br>\n";
+      echo "<pre>";
+      print_R($dirs);
+      echo "</pre>";
+
+
+      $this->albums = $this->fileList($dirs);
     unset($this->albums["@eaDir"]);
+
+      $this->albums = $this->fileList($dirs);
+      unset($this->albums["@eaDir"]);
   }
 
   protected function processImages(): void
   {
+      $start = microtime(true);
       $images = glob($this->dir.'/*{jpg,jpeg,JPG,JPEG,png,PNG}', GLOB_BRACE );
-      //echo "glob($this->dir/*{jpg,jpeg,JPG,JPEG,png,PNG})<br>\n";
+      //print_R($images);
+      echo "glob($this->dir/*{jpg,jpeg,JPG,JPEG,png,PNG}) (".(microtime(true)-$start)." sec)<br>\n";
       $this->images = $this->fileList($images, false);
   }
 
