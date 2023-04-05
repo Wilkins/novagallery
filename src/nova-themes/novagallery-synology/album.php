@@ -15,18 +15,17 @@
         <!-- albums -->
         <?php if($gallery->hasAlbums()): ?>
         <div class="row px-2 mt-4">
-          <?php foreach($gallery->getAlbums($order) as $element => $modDate):
+          <?php
+          foreach($gallery->getAlbums($order) as $element => $modDate):
+
                 $elementPath = $album ? $album.'/'.$element : $element;
           ?>
-            <?php $cover = $gallery->coverImage($element, $order); ?>
-            <?php if ($cover): ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
               <a href="<?php echo Site::basePath().'/album/'.$elementPath; ?>">
-                <img src="<?php echo Synology::url($elementPath, $cover, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded"><br>
+                <img src="<?php echo $gallery->coverImage($elementPath, $order);; ?>" loading="lazy" class="rounded"><br>
                 <?php echo ucwords($element); ?>
               </a>
             </div>
-            <?php endif; ?>
           <?php endforeach ?>
         </div>
         <?php endif; ?>
@@ -39,6 +38,8 @@
               <a href="<?php echo Synology::url($album, $element, Site::config('imageSizeBig')); ?>">
                 <img src="<?php echo Synology::url($album, $element, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded"><br>
               </a>
+                <a href="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">Favori</a>
+                <?php echo $element; ?>
             </div>
           <?php endforeach ?>
         </div>

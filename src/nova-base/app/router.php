@@ -33,6 +33,12 @@ Router::add('/album/(.*)', function($var1) {
   require 'pages/album.php';
 }, 'get');
 
+Router::add('/favorite/(.*)', function($var1) {
+  require 'auth.php';
+  $favorite = rawurldecode($var1);
+  require 'pages/favorite.php';
+}, 'get');
+
 
 // Auth
 Router::add('/login', function() {

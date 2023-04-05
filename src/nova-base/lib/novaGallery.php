@@ -16,8 +16,8 @@ class novaGallery {
   protected $albums = [];
   protected $onlyWithImages = true;
   protected $maxCacheAge = 60;
-  protected $cacheDir = 'cache';
-  protected $cacheFile = 'files.php';
+  protected $cacheDir = '';
+  protected $cacheFile = '.cache_files.php';
 
   function __construct($dir, $onlyWithImages = true, $maxCacheAge = 60){
       //echo "NovaGallery::construct";
