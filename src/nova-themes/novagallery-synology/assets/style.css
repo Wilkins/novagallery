@@ -69,3 +69,19 @@ footer .footerText a, footer .footerText a:hover {
 .sl-wrapper .sl-counter { 
   color: #333333; opacity: 1; 
 }
+
+.icon-favorite-off {
+  padding: 5px;
+  color: #666;
+  cursor: pointer;
+}
+.icon-favorite-on {
+  padding: 5px;
+  color: #cc0;
+  cursor: pointer;
+}
+.icon-favorite-error {
+  padding: 5px;
+  color: #cc4444;
+  cursor: pointer;
+}

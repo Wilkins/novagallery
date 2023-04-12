@@ -7,6 +7,9 @@
     ?>
     <content class="row mt-0 mt-md-5">
       <div class="col-12 mb-1"><h1><?php echo Page::title(); ?></h1></div>
+      <?php if($album): ?>
+        <div class="col-12 mb-4"><a href="<?php echo Site::url().'/'.Page::data('parentPage'); ?>" class="text-muted link-back">&laquo; <?php L::p('Back'); ?></a></div>
+      <?php endif; ?>
       <div class="container">
         <!-- albums -->
         <?php if($gallery->hasAlbums()): ?>
@@ -14,15 +17,14 @@
           <?php foreach($gallery->getAlbums($order) as $element => $modDate):
                 $elementPath = $album ? $album.'/'.$element : $element;
           ?>
-          <?php $cover = $gallery->coverImage($element, $order); ?>
-          <?php if ($cover): ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-              <a href="<?php echo Site::basePath().'/album/'.$elementPath; ?>">
-                <img src="<?php echo Synology::url($elementPath, $cover, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded"><br>
+                <?php $cover = $gallery->coverImage($elementPath, $order); ?>
+
+                <a href="<?php echo Site::basePath().'/album/'.$elementPath; ?>">
+                <img src="<?php echo $cover; ?>" loading="lazy" class="rounded"><br>
                 <?php echo ucwords($element); ?>
               </a>
             </div>
-            <?php endif; ?>
           <?php endforeach ?>
         </div>
         <?php endif; ?>

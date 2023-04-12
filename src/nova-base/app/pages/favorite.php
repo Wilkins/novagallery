@@ -1,12 +1,14 @@
     <?php
       //print_r([$favorite]);
-      $fullFilename = Synology::getThumbFromUrl($favorite);
+      //$fullFilename = Synology::getThumbFromUrl($favorite);
 
-      $fullFilename = Synology::getThumbFromUrl($favorite);
+      //$fullFilename = Synology::getThumbFromUrl($favorite);
 
       Synology::createCoverFromUrl($favorite);
+      echo '{"message": "ok"}'."\n";
+      return;
 
-    //echo $fullFilename;
+    echo $fullFilename;
     echo "<br>\n";
 
       return;

@@ -9,6 +9,7 @@
   </div>
 
   <script type="text/javascript" src="<?php echo THEME_PATH; ?>/assets/simple-lightbox.min.js"></script>
-  <script type="text/javascript" src="<?php echo THEME_PATH; ?>/assets/novagallery.js"></script>    
+  <script type="text/javascript" src="<?php echo THEME_PATH; ?>/assets/jquery-3.6.4.min.js"></script>
+  <script type="text/javascript" src="<?php echo THEME_PATH; ?>/assets/novagallery.js"></script>
 </body>
 </html>
