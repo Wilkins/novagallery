@@ -1,8 +1,8 @@
 <?php
 //print_r([$favorite]);
-//$fullFilename = Synology::getThumbFromUrl($favorite);
+//$fullFilename = lib\Synology::getThumbFromUrl($favorite);
 
-//$fullFilename = Synology::getThumbFromUrl($favorite);
+//$fullFilename = lib\Synology::getThumbFromUrl($favorite);
 
 Synology::createCoverFromUrl($favorite);
 echo '{"message": "ok"}' . "\n";
@@ -13,7 +13,7 @@ echo "<br>\n";
 
 return;
 //chdir($album);
-/** @var novaGalleryWithoutCache $gallery */
+/** @var Gallery $gallery */
 $gallery = Page::data('gallery');
 $album = Page::data('album');
 $order = Page::data('order');

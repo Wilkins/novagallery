@@ -38,7 +38,7 @@ if (!file_exists(IMAGES_DIR . '/' . $album)) {
     exit;
 }
 
-$gallery = new novaGalleryWithoutCache(IMAGES_DIR . '/' . $album);
+$gallery = new Gallery(IMAGES_DIR . '/' . $album);
 $parentPage = $gallery->parentAlbum($album);
 if ($parentPage) {
     $parentPage = 'album/' . $parentPage;

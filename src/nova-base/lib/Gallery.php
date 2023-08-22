@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Gallery - List Images and Albums
+ * core\lib\Gallery - List Images and Albums
  * @author novafacile OÜ
  * @copyright Copyright (c) 2021 by novafacile OÜ
  * @license AGPL-3.0
@@ -8,8 +9,7 @@
  * @link https://novagallery.org
  * to disable cache just set maxCacheAge to 'false' on initialization
  **/
-
-class novaGalleryWithoutCache
+class Gallery
 {
 
     protected $dir = '';
@@ -20,13 +20,6 @@ class novaGalleryWithoutCache
     public function __construct($dir)
     {
         $this->dir = $dir;
-        /*
-        $this->filesystem = new FileSystem($this->dir);
-        $content = $this->filesystem->readDir();
-        print_R($content);
-        $this->albums = $content['albums'];
-        $this->images = $content['images'];
-        */
         $this->listAlbums();
         $this->processImages();
     }
@@ -37,15 +30,15 @@ class novaGalleryWithoutCache
         $fileSystem = new FileSystem($this->dir);
         $dirs = $fileSystem->listDirectories();
         if (self::DEBUG) {
-            echo "FileSystem::listDirectories($this->dir/*}) (" . (microtime(true) - $start) . " sec)<br>\n";
+            echo "core\FileSystem::listDirectories($this->dir/*}) (" . (microtime(true) - $start) . " sec)<br>\n";
             echo "<pre>";
             print_R($dirs);
             echo "</pre>";
         }
         /*
         $start = microtime(true);
-        $dirs = FileSystem::listDirectories2($this->dir);
-        echo "FileSystem::listDirectories2($this->dir/*}) (".(microtime(true)-$start)." sec)<br>\n";
+        $dirs = core\lib\FileSystem::listDirectories2($this->dir);
+        echo "core\lib\FileSystem::listDirectories2($this->dir/*}) (".(microtime(true)-$start)." sec)<br>\n";
         echo "<pre>";
         print_R($dirs);
         echo "</pre>";
@@ -234,27 +227,7 @@ class novaGalleryWithoutCache
         return $orderedList;
     }
 
-    public function getFirstImage()
-    {
-        if (count($this->images)) {
-            return array_key_first($this->images);
-        }
-        if (count($this->albums)) {
-            foreach ($this->albums as $album => $images) {
-                if (!$this->albums[$album]) {
-                    $this->albums[$album] = new novaGalleryWithoutCache($this->dir . '/' . $album);
-                }
-                $firstPhoto = $this->albums[$album]->getFirstImage();
-                if ($firstPhoto) {
-                    return $album . '/' . $firstPhoto;
-                }
-                unset($this->albums[$album]);
-            }
-        }
-        return false;
-    }
-
-    public function getAlbums($order = 'default')
+    public function getAlbums($order = 'default'): array
     {
         // order images in albums
         $orderedImages = [];
@@ -282,31 +255,22 @@ class novaGalleryWithoutCache
         return $albums;
     }
 
-    public function images($order = 'default')
+    public function images($order = 'default'): array
     {
         return $this->order($this->images, $order);
     }
 
-    public function coverImage($album, $order = 'default')
+    public function coverImage($album, $order = 'default'): string
     {
-        return IMAGES_URL."/$album/".Synology::COVER;
-        if ($this->hasImages($album)) {
-            $images = $this->order($this->albums["$album"], $order);
-            reset($images);
-            return key($images);
-        }
-
-        $subGallery = new novaGalleryWithoutCache($this->dir . '/' . $album);
-
-        return $subGallery->getFirstImage();
+        return IMAGES_URL . "/$album/" . Synology::COVER;
     }
 
-    public function hasAlbums()
+    public function hasAlbums(): bool
     {
         return !empty($this->albums);
     }
 
-    public function hasImages($album = false)
+    public function hasImages($album = false): bool
     {
         // choose correct image array
         if ($album) {
@@ -318,7 +282,7 @@ class novaGalleryWithoutCache
         return !empty($imageList);
     }
 
-    public function parentAlbum($album)
+    public function parentAlbum($album): string
     {
         $parent = strrpos($album, '/');
         return substr($album, 0, $parent);

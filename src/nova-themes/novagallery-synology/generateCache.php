@@ -1,6 +1,10 @@
     <?php
-      /** @var novaGalleryWithoutCache $gallery */
-      $gallery = Page::data('gallery');
+      /** @var \lib\gallery $gallery */
+
+    use core\Gallery;
+    use lib\Synology;
+
+    $gallery = Page::data('gallery');
       $album = Page::data('album');
       $order = Page::data('order');
       $start = microtime(true);

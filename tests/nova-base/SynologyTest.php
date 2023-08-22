@@ -1,13 +1,14 @@
 <?php
 
 
+use lib\Synology;
 use PHPUnit\Framework\TestCase;
 
 class SynologyTest extends TestCase
 {
     public function testUrl(): void
     {
-        $album = 'Gallery/Album1/Alb=+~um12/Album é-%$/Album 123';
+        $album = 'core\Gallery/Album1/Alb=+~um12/Album é-%$/Album 123';
         $image = 'IMG_12345.jpg';
         $size = 'SM';
         $resultUrl = Synology::url($album, $image, $size);
@@ -17,7 +18,7 @@ class SynologyTest extends TestCase
 
     public function testPath(): void
     {
-        $album = 'Gallery/Album1/Album12';
+        $album = 'core\Gallery/Album1/Album12';
         $image = 'IMG_12345.jpg';
         $size = 'SM';
         $resultUrl = Synology::path($album, $image, $size);

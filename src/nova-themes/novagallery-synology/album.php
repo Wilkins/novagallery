@@ -1,6 +1,6 @@
     <?php
-      /** @var novaGalleryWithoutCache $gallery */
-      $gallery = Page::data('gallery');
+
+    $gallery = Page::data('gallery');
       $album = Page::data('album');
       $order = Page::data('order');
       $start = microtime(true);

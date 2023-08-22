@@ -1,5 +1,6 @@
 <?php
 
+
 class Synology extends Image
 {
     public const COVER = '.COVER.JPG';
@@ -25,7 +26,7 @@ class Synology extends Image
 
     public static function getThumbFromUrl(string $fullFilename): array
     {
-        $fullFilename = IMAGES_DIR.'/'.$fullFilename;
+        $fullFilename = IMAGES_DIR . '/' . $fullFilename;
 
         return [dirname($fullFilename), self::getThumb(basename($fullFilename))];
 
@@ -33,20 +34,20 @@ class Synology extends Image
 
     public static function getAlbumFromUrl(string $fullFilename): string
     {
-        return IMAGES_DIR.'/'.dirname($fullFilename);
+        return IMAGES_DIR . '/' . dirname($fullFilename);
     }
 
     public static function getAlbumCoverFromUrl(string $fullFilename): string
     {
-        return self::getAlbumFromUrl($fullFilename)."/".self::COVER;
+        return self::getAlbumFromUrl($fullFilename) . "/" . self::COVER;
     }
 
     public static function createCoverFromUrl(string $fullFilename): void
     {
         if (self::isAlbum($fullFilename)) {
             $fullAlbum = self::getAlbumDir($fullFilename);
-            [$dir, $subCover] = [dirname($fullAlbum), basename($fullAlbum).'/'.self::COVER];
-            $targetCover = self::getAlbumFromurl($fullFilename).'/'.self::COVER;
+            [$dir, $subCover] = [dirname($fullAlbum), basename($fullAlbum) . '/' . self::COVER];
+            $targetCover = self::getAlbumFromurl($fullFilename) . '/' . self::COVER;
             self::createLink($dir, $subCover, $targetCover);
 
             return;
@@ -82,7 +83,7 @@ class Synology extends Image
         if (file_exists($target)) {
             return;
         }
-        echo $command."<br>\n";
+        echo $command . "<br>\n";
 
         throw new Exception("$target should have been created");
         //print_r($output);
@@ -98,8 +99,9 @@ class Synology extends Image
 
     private static function getAlbumDir(string $fullFilename): string
     {
-        return IMAGES_DIR.'/'.$fullFilename;
+        return IMAGES_DIR . '/' . $fullFilename;
     }
+
     private static function isAlbum(string $fullFilename): bool
     {
         return is_dir(self::getAlbumDir($fullFilename));
