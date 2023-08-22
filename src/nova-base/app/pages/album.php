@@ -44,10 +44,13 @@ if ($parentPage) {
     $parentPage = 'album/' . $parentPage;
 }
 
+$favorites = Synology::getMetadata($album, Synology::FAVORITES_KEY);
+
 Page::addData('gallery', $gallery);
 Page::addData('order', $order);
 Page::addData('album', $album);
 Page::addData('parentPage', $parentPage);
+Page::addData('favorites', $favorites);
 
 
 Template::render('album');

@@ -3,6 +3,7 @@
     $gallery = Page::data('gallery');
       $album = Page::data('album');
       $order = Page::data('order');
+      $favorites = Page::data('favorites');
       $start = microtime(true);
     ?>
 
@@ -45,13 +46,16 @@
                 <a href="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">Favori</a>
                 <?php echo print_R(pathinfo($element)['extension'],true); ?>
                 -->
-                <p class="favorite-clickable" data-url="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">
-                    <i class="icon-favorite-off">&#9733;</i> Favorite
+                <p class="cover-clickable" data-url="/cover/<?php echo $album; ?>/<?php echo $element; ?>" title="Cover">
+                    <i class="icon-cover-off icon">&#9733;</i> Cover
                 </p>
-                <p class="favorite-clickable" data-url="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">
-                    <i class="icon-favorite-off">&#9733;</i> Favorite
+                <?php $favoriteFlag = isset($favorites[$element]); ?>
+                <p class="favorite-clickable" data-url="/favorite/<?php echo $album; ?>/<?php echo $element; ?>" title="Favorite">
+                    <i class="icon-favorite-<?php echo $favoriteFlag ? 'on' : 'off'; ?> icon">&#9829;</i> Fav
                 </p>
-                &#9829;
+                <p class="trash-clickable" data-url="/trash/<?php echo $album; ?>/<?php echo $element; ?>" title="Trash">
+                    <span class="icon-trash-off icon">&#x2716;</span> Trash
+                </p>
             </div>
           <?php endforeach ?>
         </div>

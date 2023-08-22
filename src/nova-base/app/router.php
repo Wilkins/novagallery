@@ -45,6 +45,11 @@ Router::add('/cover/(.*)', static function($var1) {
   require 'pages/cover.php';
 });
 
+Router::add('/trash/(.*)', static function($var1) {
+    require 'auth.php';
+    $trash = rawurldecode($var1);
+    require 'pages/trash.php';
+});
 
 // Auth
 Router::add('/login', static function() {

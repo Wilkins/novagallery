@@ -69,22 +69,50 @@ footer .footerText a, footer .footerText a:hover {
 .sl-wrapper .sl-counter { 
   color: #333333; opacity: 1; 
 }
-
-.icon-favorite-off {
+p.cover-clickable,
+p.trash-clickable,
+p.favorite-clickable {
+  display: inline-block;
+}
+.icon {
   padding: 5px;
-  color: #666;
   cursor: pointer;
+  font-size: 24px;
+  /*
+  border: 1px solid #1f70b8;
+  background-color: #1f70b8;
+  border-radius: 4px;
+  */
+}
+.icon-favorite-off {
+  color: #666;
 }
 .icon-favorite-on {
-  padding: 5px;
-  color: #cc0;
-  cursor: pointer;
+  color: red;
 }
 .icon-favorite-error {
-  padding: 5px;
-  color: #cc4444;
-  cursor: pointer;
+  color: orange;
 }
+.icon-cover-off {
+  color: #666;
+}
+.icon-cover-on {
+  color: #cc0;
+}
+.icon-cover-error {
+  color: #cc4444;
+}
+.icon-trash-off {
+  color: #666;
+}
+.icon-trash-on {
+  color: limegreen;
+}
+.icon-trash-error {
+  color: #cc4444;
+}
+
+
 
 .extension-overlay[data-ext="MOV"],
 .extension-overlay[data-ext="MP4"],
