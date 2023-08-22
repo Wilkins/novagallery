@@ -11,7 +11,7 @@
 // define basics
 define('NOVA', true);
 
-$path = dirname(__FILE__);
+$path = __DIR__;
 $path = substr($path, 0, -10);
 define('ROOT_DIR', $path);
 
@@ -23,12 +23,7 @@ spl_autoload_register(function($class){
     }
 });
 
-
-// load JSON DB as local files
-require 'core/JsonDB.php';
-
-// load site
-require 'core/Site.php';
+require __DIR__.'/../../vendor/autoload.php';
 
 Site::initialize();
 
@@ -47,18 +42,6 @@ define('IMAGES_QUALITY', Site::config('imageQuality'));
 define('THEME_DIR', 'nova-themes/'.Site::theme());
 define('THEME_PATH', BASE_PATH.'/nova-themes/'.Site::theme());
 
-// load basics
-require 'core/Router.php';
-require 'core/Page.php';
-require 'core/Template.php';
-require 'core/Gallery.php';
-require 'core/FileSystem.php';
-require 'core/Image.php';
-require 'core/Synology.php';
-
-// Language
-require 'core/Language.php';
-require 'core/L.php';
 L::initialize(Site::config('language'));
 
 // load routes

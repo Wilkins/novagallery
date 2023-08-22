@@ -7,7 +7,6 @@
     "autoload": {
         "psr-4": {
             "": [
-                "src/nova-base/lib",
                 "src/nova-base/core"
             ]
         }
