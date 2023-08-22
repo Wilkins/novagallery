@@ -1,22 +1,22 @@
-    <?php
-      //print_r([$favorite]);
-      //$fullFilename = Synology::getThumbFromUrl($favorite);
+<?php
+//print_r([$favorite]);
+//$fullFilename = Synology::getThumbFromUrl($favorite);
 
-      //$fullFilename = Synology::getThumbFromUrl($favorite);
+//$fullFilename = Synology::getThumbFromUrl($favorite);
 
-      Synology::createCoverFromUrl($favorite);
-      echo '{"message": "ok"}'."\n";
-      return;
+Synology::createCoverFromUrl($favorite);
+echo '{"message": "ok"}' . "\n";
+return;
 
-    echo $fullFilename;
-    echo "<br>\n";
+echo $fullFilename;
+echo "<br>\n";
 
-      return;
-      //chdir($album);
-      /** @var novaGalleryWithoutCache $gallery */
-      $gallery = Page::data('gallery');
-      $album = Page::data('album');
-      $order = Page::data('order');
-    $start = microtime(true);
+return;
+//chdir($album);
+/** @var novaGalleryWithoutCache $gallery */
+$gallery = Page::data('gallery');
+$album = Page::data('album');
+$order = Page::data('order');
+$start = microtime(true);
 
-    ?>
+?>

@@ -57,7 +57,7 @@ class Synology extends Image
         self::createLink($dir, $thumb, $cover);
     }
 
-    private static function createLink($dir, $source, $target): bool
+    private static function createLink($dir, $source, $target): void
     {
         $command = "cd \"$dir\" ; /bin/ln -sf \"$source\" \"$target\"";
 
@@ -80,7 +80,7 @@ class Synology extends Image
         */
         $output = shell_exec($command);
         if (file_exists($target)) {
-            return true;
+            return;
         }
         echo $command."<br>\n";
 
@@ -92,8 +92,8 @@ class Synology extends Image
         if (!is_writable($targetDir)) {
             //throw new Exception("$targetDir is not writable");
         }
-        */
         return true;
+        */
     }
 
     private static function getAlbumDir(string $fullFilename): string

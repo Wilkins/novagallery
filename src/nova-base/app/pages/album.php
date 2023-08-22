@@ -4,44 +4,44 @@ $title = ucwords($album);
 $title = str_replace('/', ' &raquo; ', $title);
 
 Page::title($title);
-Page::metaTitle(Page::title().' | '.Site::config('siteName'));
+Page::metaTitle(Page::title() . ' | ' . Site::config('siteName'));
 
 $order = 'newest';
 
-if(Site::config('sortImages')){
-  $order = Site::config('sortImages');
+if (Site::config('sortImages')) {
+    $order = Site::config('sortImages');
 }
 
 $fileListMaxCacheAge = Site::config('fileListMaxCacheAge');
 $imageCache = Site::config('imageCache');
 
-if(isset($_GET['order'])){
-  switch ($_GET['order']) {
-    case 'oldest':
-      $order = 'oldest';
-      break;
-    case 'newest':
-      $order = 'newest';
-      break;
-    default:
-      $order = 'default';
-      break;
-  }
+if (isset($_GET['order'])) {
+    switch ($_GET['order']) {
+        case 'oldest':
+            $order = 'oldest';
+            break;
+        case 'newest':
+            $order = 'newest';
+            break;
+        default:
+            $order = 'default';
+            break;
+    }
 }
 
 // Todo:
 // Some protections for album name
 
 // 404 if album doesn't exists
-if(!file_exists(IMAGES_DIR.'/'.$album)) {
-  Template::render('404');
-  exit;
+if (!file_exists(IMAGES_DIR . '/' . $album)) {
+    Template::render('404');
+    exit;
 }
 
-$gallery = new novaGalleryWithoutCache(IMAGES_DIR.'/'.$album);
+$gallery = new novaGalleryWithoutCache(IMAGES_DIR . '/' . $album);
 $parentPage = $gallery->parentAlbum($album);
-if($parentPage){
-  $parentPage = 'album/'.$parentPage;
+if ($parentPage) {
+    $parentPage = 'album/' . $parentPage;
 }
 
 Page::addData('gallery', $gallery);

@@ -20,13 +20,14 @@ final class FileSystem
     {
         $this->dir = $dir;
     }
-
+/*
     public function readDir(): array
     {
         $this->load();
         $content = $this->buildContent();
         return $content;
     }
+*/
 
     /*
         public function readDir2($dir): array
@@ -95,6 +96,7 @@ final class FileSystem
         return $directories;
     }
 
+    /*
     public function listDirContent(): void
     {
         $directory = new DirectoryIterator($this->dir);
@@ -113,7 +115,9 @@ final class FileSystem
         }
         $this->saveCache();
     }
+    */
 
+    /*
     private function extensionIsAccepted(string $extension): bool
     {
         return in_array(strtolower($extension), self::ACCEPTED_EXTENSIONS, true);
@@ -132,7 +136,9 @@ final class FileSystem
         $data .= $content;
         file_put_contents($cacheFile, $data, LOCK_EX); // LOCK_EX flag prevents that anyone else is writing to the file at the same time
     }
+    */
 
+    /*
     private function buildContent(): array
     {
         sort($this->albums);
@@ -142,8 +148,10 @@ final class FileSystem
             'images' => $this->images,
         ];
     }
+    */
 
 
+    /*
     public function load(): void
     {
         $maxAge = Site::config('maxAge');
@@ -165,4 +173,5 @@ final class FileSystem
         $this->images = $content['images'];
         $this->albums = $content['albums'];
     }
+    */
 }

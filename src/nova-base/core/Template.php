@@ -7,12 +7,13 @@
  * @link https://novagallery.org
  **/
 
-class Template {
-  public static function render($template){
-    if($template == 404) {
-      header('HTTP/1.0 404 Not Found');
+class Template
+{
+    public static function render($template): void
+    {
+        if ($template === 404) {
+            header('HTTP/1.0 404 Not Found');
+        }
+        require THEME_DIR . '/index.php';
     }
-    require THEME_DIR.'/index.php';
-  }
-
 }

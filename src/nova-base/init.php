@@ -54,6 +54,7 @@ require 'core/Template.php';
 
 // Language
 require 'core/Language.php';
+require 'core/L.php';
 L::initialize(Site::config('language'));
 
 // load routes

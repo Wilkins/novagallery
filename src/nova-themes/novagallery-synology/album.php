@@ -48,6 +48,10 @@
                 <p class="favorite-clickable" data-url="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">
                     <i class="icon-favorite-off">&#9733;</i> Favorite
                 </p>
+                <p class="favorite-clickable" data-url="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">
+                    <i class="icon-favorite-off">&#9733;</i> Favorite
+                </p>
+                &#9829;
             </div>
           <?php endforeach ?>
         </div>

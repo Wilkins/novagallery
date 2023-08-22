@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Simple class for saving and reading config files in JSON
  * @author novafacile OÜ
@@ -7,52 +8,55 @@
  * @link https://novagallery.org
  * optional: first line with simple php protection to prentend direct access
  **/
-class JsonDB {
-  
-  private static $firstLine = '<?php defined("NOVA") or die(); ?>';
+class JsonDB
+{
 
-  public static function read($file, $firstLine = true) {
-    if (file_exists($file)) {
+    private static $firstLine = '<?php defined("NOVA") or die(); ?>';
 
-      // Read JSON file as array
-      $content = file($file);
+    public static function read($file, $firstLine = true)
+    {
+        if (file_exists($file)) {
 
-      // Remove first security line
-      if ($firstLine) {
-        unset($content[0]);
-      }
+            // Read JSON file as array
+            $content = file($file);
 
-      // Regenerate JSON
-      $content = implode($content);
+            // Remove first security line
+            if ($firstLine) {
+                unset($content[0]);
+            }
 
-      return json_decode($content);
-    } else {
-      return false;
-    }
-  }
+            // Regenerate JSON
+            $content = implode($content);
 
-
-  public static function save($content, $file, $firstLine = true) {
-    // checkTyp
-    if(is_array($content) || is_object($content)) {
-      $content = json_encode($content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK );
+            return json_decode($content);
+        } else {
+            return false;
+        }
     }
 
-    // check if json is valid
-    $json = json_decode($content);
-    if($json === null){
-      return false;
-    } else {
-      // save to file LOCK_EX flag prevents that anyone else is writing to the file at the same time
-      $data = self::$firstLine.PHP_EOL;
-      $data .= $content;
-      if (file_put_contents($file, $data, LOCK_EX)) {
-        // on success
-        return true;
-      } else {
-        // on error
-        return false;
-      }
+
+    public static function save($content, $file, $firstLine = true)
+    {
+        // checkTyp
+        if (is_array($content) || is_object($content)) {
+            $content = json_encode($content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+        }
+
+        // check if json is valid
+        $json = json_decode($content);
+        if ($json === null) {
+            return false;
+        } else {
+            // save to file LOCK_EX flag prevents that anyone else is writing to the file at the same time
+            $data = self::$firstLine . PHP_EOL;
+            $data .= $content;
+            if (file_put_contents($file, $data, LOCK_EX)) {
+                // on success
+                return true;
+            } else {
+                // on error
+                return false;
+            }
+        }
     }
-  }
 }
