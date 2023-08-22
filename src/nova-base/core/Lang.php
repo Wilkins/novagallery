@@ -7,7 +7,7 @@
  * @license AGPL-3.0
  * @link https://novagallery.org
  **/
-class Language
+class Lang
 {
 
     private static $translations;

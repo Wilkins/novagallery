@@ -9,7 +9,7 @@
     <content class="row mt-0 mt-md-5">
       <div class="col-12 mb-1"><h1><?php echo Page::title(); ?></h1></div>
       <?php if($album): ?>
-        <div class="col-12 mb-4"><a href="<?php echo Site::url().'/'.Page::data('parentPage'); ?>" class="text-muted link-back">&laquo; <?php L::p('Back'); ?></a></div>
+        <div class="col-12 mb-4"><a href="<?php echo Site::url().'/'.Page::data('parentPage'); ?>" class="text-muted link-back">&laquo; <?php Lang::p('Back'); ?></a></div>
       <?php endif; ?>
       <div class="container">
         <!-- albums -->
