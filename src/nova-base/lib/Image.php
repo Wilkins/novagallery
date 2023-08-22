@@ -97,19 +97,18 @@ class Image
         return $url . rawurlencode($image);
 
     }
-
+/*
     public static function originalUrl($album, $image)
     {
         return IMAGES_URL . '/' . rawurlencode($album) . '/' . rawurlencode($image);
     }
+*/
 
 
-    public static function name($image)
+    public static function name($image): string
     {
         $name = pathinfo($image, PATHINFO_FILENAME);
-        $name = str_replace('_', ' ', $name);
-        $name = str_replace('+', ' ', $name);
-        $name = str_replace('-', ' ', $name);
+        $name = str_replace(array('_', '+', '-'), ' ', $name);
         $name = ucwords($name);
         return $name;
     }
@@ -136,94 +135,11 @@ class Image
             self::notFound($hide404image);
             exit;
         }
-        // if no size, stream original file
-        if (!$size) {
-            echo "ici";
-            exit;
-        }
-
-
-        // if cache file already exists, stream cache file directly
-        if (file_exists(self::$cacheFile)) {
-            exit;
-        }
-
-        // create cache dir
-        if ($cache && !file_exists(self::$cacheDir)) {
-            mkdir(self::$cacheDir, 0777, true);
-        }
 
         // load image processing
-        $img = new GImage\Image();
-        $img->load(self::$original)
-            ->setQuality(IMAGES_QUALITY);
-
-
-        if (self::$width && !self::$height) {
-            // resize to width
-            $img->resizeToWidth(self::$width);
-        } elseif (!self::$width && self::$height) {
-            // resize to height
-            $img->resizeToHeight(self::$height);
-        } elseif (self::$width && self::$height) {
-            // resize both with cover/cropCenter
-            $img->centerCrop(self::$width, self::$height);
-        }
-
-        // if cache is disabled, only stream
-        if (!$cache) {
-            $img->output();
-            exit;
-        }
-        //print_r($img->output());
+        echo file_get_contents(self::$original);
         exit;
-
-        $img->preserve()
-            ->output()
-            ->preserve(false)
-            ->save(self::$cacheFile);
-
     }
-
-    public static function writeCache($album, $image, $size)
-    {
-        self::initialize($album, $image, $size);
-
-        // check if original exists
-        if (!file_exists(self::$original)) {
-            return false;
-        }
-
-        // check if cache file already exists
-        if (file_exists(self::$cacheFile)) {
-            return true;
-        }
-
-        // create cache dir
-        if (!file_exists(self::$cacheDir)) {
-            mkdir(self::$cacheDir, 0777, true);
-        }
-
-        // perform image processing
-        $img = new GImage\Image();
-        $img->load(self::$original)
-            ->setQuality(IMAGES_QUALITY);
-
-        if (self::$width && !self::$height) {
-            // resize to width
-            $img->resizeToWidth(self::$width);
-        } elseif (!self::$width && self::$height) {
-            // resize to height
-            $img->resizeToHeight(self::$height);
-        } elseif (self::$width && self::$height) {
-            // resize both with cover/cropCenter
-            $img->centerCrop(self::$width, self::$height);
-        }
-
-        return $img->save(self::$cacheFile);
-
-    }
-
 
     private static function notfound($hide404image = true)
     {
@@ -234,5 +150,4 @@ class Image
         }
         exit;
     }
-
 }
