@@ -51,6 +51,10 @@ define('THEME_PATH', BASE_PATH.'/nova-themes/'.Site::theme());
 require 'core/Router.php';
 require 'core/Page.php';
 require 'core/Template.php';
+require 'core/Gallery.php';
+require 'core/FileSystem.php';
+require 'core/Image.php';
+require 'core/Synology.php';
 
 // Language
 require 'core/Language.php';

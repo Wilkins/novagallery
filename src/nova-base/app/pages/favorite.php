@@ -1,8 +1,8 @@
 <?php
 //print_r([$favorite]);
-//$fullFilename = lib\Synology::getThumbFromUrl($favorite);
+//$fullFilename = lib\core\Synology::getThumbFromUrl($favorite);
 
-//$fullFilename = lib\Synology::getThumbFromUrl($favorite);
+//$fullFilename = lib\core\Synology::getThumbFromUrl($favorite);
 
 Synology::createCoverFromUrl($favorite);
 echo '{"message": "ok"}' . "\n";

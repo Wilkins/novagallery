@@ -97,12 +97,13 @@ class Image
         return $url . rawurlencode($image);
 
     }
-/*
-    public static function originalUrl($album, $image)
-    {
-        return IMAGES_URL . '/' . rawurlencode($album) . '/' . rawurlencode($image);
-    }
-*/
+
+    /*
+        public static function originalUrl($album, $image)
+        {
+            return IMAGES_URL . '/' . rawurlencode($album) . '/' . rawurlencode($image);
+        }
+    */
 
 
     public static function name($image): string

@@ -1,5 +1,8 @@
-    <?php 
-      $gallery = Page::data('gallery');
+    <?php
+
+    use core\Image;
+
+    $gallery = Page::data('gallery');
       $album = Page::data('album');
       $order = Page::data('order');
     ?>

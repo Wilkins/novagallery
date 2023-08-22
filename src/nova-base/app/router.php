@@ -7,20 +7,20 @@ Router::add('/', static function() {
 });
 
 
-// Gallery
+// core\Gallery
 Router::add('/galleries/(.*)/cache/(.*)/(.*)', static function($var1, $var2, $var3) {
   require 'auth.php';
- // echo "Gallery Cache !<br>\n ";
+ // echo "core\Gallery Cache !<br>\n ";
   $album = rawurldecode($var1);
   $size = rawurldecode($var2);
   $image = rawurldecode($var3);
   require 'image.php';
 });
 
-// Gallery
+// core\Gallery
 Router::add('/galleries/(.*)/(.*)', static function($var1, $var2) {
   require 'auth.php';
-  //echo "Gallery NOCACHE ! <br>\n";
+  //echo "core\Gallery NOCACHE ! <br>\n";
   $album = rawurldecode($var1);
   $size = "SM";
   $image = rawurldecode($var2);

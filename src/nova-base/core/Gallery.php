@@ -1,7 +1,7 @@
 <?php
 
 /**
- * core\lib\Gallery - List Images and Albums
+ * core\lib\core\Gallery - List Images and Albums
  * @author novafacile OÜ
  * @copyright Copyright (c) 2021 by novafacile OÜ
  * @license AGPL-3.0
@@ -37,8 +37,8 @@ class Gallery
         }
         /*
         $start = microtime(true);
-        $dirs = core\lib\FileSystem::listDirectories2($this->dir);
-        echo "core\lib\FileSystem::listDirectories2($this->dir/*}) (".(microtime(true)-$start)." sec)<br>\n";
+        $dirs = core\lib\core\FileSystem::listDirectories2($this->dir);
+        echo "core\lib\core\FileSystem::listDirectories2($this->dir/*}) (".(microtime(true)-$start)." sec)<br>\n";
         echo "<pre>";
         print_R($dirs);
         echo "</pre>";
