@@ -8,7 +8,7 @@ final class FileSystem
 
     private const IGNORED_DIRECTORIES = ['.', '..', 'cache', 'Cache', '@eaDir', '.cache', '.cache_files.php'];
 
-    private const ACCEPTED_EXTENSIONS = ['jpeg', 'jpg', 'png'];
+    private const ACCEPTED_EXTENSIONS = ['jpeg', 'jpg', 'png', 'mov'];
 
     private $dir;
 

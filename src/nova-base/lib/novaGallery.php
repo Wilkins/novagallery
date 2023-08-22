@@ -95,7 +95,7 @@ class novaGallery {
   protected function getImageCaptureDate($file){
     if(!file_exists($file)) { return false;  }
 
-    if(preg_match('/\.(JPEG|jpeg|JPG|jpg|png|PNG)$/', $file) === 0){
+    if(preg_match('/\.(JPEG|JPG|PNG|MOV)$/g', $file) === 0){
       return filemtime($file); // use filetime, if no image
     }
 

@@ -72,7 +72,7 @@ class novaGalleryWithoutCache
     protected function processImages(): void
     {
         $start = microtime(true);
-        $images = glob($this->dir . '/*{jpg,jpeg,JPG,JPEG,png,PNG}', GLOB_BRACE);
+        $images = glob($this->dir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV}', GLOB_BRACE);
         //print_R($images);
         if (self::DEBUG) {
 

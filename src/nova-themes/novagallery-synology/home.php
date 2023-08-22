@@ -43,4 +43,4 @@
         <?php endif; ?>
       </div>
     </content>
-    <?php echo "Generated : ".(microtime(true)-$start). " secondes\n"; ?>
+    <?php # echo "Generated : ".(microtime(true)-$start). " secondes\n"; ?>

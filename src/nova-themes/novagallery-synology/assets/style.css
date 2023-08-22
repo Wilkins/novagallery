@@ -85,3 +85,18 @@ footer .footerText a, footer .footerText a:hover {
   color: #cc4444;
   cursor: pointer;
 }
+
+.extension-overlay[data-ext="MOV"],
+.extension-overlay[data-ext="MP4"],
+.extension-overlay[data-ext="MPG"],
+.extension-overlay[data-ext="AVI"]
+{
+  color: red;
+  background: url('play.png');
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 250px;
+  height: 250px;
+  position: absolute;
+}

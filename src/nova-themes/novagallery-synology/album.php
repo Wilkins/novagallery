@@ -38,11 +38,12 @@
           <?php foreach($gallery->images($order) as $element => $modDate): ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
               <a href="<?php echo Synology::url($album, $element, Site::config('imageSizeBig')); ?>">
+                <div class="extension-overlay" data-ext="<?php echo pathinfo($element)['extension']; ?>"></div>
                 <img src="<?php echo Synology::url($album, $element, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded"><br>
               </a>
                 <!--
                 <a href="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">Favori</a>
-                <?php echo $element; ?>
+                <?php echo print_R(pathinfo($element)['extension'],true); ?>
                 -->
                 <p class="favorite-clickable" data-url="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">
                     <i class="icon-favorite-off">&#9733;</i> Favorite
@@ -53,4 +54,4 @@
         <?php endif; ?>
       </div>
     </content>
-    <?php echo "Generated : ".(microtime(true)-$start). " secondes\n"; ?>
+    <?php # echo "Generated : ".(microtime(true)-$start). " secondes\n"; ?>
