@@ -36,11 +36,11 @@
         <!-- images -->
         <?php if($gallery->hasImages()): ?>
         <div class="row gallery px-2 mt-4">
-          <?php foreach($gallery->images($order) as $element => $modDate): ?>
+          <?php foreach($gallery->images($order) as $element => $filedata): ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-              <a href="<?php echo Synology::url($album, $element, Site::config('imageSizeBig')); ?>">
+              <a href="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeBig')); ?>">
                 <div class="extension-overlay" data-ext="<?php echo pathinfo($element)['extension']; ?>"></div>
-                <img src="<?php echo Synology::url($album, $element, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded"><br>
+                <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded"><br>
               </a>
                 <!--
                 <a href="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">Favori</a>
@@ -54,7 +54,7 @@
                     <i class="icon-favorite-<?php echo $favoriteFlag ? 'on' : 'off'; ?> icon">&#9829;</i> Fav
                 </p>
                 <p class="trash-clickable" data-url="/trash/<?php echo $album; ?>/<?php echo $element; ?>" title="Trash">
-                    <span class="icon-trash-off icon">&#x2716;</span> Trash
+                    <span class="icon-trash-<?php echo $filedata['trash'] === 1 ? 'on' : 'off'; ?> icon">&#x2716;</span> Trash
                 </p>
             </div>
           <?php endforeach ?>

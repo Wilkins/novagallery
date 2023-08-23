@@ -33,10 +33,10 @@
         <!-- images -->
         <?php if($gallery->hasImages()): ?>
         <div class="row gallery px-2 mt-4">
-          <?php foreach($gallery->images($order) as $element => $modDate): ?>
+          <?php foreach($gallery->images($order) as $element => $filedata): ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-              <a href="<?php echo Synology::url($album, $element, Site::config('imageSizeBig')); ?>">
-                <img src="<?php echo Synology::url($album, $element, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded"><br>
+              <a href="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeBig')); ?>">
+                <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded"><br>
               </a>
             </div>
           <?php endforeach ?>

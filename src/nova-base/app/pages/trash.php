@@ -4,6 +4,6 @@
 
 //$fullFilename = lib\core\Synology::getThumbFromUrl($favorite);
 
-//Synology::trashFromUrl($favorite);
+Synology::toggleTrashFromUrl($trash);
 echo '{"message": "ok"}' . "\n";
 return;

@@ -5,13 +5,18 @@ class Synology extends Image
 {
     public const COVER = '.COVER.JPG';
 
+    public const TRASH_DIR = 'Corbeille';
+
+    public const EADIR = '@eaDir';
+
     public const METADATA = '.METADATA.JSON';
 
     public const FAVORITES_KEY = 'favorites';
 
-    public static function url($album, $image, $size = false): string
+    public static function url($album, $image, $filedata, $size = false): string
     {
-        return IMAGES_URL . '/' . $album . '/' . self::getThumb($image, $size);
+        $prefixDir = isset($filedata['trash']) && $filedata['trash'] ? self::TRASH_DIR.'/' : '';
+        return IMAGES_URL . '/'. $prefixDir . $album . '/' . self::getThumb($image, $size);
     }
 
     public static function path($album, $image, $size = false): string
@@ -111,7 +116,6 @@ class Synology extends Image
         return is_dir(self::getAlbumDir($fullFilename));
     }
 
-
     public static function toggleFavoriteFromUrl(string $fullFilename): void
     {
         //echo $fullFilename . "<br>\n";
@@ -130,7 +134,7 @@ class Synology extends Image
 
     private static function getMetadataFilename(string $fullFilename): string
     {
-        $dirName = is_dir(IMAGES_DIR.'/'.$fullFilename) ? $fullFilename : dirname($fullFilename);
+        $dirName = is_dir(IMAGES_DIR . '/' . $fullFilename) ? $fullFilename : dirname($fullFilename);
         return IMAGES_DIR . '/' . $dirName . '/' . self::METADATA;
     }
 
@@ -162,5 +166,52 @@ class Synology extends Image
     private static function saveMetadata(string $metadataFile, array $data): void
     {
         file_put_contents($metadataFile, json_encode($data, JSON_THROW_ON_ERROR));
+    }
+
+
+    public static function toggleTrashFromUrl(string $fullFilename): void
+    {
+        //echo $fullFilename . "<br>\n";
+        $imageName = basename($fullFilename);
+        $okFile = IMAGES_DIR . '/' . $fullFilename;
+        $trashFile = IMAGES_DIR . '/' . self::TRASH_DIR . '/' . $fullFilename;
+        if (file_exists($okFile) && !file_exists($trashFile)) {
+            self::moveFile($okFile, $trashFile);
+        } else if (!file_exists($okFile) && file_exists($trashFile)) {
+            self::moveFile($trashFile, $okFile);
+        } else if (file_exists($okFile) && file_exists($trashFile)) {
+            throw new Exception("Fichier déjà dans la corbeille");
+        } else {
+            throw new Exception("Fichier introuvable");
+        }
+    }
+
+    private static function moveFile(string $fromFile, string $toFile): void
+    {
+        $targetDir = dirname($toFile);
+        if (file_exists($targetDir) && !is_dir($targetDir)) {
+            throw new Exception("Impossible de déplacer, la cible « $targetDir » est un fichier");
+        }
+        self::createDir($targetDir);
+        self::createDir($targetDir.'/'.self::EADIR);
+        $toThumbDir = dirname($toFile).'/'.self::EADIR.'/'.basename($toFile);
+        $fromThumbDir = dirname($fromFile).'/'.self::EADIR.'/'.basename($fromFile);
+        //echo "mv -i \"$fromFile\" \"$toFile\"<br>\n";
+        //echo "mv -i \"$fromThumbDir\" \"$toThumbDir\"<br>\n";
+        rename($fromFile, $toFile);
+        rename($fromThumbDir, $toThumbDir);
+    }
+
+    /**
+     * @param string $targetDir
+     * @return void
+     */
+    private static function createDir(string $targetDir): void
+    {
+        if (!file_exists($targetDir)) {
+            if (!mkdir($targetDir, 0777, true) && !is_dir($targetDir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $targetDir));
+            }
+        }
     }
 }

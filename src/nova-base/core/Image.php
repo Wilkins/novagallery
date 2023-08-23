@@ -57,7 +57,7 @@ class Image
      *
      * @return string URL - url of (resized) image
      ************/
-    public static function url($album, $image, $size = false)
+    public static function url($album, $image, $filedata, $size = false)
     {
         // split album name if is in sub dir because slash should't be encoded with rawurlencode
         if (strpos($album, '/')) {

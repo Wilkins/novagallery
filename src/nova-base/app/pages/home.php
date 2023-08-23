@@ -13,7 +13,7 @@ if (Site::config('sortAlbums')) {
 $fileListMaxCacheAge = Site::config('fileListMaxCacheAge');
 $imageCache = Site::config('imageCache');
 
-$gallery = new Gallery(IMAGES_DIR);
+$gallery = new Gallery(IMAGES_DIR,"");
 
 Page::addData('order', $order);
 Page::addData('album', '');

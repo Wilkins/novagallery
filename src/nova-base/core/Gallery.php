@@ -13,13 +13,15 @@ class Gallery
 {
 
     protected $dir = '';
+    protected $trashDir = '';
     protected $images = [];
     protected $albums = [];
-    private const DEBUG = false;
+    private const DEBUG = true;
 
-    public function __construct($dir)
+    public function __construct($root, $album)
     {
-        $this->dir = $dir;
+        $this->dir = rtrim($root.'/'.$album,'/');
+        $this->trashDir = rtrim($root.'/'.Synology::TRASH_DIR.'/'.$album, '/');
         $this->listAlbums();
         $this->processImages();
     }
@@ -30,7 +32,7 @@ class Gallery
         $fileSystem = new FileSystem($this->dir);
         $dirs = $fileSystem->listDirectories();
         if (self::DEBUG) {
-            echo "core\FileSystem::listDirectories($this->dir/*}) (" . (microtime(true) - $start) . " sec)<br>\n";
+            echo "core\FileSystem::listDirectories($this->dir/*) (" . (microtime(true) - $start) . " sec)<br>\n";
             echo "<pre>";
             print_R($dirs);
             echo "</pre>";
@@ -47,12 +49,14 @@ class Gallery
         */
         $start = microtime(true);
         //$dirs = glob($this->dir . '/' . "*", GLOB_ONLYDIR);
+        /*
         if (self::DEBUG) {
-            echo "glob($this->dir/*}) (" . (microtime(true) - $start) . " sec)<br>\n";
+            echo "glob($this->dir/*) (" . (microtime(true) - $start) . " sec)<br>\n";
             echo "<pre>";
             print_R($dirs);
             echo "</pre>";
         }
+        */
 
 
         $this->albums = $this->fileList($dirs);
@@ -65,13 +69,16 @@ class Gallery
     protected function processImages(): void
     {
         $start = microtime(true);
-        $images = glob($this->dir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV}', GLOB_BRACE);
+        $imagesOk = glob($this->dir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV}', GLOB_BRACE);
+        $imagesTrash = glob($this->trashDir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV}', GLOB_BRACE);
+        $images = array_merge($imagesOk, $imagesTrash);
         //print_R($images);
         if (self::DEBUG) {
-
+            echo "processImages<br>\n";
             echo "glob($this->dir/*{jpg,jpeg,JPG,JPEG,png,PNG}) (" . (microtime(true) - $start) . " sec)<br>\n";
         }
         $this->images = $this->fileList($images, false);
+        //print_r($this->images);
     }
 
     // create array of files or dirs without path & with last modification date
@@ -82,12 +89,15 @@ class Gallery
             if ($withCaptureDate) { // add modification date if requested
                 $value = $this->getImageCaptureDate($element);
             } else {
-                $value = []; // else add as array for sub files
+                $value = [
+                    'trash' => preg_match("#".IMAGES_DIR.'/'.Synology::TRASH_DIR."#", $element) ? 1 : 0
+                ];
             }
             $element = strrchr($element, '/');
             $element = substr($element, 1);
             $fileList[$element] = $value;
         }
+        //print_r($fileList);
         return $fileList;
     }
 

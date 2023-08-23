@@ -104,12 +104,15 @@ p.favorite-clickable {
 }
 .icon-trash-off {
   color: #666;
+  font-family: Times;
 }
 .icon-trash-on {
   color: limegreen;
+  font-family: Times;
 }
 .icon-trash-error {
   color: #cc4444;
+  font-family: Times;
 }
 
 
