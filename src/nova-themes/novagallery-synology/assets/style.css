@@ -20,6 +20,13 @@ a.link-back {
   text-decoration: none;
 }
 
+p.note {
+  display: block;
+  background: #66dddd;
+  border-radius: 8px;
+  padding: 5px;
+}
+
 content img {
   width: 100%;
   object-fit: cover;
@@ -71,6 +78,7 @@ footer .footerText a, footer .footerText a:hover {
 }
 p.cover-clickable,
 p.trash-clickable,
+p.download-clickable,
 p.favorite-clickable {
   display: inline-block;
 }
@@ -114,8 +122,18 @@ p.favorite-clickable {
   color: #cc4444;
   font-family: Times;
 }
-
-
+.icon-download-off {
+  color: #666;
+  font-family: Times;
+}
+.icon-download-on {
+  color: limegreen;
+  font-family: Times;
+}
+.icon-download-error {
+  color: #cc4444;
+  font-family: Times;
+}
 
 .extension-overlay[data-ext="MOV"],
 .extension-overlay[data-ext="MP4"],

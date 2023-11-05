@@ -13,6 +13,11 @@ class Synology extends Image
 
     public const FAVORITES_KEY = 'favorites';
 
+    public static function original($album, $image, $filedata, $size = false): string
+    {
+        return DOWNLOAD_URL . '/'. $album . '/' . $image;
+    }
+
     public static function url($album, $image, $filedata, $size = false): string
     {
         $prefixDir = isset($filedata['trash']) && $filedata['trash'] ? self::TRASH_DIR.'/' : '';
@@ -69,6 +74,7 @@ class Synology extends Image
 
     private static function createLink($dir, $source, $target): void
     {
+        $source = urldecode($source);
         $command = "cd \"$dir\" ; /bin/ln -sf \"$source\" \"$target\"";
 
         $targetDir = dirname($target);
@@ -81,14 +87,21 @@ class Synology extends Image
         echo "stat $target<br>\n";
         var_dump(stat($targetDir));
 
+        */
         if (!is_writable($targetDir)) {
-            echo "!is_writable($targetDir)<br>\n";
+            echo "dir !is_writable($targetDir)<br>\n";
         }
         if (!is_writable($target)) {
             echo "!is_writable($target)<br>\n";
         }
-        */
-        $output = shell_exec($command);
+        //echo shell_exec("whoami");
+        exec($command, $output, $result_code);
+        //echo $target;
+        //print_R($output);
+        //echo $result_code;
+
+        //echo "====<br>\n";
+        //echo "$target<br>\n";
         if (file_exists($target)) {
             return;
         }
@@ -186,6 +199,30 @@ class Synology extends Image
         }
     }
 
+    public static function download(string $fullFilename): void
+    {
+        $okFile = IMAGES_DIR . '/' . $fullFilename;
+        if (file_exists($okFile)) {
+            $cleanFile = self::cleanDownloadName($fullFilename);
+            //$content = file_get_contents($okFile);
+            //$mime = mime_content_type($okFile);
+//            header("Content-Type: $mime");
+            header('Content-Type: application/octet-stream');
+
+            header('Content-Description: File Transfer');
+            header("Content-Disposition: attachment; filename=\"$cleanFile\"");
+            header("Content-Length: ".filesize($okFile));
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            readfile($okFile);
+            //echo $content;
+            //exit;
+        } else {
+            throw new Exception("Fichier introuvable");
+        }
+    }
+
     private static function moveFile(string $fromFile, string $toFile): void
     {
         $targetDir = dirname($toFile);
@@ -213,5 +250,15 @@ class Synology extends Image
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $targetDir));
             }
         }
+    }
+
+    private static function cleanDownloadName(string $okFile)
+    {
+        $months = ['JANVIER', 'FEVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN', 'JUILLET',
+            'AOUT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DECEMBRE'];
+        foreach ($months as $month) {
+            $okFile = str_replace('.'.$month, '', $okFile);
+        }
+        return preg_replace('#^(\d\d\d\d)/(\d\d)/.*/(\w+.\w+)$#', '$1_$2_$3', $okFile);
     }
 }

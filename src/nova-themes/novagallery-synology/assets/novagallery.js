@@ -54,3 +54,22 @@ $('.trash-clickable').click(function () {
         });
 
 });
+$('.download-clickable').click(function () {
+    window.open($(this).attr('data-url'), '_blank');
+    /*
+    $.ajax({
+        url: $(this).attr('data-url'),
+        type: 'GET',
+        dataType: 'json',
+    })
+        .done(function (msg) {
+            console.log($(star).closest('.element'));
+            $(star).closest('.element').remove();
+        })
+        .fail(function (msg) {
+            console.log('fail');
+            console.log(msg);
+            $("i", star).toggleClass("icon-download-off icon-download-error");
+        });
+*/
+});

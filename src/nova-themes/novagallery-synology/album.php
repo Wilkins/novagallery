@@ -15,6 +15,13 @@
       <div class="container">
         <!-- albums -->
         <?php if($gallery->hasAlbums()): ?>
+            <?php
+            $cover = $gallery->hasCoverImage($album);
+            if (! $cover) {
+                ?><p class="note">Vous devez choisir une cover pour cet album</p><?php
+            }
+            echo $cover;
+            ?>
         <div class="row px-2 mt-4">
           <?php foreach($gallery->getAlbums($order) as $element => $modDate):
                 $elementPath = $album ? $album.'/'.$element : $element;
@@ -22,10 +29,10 @@
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
               <a href="<?php echo Site::basePath().'/album/'.$elementPath; ?>">
                   <?php $cover = $gallery->coverImage($elementPath, $order); ?>
-                <img src="<?php echo $cover ?>" loading="lazy" class="rounded"><br>
+                <img src="<?php echo $cover ?>" loading="lazy" class="rounded alt=""><br>
               </a>
-                  <p class="favorite-clickable" data-url="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">
-                      <i class="icon-favorite-off">&#9733;</i> Favorite
+                  <p class="cover-clickable" data-url="/cover/<?php echo $album; ?>/<?php echo $element; ?>" title="Cover">
+                      <i class="icon-cover-off icon">&#9733;</i>
                   </p>
                 <?php echo ucwords($element); ?>
             </div>
@@ -47,14 +54,17 @@
                 <?php echo print_R(pathinfo($element)['extension'],true); ?>
                 -->
                 <p class="cover-clickable" data-url="/cover/<?php echo $album; ?>/<?php echo $element; ?>" title="Cover">
-                    <i class="icon-cover-off icon">&#9733;</i> Cover
+                    <i class="icon-cover-off icon">&#9733;</i>
                 </p>
                 <?php $favoriteFlag = isset($favorites[$element]); ?>
                 <p class="favorite-clickable" data-url="/favorite/<?php echo $album; ?>/<?php echo $element; ?>" title="Favorite">
-                    <i class="icon-favorite-<?php echo $favoriteFlag ? 'on' : 'off'; ?> icon">&#9829;</i> Fav
+                    <i class="icon-favorite-<?php echo $favoriteFlag ? 'on' : 'off'; ?> icon">&#9829;</i>
                 </p>
                 <p class="trash-clickable" data-url="/trash/<?php echo $album; ?>/<?php echo $element; ?>" title="Trash">
-                    <span class="icon-trash-<?php echo $filedata['trash'] === 1 ? 'on' : 'off'; ?> icon">&#x2716;</span> Trash
+                    <span class="icon-trash-<?php echo $filedata['trash'] === 1 ? 'on' : 'off'; ?> icon">&#x2716;</span>
+                </p>
+                <p class="download-clickable" data-url="/download/<?php echo $album; ?>/<?php echo $element; ?>" title="Download">
+                    <span class="icon-download-off icon">&#8615;</span>
                 </p>
             </div>
           <?php endforeach ?>

@@ -51,6 +51,12 @@ Router::add('/trash/(.*)', static function($var1) {
     require 'pages/trash.php';
 });
 
+Router::add('/download/(.*)', static function($var1) {
+    require 'auth.php';
+    $download = rawurldecode($var1);
+    require 'pages/download.php';
+});
+
 // Auth
 Router::add('/login', static function() {
   require 'pages/login.php';

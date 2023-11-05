@@ -16,7 +16,7 @@ class Gallery
     protected $trashDir = '';
     protected $images = [];
     protected $albums = [];
-    private const DEBUG = true;
+    private const DEBUG = false;
 
     public function __construct($root, $album)
     {
@@ -273,6 +273,11 @@ class Gallery
     public function coverImage($album, $order = 'default'): string
     {
         return IMAGES_URL . "/$album/" . Synology::COVER;
+    }
+
+    public function hasCoverImage($album, $order = 'default'): string
+    {
+        return file_exists(IMAGES_DIR . "/$album/" . Synology::COVER);
     }
 
     public function hasAlbums(): bool
