@@ -29,6 +29,7 @@ define('BASE_PATH', Site::basePath());
 
 define('IMAGES_DIR', ROOT_DIR.'/'.$imagesDirName);
 define('IMAGES_URL', BASE_PATH.'/'.$imagesDirName);
+define('IMAGES_URL_CODE', BASE_PATH.'/code/src/'.$imagesDirName);
 define('IMAGES_QUALITY', Site::config('imageQuality'));
 
 define('THEME_DIR', 'nova-themes/'.Site::theme());

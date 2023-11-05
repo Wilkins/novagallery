@@ -56,6 +56,11 @@ Router::add('/download/(.*)', static function($var1) {
     $download = rawurldecode($var1);
     require 'pages/download.php';
 });
+Router::add('/video/(.*)', static function($var1) {
+    require 'auth.php';
+    $video = rawurldecode($var1);
+    require 'pages/video.php';
+});
 
 // Auth
 Router::add('/login', static function() {

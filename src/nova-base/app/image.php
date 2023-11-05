@@ -1,9 +1,5 @@
 <?php
 
-// Todo:
-// More protection for album & image names
-
-// pass only allowed sizes
 /*
 echo "Size : $size<br>\n";
 echo "Allow : ".implode(',', Site::config('allowedImageSizes'))."<br>\n";

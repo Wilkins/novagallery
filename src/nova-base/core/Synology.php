@@ -13,9 +13,12 @@ class Synology extends Image
 
     public const FAVORITES_KEY = 'favorites';
 
-    public static function original($album, $image, $filedata, $size = false): string
+    public static function urlLink($album, $image, $filedata, $size = false): string
     {
-        return DOWNLOAD_URL . '/'. $album . '/' . $image;
+        if (!preg_match('/.MOV/', $image)) {
+            return self::url($album, $image, $filedata, $size);
+        }
+        return '/video/'.$album.'/'.$image;
     }
 
     public static function url($album, $image, $filedata, $size = false): string

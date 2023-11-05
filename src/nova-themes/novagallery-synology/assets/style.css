@@ -149,3 +149,8 @@ p.favorite-clickable {
   height: 250px;
   position: absolute;
 }
+
+video {
+  height: 600px;
+  object-fit: cover;
+}

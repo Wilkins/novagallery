@@ -20,7 +20,6 @@
             if (! $cover) {
                 ?><p class="note">Vous devez choisir une cover pour cet album</p><?php
             }
-            echo $cover;
             ?>
         <div class="row px-2 mt-4">
           <?php foreach($gallery->getAlbums($order) as $element => $modDate):
@@ -45,14 +44,10 @@
         <div class="row gallery px-2 mt-4">
           <?php foreach($gallery->images($order) as $element => $filedata): ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-              <a href="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeBig')); ?>">
+              <a href="<?php echo Synology::urlLink($album, $element, $filedata, Site::config('imageSizeBig')); ?>" target="_blank">
                 <div class="extension-overlay" data-ext="<?php echo pathinfo($element)['extension']; ?>"></div>
-                <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded"><br>
+                <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded" alt=""><br>
               </a>
-                <!--
-                <a href="/favorite/<?php echo $album; ?>/<?php echo $element; ?>">Favori</a>
-                <?php echo print_R(pathinfo($element)['extension'],true); ?>
-                -->
                 <p class="cover-clickable" data-url="/cover/<?php echo $album; ?>/<?php echo $element; ?>" title="Cover">
                     <i class="icon-cover-off icon">&#9733;</i>
                 </p>
