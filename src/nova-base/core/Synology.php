@@ -23,6 +23,7 @@ class Synology extends Image
 
     public static function url($album, $image, $filedata, $size = false): string
     {
+        $album = self::cleanAlbumName($album);
         $prefixDir = isset($filedata['trash']) && $filedata['trash'] ? self::TRASH_DIR.'/' : '';
         return IMAGES_URL . '/'. $prefixDir . $album . '/' . self::getThumb($image, $size);
     }
@@ -94,7 +95,7 @@ class Synology extends Image
         if (!is_writable($targetDir)) {
             echo "dir !is_writable($targetDir)<br>\n";
         }
-        if (!is_writable($target)) {
+        if (file_exists($target) && !is_writable($target)) {
             echo "!is_writable($target)<br>\n";
         }
         //echo shell_exec("whoami");
@@ -263,5 +264,10 @@ class Synology extends Image
             $okFile = str_replace('.'.$month, '', $okFile);
         }
         return preg_replace('#^(\d\d\d\d)/(\d\d)/.*/(\w+.\w+)$#', '$1_$2_$3', $okFile);
+    }
+
+    public static function cleanAlbumName(string $album): string
+    {
+        return str_replace('+', '%2B', $album);
     }
 }

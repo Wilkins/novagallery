@@ -97,7 +97,6 @@ class Gallery
             $element = substr($element, 1);
             $fileList[$element] = $value;
         }
-        //print_r($fileList);
         return $fileList;
     }
 
