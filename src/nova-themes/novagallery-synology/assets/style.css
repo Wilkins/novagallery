@@ -79,6 +79,8 @@ footer .footerText a, footer .footerText a:hover {
 p.cover-clickable,
 p.trash-clickable,
 p.download-clickable,
+p.rotateright-clickable,
+p.rotateleft-clickable,
 p.favorite-clickable {
   display: inline-block;
 }
@@ -133,6 +135,38 @@ p.favorite-clickable {
 .icon-download-error {
   color: #cc4444;
   font-family: Times;
+}
+
+.icon-rotateright-off {
+  color: #666;
+  font-family: Times;
+  font-size: 30px;
+}
+.icon-rotateright-on {
+  color: limegreen;
+  font-family: Times;
+  font-size: 30px;
+}
+.icon-rotateright-error {
+  color: #cc4444;
+  font-family: Times;
+  font-size: 30px;
+}
+
+.icon-rotateleft-off {
+  color: #666;
+  font-family: Times;
+  font-size: 30px;
+}
+.icon-rotateleft-on {
+  color: limegreen;
+  font-family: Times;
+  font-size: 30px;
+}
+.icon-rotateleft-error {
+  color: #cc4444;
+  font-family: Times;
+  font-size: 30px;
 }
 
 .extension-overlay[data-ext="MOV"],

@@ -1,4 +1,4 @@
-    <?php
+<?php
 
     $gallery = Page::data('gallery');
       $album = Page::data('album');
@@ -63,6 +63,12 @@
                 </p>
                 <p class="download-clickable" data-url="/download/<?php echo $albumLink; ?>/<?php echo $element; ?>" title="Download">
                     <span class="icon-download-off icon">&#8615;</span>
+                </p>
+                <p class="rotateleft-clickable" data-url="/rotateleft/<?php echo $albumLink; ?>/<?php echo $element; ?>" title="Rotate Left">
+                    <span class="icon-rotateleft-off icon">&#x27F2;</span>
+                </p>
+                <p class="rotateright-clickable" data-url="/rotateright/<?php echo $albumLink; ?>/<?php echo $element; ?>" title="Rotate Right">
+                    <span class="icon-rotateright-off icon">&#x27F3;</span>
                 </p>
             </div>
           <?php endforeach ?>

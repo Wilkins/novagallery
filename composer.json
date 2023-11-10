@@ -20,6 +20,8 @@
     },
     "require": {
         "ext-json": "*",
-        "ext-fileinfo": "*"
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-exif": "*"
     }
 }

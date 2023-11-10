@@ -54,22 +54,41 @@ $('.trash-clickable').click(function () {
         });
 
 });
-$('.download-clickable').click(function () {
-    window.open($(this).attr('data-url'), '_blank');
-    /*
+$('.rotateleft-clickable').click(function () {
+    star = $(this);
     $.ajax({
         url: $(this).attr('data-url'),
         type: 'GET',
         dataType: 'json',
     })
         .done(function (msg) {
-            console.log($(star).closest('.element'));
-            $(star).closest('.element').remove();
+            document.location.reload();
         })
         .fail(function (msg) {
             console.log('fail');
             console.log(msg);
-            $("i", star).toggleClass("icon-download-off icon-download-error");
+            $("i", star).toggleClass("icon-rotateleft-off icon-rotateleft-error");
         });
-*/
+});
+$('.rotateright-clickable').click(function () {
+    star = $(this);
+    $.ajax({
+        url: $(this).attr('data-url'),
+        type: 'GET',
+        dataType: 'json',
+    })
+        .done(function (msg) {
+            //console.log($(star).closest('.element'));
+            //$(star).closest('.element').remove();
+            document.location.reload();
+        })
+        .fail(function (msg) {
+            console.log('fail');
+            console.log(msg);
+            $("i", star).toggleClass("icon-rotateright-off icon-rotateright-error");
+        });
+
+});
+$('.download-clickable').click(function () {
+    window.open($(this).attr('data-url'), '_blank');
 });

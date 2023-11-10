@@ -1,5 +1,5 @@
 <?php
 
-Synology::download($download);
+Synology::rotateright($rotateright);
 echo '{"message": "ok"}' . "\n";
 return;

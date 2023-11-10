@@ -56,6 +56,16 @@ Router::add('/download/(.*)', static function($var1) {
     $download = rawurldecode($var1);
     require 'pages/download.php';
 });
+Router::add('/rotateleft/(.*)', static function($var1) {
+    require 'auth.php';
+    $rotateleft = rawurldecode($var1);
+    require 'pages/rotateleft.php';
+});
+Router::add('/rotateright/(.*)', static function($var1) {
+    require 'auth.php';
+    $rotateright = rawurldecode($var1);
+    require 'pages/rotateright.php';
+});
 Router::add('/video/(.*)', static function($var1) {
     require 'auth.php';
     $video = rawurldecode($var1);

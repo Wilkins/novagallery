@@ -18,14 +18,14 @@ class Synology extends Image
         if (!preg_match('/.MOV/', $image)) {
             return self::url($album, $image, $filedata, $size);
         }
-        return '/video/'.$album.'/'.$image;
+        return '/video/' . $album . '/' . $image;
     }
 
     public static function url($album, $image, $filedata, $size = false): string
     {
         $album = self::cleanAlbumName($album);
-        $prefixDir = isset($filedata['trash']) && $filedata['trash'] ? self::TRASH_DIR.'/' : '';
-        return IMAGES_URL . '/'. $prefixDir . $album . '/' . self::getThumb($image, $size);
+        $prefixDir = isset($filedata['trash']) && $filedata['trash'] ? self::TRASH_DIR . '/' : '';
+        return IMAGES_URL . '/' . $prefixDir . $album . '/' . self::getThumb($image, $size);
     }
 
     public static function path($album, $image, $size = false): string
@@ -70,7 +70,6 @@ class Synology extends Image
 
             return;
         }
-        //echo IMAGES_DIR.'/'.$fullFilename;
         [$dir, $thumb] = self::getThumbFromUrl($fullFilename);
         $cover = self::getAlbumCoverFromUrl($fullFilename);
         self::createLink($dir, $thumb, $cover);
@@ -135,7 +134,6 @@ class Synology extends Image
 
     public static function toggleFavoriteFromUrl(string $fullFilename): void
     {
-        //echo $fullFilename . "<br>\n";
         $imageName = basename($fullFilename);
         $metadata = self::getMetadata($fullFilename);
         if (isset($metadata[self::FAVORITES_KEY][$imageName])) {
@@ -144,9 +142,6 @@ class Synology extends Image
             $metadata[self::FAVORITES_KEY][$imageName] = 1;
         }
         self::saveMetadata(self::getMetadataFilename($fullFilename), $metadata);
-        //$favoriteData = file_get_contents("");
-        //self::toggleFavorite($favorite);
-        //self::createLink($dir, $thumb, $cover);
     }
 
     private static function getMetadataFilename(string $fullFilename): string
@@ -188,8 +183,6 @@ class Synology extends Image
 
     public static function toggleTrashFromUrl(string $fullFilename): void
     {
-        //echo $fullFilename . "<br>\n";
-        $imageName = basename($fullFilename);
         $okFile = IMAGES_DIR . '/' . $fullFilename;
         $trashFile = IMAGES_DIR . '/' . self::TRASH_DIR . '/' . $fullFilename;
         if (file_exists($okFile) && !file_exists($trashFile)) {
@@ -215,7 +208,7 @@ class Synology extends Image
 
             header('Content-Description: File Transfer');
             header("Content-Disposition: attachment; filename=\"$cleanFile\"");
-            header("Content-Length: ".filesize($okFile));
+            header("Content-Length: " . filesize($okFile));
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
@@ -227,6 +220,76 @@ class Synology extends Image
         }
     }
 
+    public static function rotateleft(string $fullFilename): void
+    {
+        $okFile = IMAGES_DIR . '/' . $fullFilename;
+        self::rotateImage($okFile, 90);
+        self::resetThumbs($okFile);
+
+    }
+
+    public static function rotateright(string $fullFilename): void
+    {
+        $okFile = IMAGES_DIR . '/' . $fullFilename;
+        self::rotateImage($okFile, -90);
+        self::resetThumbs($okFile);
+
+    }
+
+    public static function rotateImage($imagePath, $angle): void
+    {
+        if (file_exists($imagePath)) {
+            $path = realpath($imagePath);
+            $source = imagecreatefromjpeg($path);
+            $rotated = imagerotate($source, $angle, 0);
+            imagejpeg($rotated, $path, 94);
+        } else {
+            throw new Exception("Fichier introuvable");
+        }
+    }
+
+    public static function resetThumbs($imagePath): void
+    {
+        self::removeThumbs($imagePath);
+        $thumbDir = dirname($imagePath) . '/' . self::EADIR . '/' . basename($imagePath);
+        self::createDir($thumbDir);
+        self::createThumb($imagePath, "SYNOPHOTO_THUMB_XL.jpg", 1280);
+        self::createThumb($imagePath, "SYNOPHOTO_THUMB_SM.jpg", 320);
+    }
+
+    public static function createThumb($imagePath, $fileName, $maxSize): void
+    {
+        $width = $maxSize;
+        $height = $maxSize;
+
+        [$width_orig, $height_orig] = getimagesize($imagePath);
+
+        $ratio_orig = $width_orig / $height_orig;
+
+        if ($width / $height > $ratio_orig) {
+            $width = $height * $ratio_orig;
+        } else {
+            $height = $width / $ratio_orig;
+        }
+
+        $image_thumb = imagecreatetruecolor($width, $height);
+        $image = imagecreatefromjpeg($imagePath);
+        imagecopyresampled($image_thumb, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+        $thumbDir = dirname($imagePath) . '/' . self::EADIR . '/' . basename($imagePath);
+
+        imagejpeg($image_thumb, $thumbDir . "/" . $fileName, 94);
+    }
+
+    public static function removeThumbs($imagePath): void
+    {
+        $thumbDir = dirname($imagePath) . '/' . self::EADIR . '/' . basename($imagePath);
+
+        $thumbs = glob($thumbDir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV}', GLOB_BRACE);
+        foreach ($thumbs as $thumb) {
+            unlink($thumb);
+        }
+    }
+
     private static function moveFile(string $fromFile, string $toFile): void
     {
         $targetDir = dirname($toFile);
@@ -234,24 +297,20 @@ class Synology extends Image
             throw new Exception("Impossible de déplacer, la cible « $targetDir » est un fichier");
         }
         self::createDir($targetDir);
-        self::createDir($targetDir.'/'.self::EADIR);
-        $toThumbDir = dirname($toFile).'/'.self::EADIR.'/'.basename($toFile);
-        $fromThumbDir = dirname($fromFile).'/'.self::EADIR.'/'.basename($fromFile);
+        self::createDir($targetDir . '/' . self::EADIR);
+        $toThumbDir = dirname($toFile) . '/' . self::EADIR . '/' . basename($toFile);
+        $fromThumbDir = dirname($fromFile) . '/' . self::EADIR . '/' . basename($fromFile);
         //echo "mv -i \"$fromFile\" \"$toFile\"<br>\n";
         //echo "mv -i \"$fromThumbDir\" \"$toThumbDir\"<br>\n";
         rename($fromFile, $toFile);
         rename($fromThumbDir, $toThumbDir);
     }
 
-    /**
-     * @param string $targetDir
-     * @return void
-     */
     private static function createDir(string $targetDir): void
     {
         if (!file_exists($targetDir)) {
             if (!mkdir($targetDir, 0777, true) && !is_dir($targetDir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $targetDir));
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $targetDir));
             }
         }
     }
@@ -261,7 +320,7 @@ class Synology extends Image
         $months = ['JANVIER', 'FEVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN', 'JUILLET',
             'AOUT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DECEMBRE'];
         foreach ($months as $month) {
-            $okFile = str_replace('.'.$month, '', $okFile);
+            $okFile = str_replace('.' . $month, '', $okFile);
         }
         return preg_replace('#^(\d\d\d\d)/(\d\d)/.*/(\w+.\w+)$#', '$1_$2_$3', $okFile);
     }
