@@ -71,6 +71,11 @@ Router::add('/video/(.*)', static function($var1) {
     $video = rawurldecode($var1);
     require 'pages/video.php';
 });
+Router::add('/deletealbum/(.*)', static function($var1) {
+    require 'auth.php';
+    $album = rawurldecode($var1);
+    require 'pages/deletealbum.php';
+});
 
 // Auth
 Router::add('/login', static function() {

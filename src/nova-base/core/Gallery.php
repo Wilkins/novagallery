@@ -13,6 +13,8 @@ class Gallery
 {
 
     protected $dir = '';
+    protected $album = '';
+    protected $root = '';
     protected $trashDir = '';
     protected $images = [];
     protected $albums = [];
@@ -20,6 +22,8 @@ class Gallery
 
     public function __construct($root, $album)
     {
+        $this->root = $root;
+        $this->album = $album;
         $this->dir = rtrim($root.'/'.$album,'/');
         $this->trashDir = rtrim($root.'/'.Synology::TRASH_DIR.'/'.$album, '/');
         $this->listAlbums();
@@ -69,8 +73,8 @@ class Gallery
     protected function processImages(): void
     {
         $start = microtime(true);
-        $imagesOk = glob($this->dir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV}', GLOB_BRACE);
-        $imagesTrash = glob($this->trashDir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV}', GLOB_BRACE);
+        $imagesOk = glob($this->dir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV,mp4,MP4}', GLOB_BRACE);
+        $imagesTrash = glob($this->trashDir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV,mp4,MP4}', GLOB_BRACE);
         $images = array_merge($imagesOk, $imagesTrash);
         //print_R($images);
         if (self::DEBUG) {
@@ -95,7 +99,9 @@ class Gallery
             }
             $element = strrchr($element, '/');
             $element = substr($element, 1);
-            $fileList[$element] = $value;
+            if ($value['trash'] === 0) {
+                $fileList[$element] = $value;
+            }
         }
         return $fileList;
     }
@@ -282,6 +288,11 @@ class Gallery
     public function hasAlbums(): bool
     {
         return !empty($this->albums);
+    }
+
+    public function isDeletable(): bool
+    {
+        return count($this->albums) === 0 && count($this->images) === 0;
     }
 
     public function hasImages($album = false): bool

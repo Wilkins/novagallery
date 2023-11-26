@@ -9,13 +9,17 @@ class Synology extends Image
 
     public const EADIR = '@eaDir';
 
+    public const DSSTORE = '.DS_Store';
+
+    public const THUMBS = 'Thumbs.db';
+
     public const METADATA = '.METADATA.JSON';
 
     public const FAVORITES_KEY = 'favorites';
 
     public static function urlLink($album, $image, $filedata, $size = false): string
     {
-        if (!preg_match('/.MOV/', $image)) {
+        if (!preg_match('/\.(MOV|MP4)/', $image)) {
             return self::url($album, $image, $filedata, $size);
         }
         return '/video/' . $album . '/' . $image;
@@ -284,7 +288,7 @@ class Synology extends Image
     {
         $thumbDir = dirname($imagePath) . '/' . self::EADIR . '/' . basename($imagePath);
 
-        $thumbs = glob($thumbDir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV}', GLOB_BRACE);
+        $thumbs = glob($thumbDir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV,mp4,MP4}', GLOB_BRACE);
         foreach ($thumbs as $thumb) {
             unlink($thumb);
         }
@@ -328,5 +332,16 @@ class Synology extends Image
     public static function cleanAlbumName(string $album): string
     {
         return str_replace('+', '%2B', $album);
+    }
+
+    public static function deleteAlbum($album): void
+    {
+        $albumDir = IMAGES_DIR . '/' . $album;
+        FileSystem::unlink( $albumDir."/".Synology::DSSTORE);
+        FileSystem::unlink( $albumDir."/".Synology::THUMBS);
+        FileSystem::unlink( $albumDir."/".Synology::COVER);
+        FileSystem::unlink( $albumDir."/".Synology::METADATA);
+        FileSystem::rrmdir( $albumDir."/".Synology::EADIR);
+        rmdir($albumDir);
     }
 }

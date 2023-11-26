@@ -19,6 +19,14 @@
               ?><p class="note">Vous devez choisir une cover pour cet album</p><?php
           }
           ?>        <!-- albums -->
+        <?php if($gallery->isDeletable()): ?>
+        <div class="text-center">
+            <button class="deletealbum btn btn-danger center" data-url="/deletealbum/<?php echo $album; ?>/">
+                Supprimer l'album vide
+            </button>
+        </div>
+        <?php endif; ?>
+
         <?php if($gallery->hasAlbums()): ?>
 
         <div class="row px-2 mt-4">

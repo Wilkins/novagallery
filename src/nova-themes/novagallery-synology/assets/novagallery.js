@@ -92,3 +92,20 @@ $('.rotateright-clickable').click(function () {
 $('.download-clickable').click(function () {
     window.open($(this).attr('data-url'), '_blank');
 });
+$('.deletealbum').click(function () {
+    button = $(this);
+    $.ajax({
+        url: $(this).attr('data-url'),
+        type: 'GET',
+        dataType: 'json',
+    })
+    .done(function (msg) {
+        //console.log($("a.link-back")[0]);
+        $("a.link-back")[0].click();
+    })
+    .fail(function (msg) {
+        console.log('fail');
+        console.log(msg);
+        alert(msg);
+    });
+});
