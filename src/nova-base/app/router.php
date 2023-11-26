@@ -76,6 +76,11 @@ Router::add('/deletealbum/(.*)', static function($var1) {
     $album = rawurldecode($var1);
     require 'pages/deletealbum.php';
 });
+Router::add('/duplicates/(.*)', static function($var1) {
+    require 'auth.php';
+    $album = rawurldecode($var1);
+    require 'pages/duplicates.php';
+});
 
 // Auth
 Router::add('/login', static function() {
