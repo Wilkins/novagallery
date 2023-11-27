@@ -54,4 +54,12 @@ final class FileSystem
             unlink($file);
         }
     }
+
+    public static function md5($file): string
+    {
+        if (filesize($file) > 10*1024*1024) {
+            return filesize($file);
+        }
+        return md5_file($file);
+    }
 }

@@ -27,6 +27,13 @@ p.note {
   padding: 5px;
 }
 
+p.danger {
+  display: block;
+  background: #ff6666;
+  border-radius: 8px;
+  padding: 5px;
+}
+
 content img {
   width: 100%;
   object-fit: cover;

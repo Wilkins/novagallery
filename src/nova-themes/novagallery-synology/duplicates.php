@@ -21,50 +21,35 @@
           ?>        <!-- albums -->
         <?php if($gallery->isDeletable()): ?>
         <div class="text-center">
-            <button class="deletealbum btn btn-danger center" data-url="/deletealbum/<?php echo $album; ?>/">
-                Supprimer l'album vide
-            </button>
-        </div>
-        <?php endif; ?>
-
-        <?php if($gallery->hasAlbums()): ?>
-
-        <div class="row px-2 mt-4">
-          <?php foreach($gallery->getAlbums($order) as $element => $modDate):
-                $elementLink = rawurlencode($element);
-                $elementPath = $album ? $album.'/'.$elementLink : $elementLink;
-          ?>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-              <a href="<?php echo Site::basePath().'/album/'.$elementPath; ?>">
-                  <?php $cover = $gallery->coverImage($elementPath, $order); ?>
-                <img src="<?php echo $cover ?>" loading="lazy" class="rounded alt=""><br>
-              </a>
-                  <p class="cover-clickable" data-url="/cover/<?php echo $album; ?>/<?php echo $elementLink; ?>" title="Cover">
-                      <i class="icon-cover-off icon">&#9733;</i>
-                  </p>
-                <?php echo ucwords($element); ?>
-            </div>
-          <?php endforeach ?>
+            Aucune doublon trouvé
         </div>
         <?php endif; ?>
 
         <!-- images -->
         <?php if($gallery->hasImages()): ?>
+            <div class="text-center">
+                <a href="/duplicates/<?php echo $album; ?>" class="btn btn-info center">
+                    Rafraîchir
+                </a>
+                <a href="?delete=1" class="btn btn-danger center">
+                    Mettre les doublons à la Corbeille (<?php echo count($gallery->images()); ?>)
+                </a>
+            </div>
           <?php foreach($gallery->images() as $md5 => $elementList):
                 $albumLink = Synology::cleanAlbumName($album);
                 ?>
         <div class="row gallery px-2 mt-4">
-            <?php foreach($elementList as $element):
+            <?php foreach($elementList as $elementSource):
             $filedata = ['trash' => '0'];
+            $albumLocal = dirname($elementSource);
+            $element = basename($elementSource);
             ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-              <a href="<?php echo Synology::urlLink($album, $element, $filedata, Site::config('imageSizeBig')); ?>" target="_blank">
+                <?php #echo $elementSource; ?>
+              <a href="<?php echo Synology::urlLink($albumLocal, $element, $filedata, Site::config('imageSizeBig')); ?>" target="_blank">
                 <div class="extension-overlay" data-ext="<?php echo pathinfo($element)['extension']; ?>"></div>
-                <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded" alt=""><br>
+                <img src="<?php echo Synology::url($albumLocal, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded" alt=""><br>
               </a>
-                <p class="trash-clickable" data-url="/trash/<?php echo $albumLink; ?>/<?php echo $element; ?>" title="Trash">
-                    <span class="icon-trash-<?php echo $filedata['trash'] === 1 ? 'on' : 'off'; ?> icon">&#x2716;</span>
-                </p>
             </div>
             <?php endforeach ?>
         </div>

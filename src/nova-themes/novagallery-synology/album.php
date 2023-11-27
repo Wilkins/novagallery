@@ -10,7 +10,12 @@
     <content class="row mt-0 mt-md-5">
       <div class="col-12 mb-1"><h1><?php echo Page::title(); ?></h1></div>
       <?php if($album): ?>
-        <div class="col-12 mb-4"><a href="<?php echo Site::url().'/'.Page::data('parentPage'); ?>" class="text-muted link-back">&laquo; <?php Lang::p('Back'); ?></a></div>
+        <div class="col-6 mb-4">
+            <a href="<?php echo Site::url().'/'.Page::data('parentPage'); ?>" class="text-muted link-back">&laquo; <?php Lang::p('Back'); ?></a>
+        </div>
+        <div class="col-6 mb-4" style="text-align: right">
+            <a style="text-align:right" href="<?php echo Site::url().'/duplicates/'.$album; ?>" target="duplicates" class="text-muted link-back">&#x1F50D; Trouver les doublons</a>
+        </div>
       <?php endif; ?>
       <div class="container">
           <?php
@@ -55,6 +60,7 @@
               $albumLink = Synology::cleanAlbumName($album);
               ?>
               <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
+
               <a href="<?php echo Synology::urlLink($album, $element, $filedata, Site::config('imageSizeBig')); ?>" target="_blank">
                 <div class="extension-overlay" data-ext="<?php echo pathinfo($element)['extension']; ?>"></div>
                 <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded" alt=""><br>
