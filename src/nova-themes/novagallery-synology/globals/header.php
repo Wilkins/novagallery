@@ -7,9 +7,10 @@
   <title><?php echo Page::metaTitle(); ?></title>
   <meta name="description" content="<?php echo Page::metaDescription(); ?>">
 
-  <link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>/assets//bootstrap.min.css">
+  <?php $cssmtime = filemtime(__DIR__.'/../assets/style.css'); ?>
+  <link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>/assets/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>/assets/simple-lightbox.min.css">
-  <link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>/assets/style.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>/assets/style.css?t=<?php echo $cssmtime; ?>" />
 
   <link rel="icon" href="<?php echo THEME_PATH; ?>/assets/novagallery-favicon.png" type="image/png">
 

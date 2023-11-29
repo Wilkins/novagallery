@@ -191,6 +191,21 @@ p.favorite-clickable {
   position: absolute;
 }
 
+.duration-overlay
+{
+  color: white;
+  font-weight: bold;
+  left: 200;
+  top: 220;
+  width: 66px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  position: absolute;
+  background: rgba(40, 40, 40, 0.5);
+  display: inline-block;
+}
+
 video {
   height: 600px;
   object-fit: cover;

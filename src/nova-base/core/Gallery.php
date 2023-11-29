@@ -96,6 +96,12 @@ class Gallery
                 $value = [
                     'trash' => preg_match("#".IMAGES_DIR.'/'.Synology::TRASH_DIR."#", $element) ? 1 : 0
                 ];
+                if ($this->isVideo($element)) {
+                    $value['filetype'] = 'video';
+                    $value['duration'] = $this->getVideoDuration($element);
+                } else {
+                    $value['filetype'] = 'image';
+                }
             }
             $element = strrchr($element, '/');
             $element = substr($element, 1);
@@ -311,5 +317,28 @@ class Gallery
     {
         $parent = strrpos($album, '/');
         return substr($album, 0, $parent);
+    }
+
+    private function isVideo($element): bool
+    {
+        return preg_match('/\.(MOV|MP4|AVI)$/i', $element) === 1;
+    }
+
+    private function getVideoDuration($element): string
+    {
+        //echo "<pre>";
+        //echo $element."\n";
+        $totalSeconds = trim(shell_exec('/usr/local/bin/ffprobe -v error '
+            .' -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 '
+            .' "'.$element.'"'));
+        //echo $totalSeconds."\n";
+        $minutes = floor($totalSeconds / 60);
+        //echo $minutes."\n";
+        $seconds = round($totalSeconds) % 60;
+        //echo "</pre>";
+        echo "<pre>$minutes:$seconds</pre>";
+        $res = sprintf('%02d:%02d', $minutes, $seconds);
+        echo "<pre>$res</pre>";
+        return $res;
     }
 }

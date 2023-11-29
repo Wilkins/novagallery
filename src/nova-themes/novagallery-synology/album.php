@@ -62,7 +62,10 @@
               <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
 
               <a href="<?php echo Synology::urlLink($album, $element, $filedata, Site::config('imageSizeBig')); ?>" target="_blank">
-                <div class="extension-overlay" data-ext="<?php echo pathinfo($element)['extension']; ?>"></div>
+                <div class="extension-overlay" data-ext="<?php echo strtoupper(pathinfo($element)['extension']); ?>"></div>
+                <?php if($filedata['filetype'] === 'video'): ?>
+                    <div class="duration-overlay" data-ext="<?php echo $filedata['duration']; ?>"><?php echo $filedata['duration']; ?></div>
+                <?php endif; ?>
                 <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded" alt=""><br>
               </a>
                 <p class="cover-clickable" data-url="/cover/<?php echo $albumLink; ?>/<?php echo $element; ?>" title="Cover">

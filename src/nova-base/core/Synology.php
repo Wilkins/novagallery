@@ -19,7 +19,7 @@ class Synology extends Image
 
     public static function urlLink($album, $image, $filedata, $size = false): string
     {
-        if (!preg_match('/\.(MOV|MP4)/', $image)) {
+        if (!preg_match('/\.(MOV|MP4)/', strtoupper($image))) {
             return self::url($album, $image, $filedata, $size);
         }
         return '/video/' . $album . '/' . $image;
