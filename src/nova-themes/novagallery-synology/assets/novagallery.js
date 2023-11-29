@@ -44,8 +44,11 @@ $('.trash-clickable').click(function () {
         dataType: 'json',
     })
         .done(function (msg) {
-            console.log($(star).closest('.element'));
+            let remainingElements = $(star).closest('.gallery').children().length - 1;
             $(star).closest('.element').remove();
+            if (remainingElements === 0) {
+                document.location.reload();
+            }
         })
         .fail(function (msg) {
             console.log('fail');

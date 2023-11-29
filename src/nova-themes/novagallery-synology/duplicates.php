@@ -13,12 +13,7 @@
         <div class="col-12 mb-4"><a href="<?php echo Site::url().'/'.Page::data('parentPage'); ?>" class="text-muted link-back">&laquo; <?php Lang::p('Back'); ?></a></div>
       <?php endif; ?>
       <div class="container">
-          <?php
-          $cover = $gallery->hasCoverImage($album);
-          if (! $cover) {
-              ?><p class="note">Vous devez choisir une cover pour cet album</p><?php
-          }
-          ?>        <!-- albums -->
+        <!-- albums -->
         <?php if($gallery->isDeletable()): ?>
         <div class="text-center">
             Aucune doublon trouvé
@@ -45,11 +40,11 @@
             $element = basename($elementSource);
             ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-                <?php #echo $elementSource; ?>
               <a href="<?php echo Synology::urlLink($albumLocal, $element, $filedata, Site::config('imageSizeBig')); ?>" target="_blank">
                 <div class="extension-overlay" data-ext="<?php echo pathinfo($element)['extension']; ?>"></div>
                 <img src="<?php echo Synology::url($albumLocal, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded" alt=""><br>
               </a>
+              <?php echo $elementSource; ?>
             </div>
             <?php endforeach ?>
         </div>
