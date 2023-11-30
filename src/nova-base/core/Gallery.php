@@ -326,19 +326,11 @@ class Gallery
 
     private function getVideoDuration($element): string
     {
-        //echo "<pre>";
-        //echo $element."\n";
         $totalSeconds = trim(shell_exec('/usr/local/bin/ffprobe -v error '
             .' -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 '
             .' "'.$element.'"'));
-        //echo $totalSeconds."\n";
         $minutes = floor($totalSeconds / 60);
-        //echo $minutes."\n";
         $seconds = round($totalSeconds) % 60;
-        //echo "</pre>";
-        echo "<pre>$minutes:$seconds</pre>";
-        $res = sprintf('%02d:%02d', $minutes, $seconds);
-        echo "<pre>$res</pre>";
-        return $res;
+        return sprintf('%02d:%02d', $minutes, $seconds);
     }
 }
