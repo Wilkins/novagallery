@@ -175,9 +175,25 @@ p.favorite-clickable {
   font-family: Times;
   font-size: 30px;
 }
+.icon-moveto img {
+  width: 22px;
+  height: 22px;
+}
+.actions p {
+  margin-bottom: 0;
+}
+.actions-moves {
+  margin-bottom: 1rem;
+}
+.moveto-clickable {
+  display: inline-block;
+}
 
 .extension-overlay[data-ext="MOV"],
 .extension-overlay[data-ext="MP4"],
+.extension-overlay[data-ext="MPEG"],
+.extension-overlay[data-ext="MTS"],
+.extension-overlay[data-ext="MKV"],
 .extension-overlay[data-ext="MPG"],
 .extension-overlay[data-ext="AVI"]
 {

@@ -73,8 +73,8 @@ class Gallery
     protected function processImages(): void
     {
         $start = microtime(true);
-        $imagesOk = glob($this->dir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV,mp4,MP4}', GLOB_BRACE);
-        $imagesTrash = glob($this->trashDir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV,mp4,MP4}', GLOB_BRACE);
+        $imagesOk = glob($this->dir . '/*'.Synology::getAcceptedFormats(), GLOB_BRACE);
+        $imagesTrash = glob($this->trashDir . '/*'.Synology::getAcceptedFormats(), GLOB_BRACE);
         $images = array_merge($imagesOk, $imagesTrash);
         //print_R($images);
         if (self::DEBUG) {
@@ -316,12 +316,12 @@ class Gallery
     public function parentAlbum($album): string
     {
         $parent = strrpos($album, '/');
-        return substr($album, 0, $parent);
+        return ltrim(substr($album, 0, $parent), '/');
     }
 
     private function isVideo($element): bool
     {
-        return preg_match('/\.(MOV|MP4|AVI)$/i', $element) === 1;
+        return preg_match('/\.('.implode('|', Synology::VIDEO_FORMATS).')$/i', $element) === 1;
     }
 
     private function getVideoDuration($element): string
@@ -329,6 +329,9 @@ class Gallery
         $totalSeconds = trim(shell_exec('/usr/local/bin/ffprobe -v error '
             .' -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 '
             .' "'.$element.'"'));
+        if (!is_numeric($totalSeconds)) {
+            return '00:00';
+        }
         $minutes = floor($totalSeconds / 60);
         $seconds = round($totalSeconds) % 60;
         return sprintf('%02d:%02d', $minutes, $seconds);

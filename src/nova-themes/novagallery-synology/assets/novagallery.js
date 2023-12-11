@@ -103,7 +103,6 @@ $('.deletealbum').click(function () {
         dataType: 'json',
     })
     .done(function (msg) {
-        //console.log($("a.link-back")[0]);
         $("a.link-back")[0].click();
     })
     .fail(function (msg) {
@@ -111,4 +110,45 @@ $('.deletealbum').click(function () {
         console.log(msg);
         alert(msg);
     });
+});
+
+$('.moveto-clickable').click(function () {
+    star = $(this);
+    $.ajax({
+        url: $(this).attr('data-url'),
+        type: 'GET',
+        dataType: 'json',
+    })
+        .done(function (msg) {
+            let remainingElements = $(star).closest('.gallery').children().length - 1;
+            $(star).closest('.element').remove();
+            if (remainingElements === 0) {
+                document.location.reload();
+            }
+        })
+        .fail(function (msg) {
+            console.log('fail');
+            console.log(msg);
+            alert('Fail : '+msg);
+            //$("i", star).toggleClass("icon-trash-off icon-trash-error");
+        });
+
+});
+
+$('.rename-folder').click(function (){
+    let newName = prompt("Nouveau nom :", $(this).attr('data-name'));
+    $.ajax({
+        url: $(this).attr('data-url')+'?newName='+newName,
+        type: 'GET',
+        dataType: 'json',
+    })
+        .done(function (msg) {
+            document.location.reload();
+        })
+        .fail(function (msg) {
+            console.log('fail');
+            console.log(msg);
+            alert('Fail : '+msg);
+        });
+
 });

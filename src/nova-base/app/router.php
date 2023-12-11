@@ -81,6 +81,55 @@ Router::add('/duplicates/(.*)', static function($var1) {
     $album = rawurldecode($var1);
     require 'pages/duplicates.php';
 });
+Router::add('/moveto-houra/(.*)', static function($var1) {
+    require 'auth.php';
+    $image = rawurldecode($var1);
+    $destination = 'HOURA';
+    require 'pages/moveto.php';
+});
+Router::add('/moveto-ugap/(.*)', static function($var1) {
+    require 'auth.php';
+    $image = rawurldecode($var1);
+    $destination = 'UGAP';
+    require 'pages/moveto.php';
+});
+Router::add('/moveto-snapchat/(.*)', static function($var1) {
+    require 'auth.php';
+    $image = rawurldecode($var1);
+    $destination = 'Snapchat';
+    require 'pages/moveto.php';
+});
+Router::add('/moveto-bestof/(.*)', static function($var1) {
+    require 'auth.php';
+    $image = rawurldecode($var1);
+    $destination = 'BestOf';
+    require 'pages/moveto.php';
+});
+Router::add('/moveto-divers/(.*)', static function($var1) {
+    require 'auth.php';
+    $image = rawurldecode($var1);
+    $destination = 'Divers';
+    require 'pages/moveto.php';
+});
+Router::add('/moveto-maison/(.*)', static function($var1) {
+    require 'auth.php';
+    $image = rawurldecode($var1);
+    $destination = 'Maison';
+    require 'pages/moveto.php';
+});
+Router::add('/moveto-openclassrooms/(.*)', static function($var1) {
+    require 'auth.php';
+    $image = rawurldecode($var1);
+    $destination = 'OpenClassrooms';
+    require 'pages/moveto.php';
+});
+Router::add('/rename-folder/(.*)', static function($var1) {
+    require 'auth.php';
+    $folder = rawurldecode($var1);
+    $newFolder = $_GET['newName'];
+    require 'pages/rename-folder.php';
+});
+
 
 // Auth
 Router::add('/login', static function() {

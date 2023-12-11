@@ -17,9 +17,55 @@ class Synology extends Image
 
     public const FAVORITES_KEY = 'favorites';
 
+    public const MONTHS = [
+        '01' => '01.JANVIER',
+        '02' => '02.FEVRIER',
+        '03' => '03.MARS',
+        '04' => '04.AVRIL',
+        '05' => '05.MAI',
+        '06' => '06.JUIN',
+        '07' => '07.JUILLET',
+        '08' => '08.AOUT',
+        '09' => '09.SEPTEMBRE',
+        '10' => '10.OCTOBRE',
+        '11' => '11.NOVEMBRE',
+        '12' => '12.DECEMBRE',
+    ];
+    public const SPECIAL_DIRS = [
+        'BestOf',
+        'Maison',
+        'HOURA',
+        'OpenClassrooms',
+        'UGAP',
+        'CELESTE',
+        'UNGI',
+        'Maison',
+        'Snapchat',
+        'Divers',
+    ];
+    public const VIDEO_FORMATS = [
+        'MOV',
+        'MP4',
+        'MPEG4',
+        'MPG',
+        'AVI',
+        'MTS',
+        'WEBM',
+        'MKV',
+        'VOB',
+        'AVIF',
+    ];
+    public const IMAGE_FORMATS = [
+        'JPG',
+        'JPEG',
+        'PNG',
+        'GIF',
+        'WEBP',
+    ];
+
     public static function urlLink($album, $image, $filedata, $size = false): string
     {
-        if (!preg_match('/\.(MOV|MP4)/', strtoupper($image))) {
+        if (!preg_match('/\.('.implode('|', self::VIDEO_FORMATS).')/i', $image)) {
             return self::url($album, $image, $filedata, $size);
         }
         return '/video/' . $album . '/' . $image;
@@ -148,6 +194,18 @@ class Synology extends Image
         self::saveMetadata(self::getMetadataFilename($fullFilename), $metadata);
     }
 
+    public static function saveVideoDuration(string $fullFilename): void
+    {
+        $imageName = basename($fullFilename);
+        $metadata = self::getMetadata($fullFilename);
+        if (isset($metadata[self::FAVORITES_KEY][$imageName])) {
+            unset($metadata[self::FAVORITES_KEY][$imageName]);
+        } else {
+            $metadata[self::FAVORITES_KEY][$imageName] = 1;
+        }
+        self::saveMetadata(self::getMetadataFilename($fullFilename), $metadata);
+    }
+
     private static function getMetadataFilename(string $fullFilename): string
     {
         $dirName = is_dir(IMAGES_DIR . '/' . $fullFilename) ? $fullFilename : dirname($fullFilename);
@@ -190,9 +248,9 @@ class Synology extends Image
         $okFile = IMAGES_DIR . '/' . $fullFilename;
         $trashFile = IMAGES_DIR . '/' . self::TRASH_DIR . '/' . $fullFilename;
         if (file_exists($okFile) && !file_exists($trashFile)) {
-            self::moveFile($okFile, $trashFile);
+            FileSystem::moveFile($okFile, $trashFile);
         } else if (!file_exists($okFile) && file_exists($trashFile)) {
-            self::moveFile($trashFile, $okFile);
+            FileSystem::moveFile($trashFile, $okFile);
         } else if (file_exists($okFile) && file_exists($trashFile)) {
             throw new Exception("Fichier déjà dans la corbeille");
         } else {
@@ -256,7 +314,7 @@ class Synology extends Image
     {
         self::removeThumbs($imagePath);
         $thumbDir = dirname($imagePath) . '/' . self::EADIR . '/' . basename($imagePath);
-        self::createDir($thumbDir);
+        FileSystem::mkdir($thumbDir);
         self::createThumb($imagePath, "SYNOPHOTO_THUMB_XL.jpg", 1280);
         self::createThumb($imagePath, "SYNOPHOTO_THUMB_SM.jpg", 320);
     }
@@ -288,36 +346,12 @@ class Synology extends Image
     {
         $thumbDir = dirname($imagePath) . '/' . self::EADIR . '/' . basename($imagePath);
 
-        $thumbs = glob($thumbDir . '/*{jpg,jpeg,JPG,JPEG,png,PNG,mov,MOV,mp4,MP4}', GLOB_BRACE);
+        $thumbs = glob($thumbDir . '/*'.self::getAcceptedFormats(), GLOB_BRACE);
         foreach ($thumbs as $thumb) {
             unlink($thumb);
         }
     }
 
-    private static function moveFile(string $fromFile, string $toFile): void
-    {
-        $targetDir = dirname($toFile);
-        if (file_exists($targetDir) && !is_dir($targetDir)) {
-            throw new Exception("Impossible de déplacer, la cible « $targetDir » est un fichier");
-        }
-        self::createDir($targetDir);
-        self::createDir($targetDir . '/' . self::EADIR);
-        $toThumbDir = dirname($toFile) . '/' . self::EADIR . '/' . basename($toFile);
-        $fromThumbDir = dirname($fromFile) . '/' . self::EADIR . '/' . basename($fromFile);
-        //echo "mv -i \"$fromFile\" \"$toFile\"<br>\n";
-        //echo "mv -i \"$fromThumbDir\" \"$toThumbDir\"<br>\n";
-        rename($fromFile, $toFile);
-        rename($fromThumbDir, $toThumbDir);
-    }
-
-    private static function createDir(string $targetDir): void
-    {
-        if (!file_exists($targetDir)) {
-            if (!mkdir($targetDir, 0777, true) && !is_dir($targetDir)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $targetDir));
-            }
-        }
-    }
 
     private static function cleanDownloadName(string $okFile)
     {
@@ -337,11 +371,43 @@ class Synology extends Image
     public static function deleteAlbum($album): void
     {
         $albumDir = IMAGES_DIR . '/' . $album;
-        FileSystem::unlink( $albumDir."/".Synology::DSSTORE);
-        FileSystem::unlink( $albumDir."/".Synology::THUMBS);
-        FileSystem::unlink( $albumDir."/".Synology::COVER);
-        FileSystem::unlink( $albumDir."/".Synology::METADATA);
-        FileSystem::rrmdir( $albumDir."/".Synology::EADIR);
+        FileSystem::unlink($albumDir . "/" . Synology::DSSTORE);
+        FileSystem::unlink($albumDir . "/" . Synology::THUMBS);
+        FileSystem::unlink($albumDir . "/" . Synology::COVER);
+        FileSystem::unlink($albumDir . "/" . Synology::METADATA);
+        FileSystem::rrmdir($albumDir . "/" . Synology::EADIR);
         rmdir($albumDir);
+    }
+
+    public static function moveTo($fullFilename, $destination)
+    {
+        $currentFile = IMAGES_DIR . '/' . $fullFilename;
+        $dirs = explode('/', $fullFilename);
+        if (in_array($dirs[1], self::MONTHS, true)
+            || in_array($dirs[1], self::SPECIAL_DIRS, true)) {
+            $newFile = IMAGES_DIR . '/' . implode("/", [$dirs[0], $dirs[1], $destination, basename($fullFilename)]);
+            FileSystem::moveFile($currentFile, $newFile);
+        }
+    }
+
+    public static function getAcceptedFormats(): string
+    {
+        $formats = array_merge(
+            self::VIDEO_FORMATS,
+            self::IMAGE_FORMATS,
+            array_map('strtolower', self::VIDEO_FORMATS),
+            array_map('strtolower', self::IMAGE_FORMATS)
+        );
+        return '{' . implode(',', $formats) . '}';
+    }
+    public static function getImageFormats(): string
+    {
+        $formats = array_merge(
+            self::VIDEO_FORMATS,
+            self::IMAGE_FORMATS,
+            array_map('strtolower', self::VIDEO_FORMATS),
+            array_map('strtolower', self::IMAGE_FORMATS)
+        );
+        return '{' . implode(',', $formats) . '}';
     }
 }
