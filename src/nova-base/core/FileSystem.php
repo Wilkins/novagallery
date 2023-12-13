@@ -113,6 +113,10 @@ final class FileSystem
             throw new Exception("Le répertoire « $targetDir » existe déjà");
         }
         //echo "mv -i \"$fromDir\" \"$targetDir\"<br>\n";
+        $command = "mv -n \"$fromDir\" \"$targetDir\"\n";
+        $fh = fopen(IMAGES_DIR.'/'.Synology::RENAME_ARCHIVE, "a+");
+        fwrite($fh, $command);
+        fclose($fh);
         rename($fromDir, $targetDir);
         if (!file_exists($targetDir)) {
             throw new Exception("Le répertoire « $targetDir » n'a pas pu être renommé");

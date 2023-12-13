@@ -23,6 +23,9 @@
           if (! $cover) {
               ?><p class="note">Vous devez choisir une cover pour cet album</p><?php
           }
+          if (! $gallery->isWritable()) {
+              ?><p class="danger">Le répertoire n'est pas accessible en écriture</p><?php
+          }
           ?>        <!-- albums -->
         <?php if($gallery->isDeletable()): ?>
         <div class="text-center">
@@ -35,10 +38,18 @@
         <?php if($gallery->hasAlbums()): ?>
 
         <div class="row px-2 mt-4">
+          <?php $specialDirs = false; ?>
           <?php foreach($gallery->getAlbums($order) as $element => $modDate):
                 $elementLink = rawurlencode($element);
                 $elementPath = $album ? $album.'/'.$elementLink : $elementLink;
           ?>
+            <?php if ($specialDirs === false && in_array($elementLink, Synology::SPECIAL_DIRS, true)):
+                $specialDirs = true;
+                ?>
+                </div>
+                <div class="row px-2 mt-4">
+            <?php endif; ?>
+
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
               <a href="<?php echo Site::basePath().'/album/'.$elementPath; ?>">
                   <?php if (in_array($elementLink, Synology::SPECIAL_DIRS, true)): ?>

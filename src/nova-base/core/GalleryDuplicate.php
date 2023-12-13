@@ -75,9 +75,13 @@ class GalleryDuplicate extends Gallery
             if ($this->filesCanBeDeleted($files[0], $files[1])) {
                 $deleteFile = $this->compareFiles($files[0], $files[1]);
                 $nbRemoved++;
-                //echo "<pre>";
-                //echo "remove $deleteFile\n";
-                //echo "</pre>";
+                /*
+                echo "<pre>";
+                echo "files0 : ".$files[0]. "\n";
+                echo "files1 : ".$files[1]. "\n";
+                echo "remove $deleteFile\n";
+                echo "</pre>";
+                */
                 Synology::toggleTrashFromUrl($deleteFile);
             }
         }
@@ -86,6 +90,30 @@ class GalleryDuplicate extends Gallery
 
     private function compareFiles($file0, $file1)
     {
+        if (false !== stripos($file0, "trier")) {
+            return $file0;
+        }
+        if (false !== stripos($file1, "trier")) {
+            return $file1;
+        }
+        if (false !== stripos($file0, "brut")) {
+            return $file0;
+        }
+        if (false !== stripos($file1, "brut")) {
+            return $file1;
+        }
+        if (false !== stripos($file0, "garder")) {
+            return $file1;
+        }
+        if (false !== stripos($file1, "garder")) {
+            return $file0;
+        }
+        if (false !== stripos($file0, "selection")) {
+            return $file1;
+        }
+        if (false !== stripos($file1, "selection")) {
+            return $file0;
+        }
         $nbSlash0 = substr_count($file0, '/');
         $nbSlash1 = substr_count($file1, '/');
         if ($nbSlash0 > $nbSlash1) {

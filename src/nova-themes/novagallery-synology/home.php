@@ -13,16 +13,32 @@
       <?php endif; ?>
       <div class="container">
         <!-- albums -->
+        <?php $specialDirs = false; ?>
         <?php if($gallery->hasAlbums()): ?>
         <div class="row px-2 mt-4">
           <?php foreach($gallery->getAlbums($order) as $element => $modDate):
-                $elementPath = $album ? $album.'/'.$element : $element;
+              $elementLink = rawurlencode($element);
+              $elementPath = $album ? $album.'/'.$element : $element;
+              if ($element === date('Y')+1) {
+                  continue;
+              }
           ?>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-                <?php $cover = $gallery->coverImage($elementPath, $order); ?>
 
+            <?php if ($specialDirs === false && in_array($elementLink, Synology::SPECIAL_DIRS, true)):
+                $specialDirs = true;
+                ?>
+                </div>
+                <div class="row px-2 mt-4">
+            <?php endif; ?>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
+                <?php if (in_array($elementLink, Synology::SPECIAL_DIRS, true)): ?>
+                    <?php $cover =  THEME_PATH . "/assets/$elementLink.png"; ?>
+                <?php else: ?>
+                    <?php $cover = $gallery->coverImage($elementPath, $order); ?>
+                <?php endif; ?>
                 <a href="<?php echo Site::basePath().'/album/'.$elementPath; ?>">
-                <img src="<?php echo $cover; ?>" loading="lazy" class="rounded"><br>
+                <img src="<?php echo $cover; ?>" loading="lazy" class="rounded"/><br>
                 <?php echo ucwords($element); ?>
               </a>
             </div>

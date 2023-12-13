@@ -301,6 +301,11 @@ class Gallery
         return count($this->albums) === 0 && count($this->images) === 0;
     }
 
+    public function isWritable(): bool
+    {
+        return is_writable($this->dir);
+    }
+
     public function hasImages($album = false): bool
     {
         // choose correct image array

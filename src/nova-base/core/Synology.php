@@ -10,12 +10,15 @@ class Synology extends Image
     public const EADIR = '@eaDir';
 
     public const DSSTORE = '.DS_Store';
+    public const DSSTORE2 = '._.DS_Store';
 
     public const THUMBS = 'Thumbs.db';
 
     public const METADATA = '.METADATA.JSON';
 
     public const FAVORITES_KEY = 'favorites';
+
+    public const RENAME_ARCHIVE = 'rename_archive.txt';
 
     public const MONTHS = [
         '01' => '01.JANVIER',
@@ -35,6 +38,8 @@ class Synology extends Image
         'BestOf',
         'Maison',
         'HOURA',
+        'UNGI',
+        'CELESTE',
         'OpenClassrooms',
         'UGAP',
         'CELESTE',
@@ -42,6 +47,7 @@ class Synology extends Image
         'Maison',
         'Snapchat',
         'Divers',
+        'a_trier',
     ];
     public const VIDEO_FORMATS = [
         'MOV',
@@ -217,6 +223,10 @@ class Synology extends Image
         $metadataFile = self::getMetadataFilename($fullFilename);
 
         //echo $metadataFile . "<br>\n";
+        if (!is_writable(dirname($metadataFile))) {
+            //throw new Exception("Le répertoire « " . dirname($metadataFile) . " » n'est pas accessible en écriture");
+            return [];
+        }
         if (!file_exists($metadataFile)) {
             self::createEmptyMetadata($metadataFile);
         }
@@ -372,6 +382,7 @@ class Synology extends Image
     {
         $albumDir = IMAGES_DIR . '/' . $album;
         FileSystem::unlink($albumDir . "/" . Synology::DSSTORE);
+        FileSystem::unlink($albumDir . "/" . Synology::DSSTORE2);
         FileSystem::unlink($albumDir . "/" . Synology::THUMBS);
         FileSystem::unlink($albumDir . "/" . Synology::COVER);
         FileSystem::unlink($albumDir . "/" . Synology::METADATA);

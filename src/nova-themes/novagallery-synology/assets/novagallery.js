@@ -137,6 +137,9 @@ $('.moveto-clickable').click(function () {
 
 $('.rename-folder').click(function (){
     let newName = prompt("Nouveau nom :", $(this).attr('data-name'));
+    if (newName === null) {
+        return;
+    }
     $.ajax({
         url: $(this).attr('data-url')+'?newName='+newName,
         type: 'GET',
