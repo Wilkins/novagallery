@@ -60,6 +60,8 @@ class Synology extends Image
         'MKV',
         'VOB',
         'AVIF',
+        'M4A',
+        'MP3',
     ];
     public const IMAGE_FORMATS = [
         'JPG',
@@ -376,6 +378,11 @@ class Synology extends Image
     public static function cleanAlbumName(string $album): string
     {
         return str_replace('+', '%2B', $album);
+    }
+
+    public static function cleanAlbumTitle(string $album): string
+    {
+        return ucwords(str_replace('_', ' ', $album));
     }
 
     public static function deleteAlbum($album): void

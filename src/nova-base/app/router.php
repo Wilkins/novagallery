@@ -123,6 +123,12 @@ Router::add('/moveto-openclassrooms/(.*)', static function($var1) {
     $destination = 'OpenClassrooms';
     require 'pages/moveto.php';
 });
+Router::add('/moveto-celeste/(.*)', static function($var1) {
+    require 'auth.php';
+    $image = rawurldecode($var1);
+    $destination = 'CELESTE';
+    require 'pages/moveto.php';
+});
 Router::add('/rename-folder/(.*)', static function($var1) {
     require 'auth.php';
     $folder = rawurldecode($var1);

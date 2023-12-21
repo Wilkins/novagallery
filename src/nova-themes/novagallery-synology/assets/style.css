@@ -189,6 +189,19 @@ p.favorite-clickable {
   display: inline-block;
 }
 
+.extension-overlay[data-ext="M4A"],
+.extension-overlay[data-ext="MP3"]
+{
+  color: red;
+  background: url('sound.png');
+  background-size: 250px 250px;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 250px;
+  height: 250px;
+  position: absolute;
+}
+
 .extension-overlay[data-ext="MOV"],
 .extension-overlay[data-ext="MP4"],
 .extension-overlay[data-ext="MPEG"],

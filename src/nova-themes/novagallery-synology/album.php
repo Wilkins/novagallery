@@ -67,7 +67,7 @@
                   <p class="cover-clickable" data-url="/cover/<?php echo $album; ?>/<?php echo $elementLink; ?>" title="Cover">
                       <i class="icon-cover-off icon">&#9733;</i>
                   </p>
-                <?php echo ucwords($element); ?>
+                <?php echo Synology::cleanAlbumTitle($element); ?>
             </div>
           <?php endforeach ?>
         </div>
@@ -133,6 +133,12 @@
                                title="Move to UGAP">
                                 <span class="icon-moveto icon"><img
                                             src="<?php echo THEME_PATH; ?>/assets/UGAP.png"></span>
+                            </p>
+                            <p class="moveto-clickable"
+                               data-url="/moveto-celeste/<?php echo $albumLink; ?>/<?php echo $element; ?>"
+                               title="Move to CELESTE">
+                                <span class="icon-moveto icon"><img
+                                            src="<?php echo THEME_PATH; ?>/assets/CELESTE.png"></span>
                             </p>
                             <p class="moveto-clickable"
                                data-url="/moveto-openclassrooms/<?php echo $albumLink; ?>/<?php echo $element; ?>"
