@@ -14,10 +14,6 @@ class Synology extends Image
 
     public const THUMBS = 'Thumbs.db';
 
-    public const METADATA = '.METADATA.JSON';
-
-    public const FAVORITES_KEY = 'favorites';
-
     public const RENAME_ARCHIVE = 'rename_archive.txt';
 
     public const MONTHS = [
@@ -188,86 +184,6 @@ class Synology extends Image
     private static function isAlbum(string $fullFilename): bool
     {
         return is_dir(self::getAlbumDir($fullFilename));
-    }
-
-    public static function toggleFavoriteFromUrl(string $fullFilename): void
-    {
-        $imageName = basename($fullFilename);
-        $metadata = self::getMetadata($fullFilename);
-        if (isset($metadata[self::FAVORITES_KEY][$imageName])) {
-            unset($metadata[self::FAVORITES_KEY][$imageName]);
-        } else {
-            $metadata[self::FAVORITES_KEY][$imageName] = 1;
-        }
-        self::saveMetadata(self::getMetadataFilename($fullFilename), $metadata);
-    }
-
-    public static function saveVideoDuration(string $fullFilename): void
-    {
-        $imageName = basename($fullFilename);
-        $metadata = self::getMetadata($fullFilename);
-        if (isset($metadata[self::FAVORITES_KEY][$imageName])) {
-            unset($metadata[self::FAVORITES_KEY][$imageName]);
-        } else {
-            $metadata[self::FAVORITES_KEY][$imageName] = 1;
-        }
-        self::saveMetadata(self::getMetadataFilename($fullFilename), $metadata);
-    }
-
-    private static function getMetadataFilename(string $fullFilename): string
-    {
-        $dirName = is_dir(IMAGES_DIR . '/' . $fullFilename) ? $fullFilename : dirname($fullFilename);
-        return IMAGES_DIR . '/' . $dirName . '/' . self::METADATA;
-    }
-
-    public static function getMetadata(string $fullFilename, string $key = null): array
-    {
-        $metadataFile = self::getMetadataFilename($fullFilename);
-
-        //echo $metadataFile . "<br>\n";
-        if (!is_writable(dirname($metadataFile))) {
-            //throw new Exception("Le répertoire « " . dirname($metadataFile) . " » n'est pas accessible en écriture");
-            return [];
-        }
-        if (!file_exists($metadataFile)) {
-            self::createEmptyMetadata($metadataFile);
-        }
-        $metadata = json_decode(file_get_contents($metadataFile), true, 512, JSON_THROW_ON_ERROR);
-        //print_r($metadata);
-        //print"<br>\n";
-        if ($key) {
-            return $metadata[$key];
-        }
-        return $metadata;
-    }
-
-    private static function createEmptyMetadata(string $metadataFile): void
-    {
-        $emptyData = [
-            self::FAVORITES_KEY => [],
-        ];
-        self::saveMetadata($metadataFile, $emptyData);
-    }
-
-    private static function saveMetadata(string $metadataFile, array $data): void
-    {
-        file_put_contents($metadataFile, json_encode($data, JSON_THROW_ON_ERROR));
-    }
-
-
-    public static function toggleTrashFromUrl(string $fullFilename): void
-    {
-        $okFile = IMAGES_DIR . '/' . $fullFilename;
-        $trashFile = IMAGES_DIR . '/' . self::TRASH_DIR . '/' . $fullFilename;
-        if (file_exists($okFile) && !file_exists($trashFile)) {
-            FileSystem::moveFile($okFile, $trashFile);
-        } else if (!file_exists($okFile) && file_exists($trashFile)) {
-            FileSystem::moveFile($trashFile, $okFile);
-        } else if (file_exists($okFile) && file_exists($trashFile)) {
-            throw new Exception("Fichier déjà dans la corbeille");
-        } else {
-            throw new Exception("Fichier introuvable");
-        }
     }
 
     public static function download(string $fullFilename): void

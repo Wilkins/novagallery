@@ -1,5 +1,5 @@
 <?php
 
-Synology::toggleTrashFromUrl($trash);
+Metadata::toggleTrashFromUrl($trash);
 echo '{"message": "ok"}' . "\n";
 return;

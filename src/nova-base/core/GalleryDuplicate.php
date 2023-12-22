@@ -82,7 +82,7 @@ class GalleryDuplicate extends Gallery
                 echo "remove $deleteFile\n";
                 echo "</pre>";
                 */
-                Synology::toggleTrashFromUrl($deleteFile);
+                Metadata::toggleTrashFromUrl($deleteFile);
             }
         }
         echo "<p class=\"danger\">$nbRemoved doublons supprimé(s)</p>\n";

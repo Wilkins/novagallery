@@ -4,6 +4,6 @@
 
 //$fullFilename = lib\core\Synology::getThumbFromUrl($favorite);
 
-Synology::toggleFavoriteFromUrl($favorite);
+Metadata::toggleFavoriteFromUrl($favorite);
 echo '{"message": "ok"}' . "\n";
 return;

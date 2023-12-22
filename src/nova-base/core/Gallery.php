@@ -24,8 +24,8 @@ class Gallery
     {
         $this->root = $root;
         $this->album = $album;
-        $this->dir = rtrim($root.'/'.$album,'/');
-        $this->trashDir = rtrim($root.'/'.Synology::TRASH_DIR.'/'.$album, '/');
+        $this->dir = rtrim($root . '/' . $album, '/');
+        $this->trashDir = rtrim($root . '/' . Synology::TRASH_DIR . '/' . $album, '/');
         $this->listAlbums();
         $this->processImages();
     }
@@ -73,16 +73,14 @@ class Gallery
     protected function processImages(): void
     {
         $start = microtime(true);
-        $imagesOk = glob($this->dir . '/*'.Synology::getAcceptedFormats(), GLOB_BRACE);
-        $imagesTrash = glob($this->trashDir . '/*'.Synology::getAcceptedFormats(), GLOB_BRACE);
+        $imagesOk = glob($this->dir . '/*.' . Synology::getAcceptedFormats(), GLOB_BRACE);
+        $imagesTrash = glob($this->trashDir . '/*.' . Synology::getAcceptedFormats(), GLOB_BRACE);
         $images = array_merge($imagesOk, $imagesTrash);
-        //print_R($images);
         if (self::DEBUG) {
             echo "processImages<br>\n";
             echo "glob($this->dir/*{jpg,jpeg,JPG,JPEG,png,PNG}) (" . (microtime(true) - $start) . " sec)<br>\n";
         }
         $this->images = $this->fileList($images, false);
-        //print_r($this->images);
     }
 
     // create array of files or dirs without path & with last modification date
@@ -94,11 +92,11 @@ class Gallery
                 $value = $this->getImageCaptureDate($element);
             } else {
                 $value = [
-                    'trash' => preg_match("#".IMAGES_DIR.'/'.Synology::TRASH_DIR."#", $element) ? 1 : 0
+                    'trash' => preg_match("#" . IMAGES_DIR . '/' . Synology::TRASH_DIR . "#", $element) ? 1 : 0
                 ];
                 if ($this->isVideo($element)) {
                     $value['filetype'] = 'video';
-                    $value['duration'] = $this->getVideoDuration($element);
+                    $value['duration'] = $this->getVideoDurationWithCache($element);
                 } else {
                     $value['filetype'] = 'image';
                 }
@@ -326,14 +324,31 @@ class Gallery
 
     private function isVideo($element): bool
     {
-        return preg_match('/\.('.implode('|', Synology::VIDEO_FORMATS).')$/i', $element) === 1;
+        return preg_match('/\.(' . implode('|', Synology::VIDEO_FORMATS) . ')$/i', $element) === 1;
+    }
+
+    private function getVideoDurationWithCache($element): string
+    {
+        $albumName = str_replace(IMAGES_DIR . '/', '', dirname($element));
+        $imageName = basename($element);
+        $durations = Metadata::getKey($albumName, Metadata::DURATION_KEY);
+        if (isset($durations[$imageName])) {
+            return $durations[$imageName];
+        }
+        $duration = $this->getVideoDuration($element);
+        $durations[$imageName] = $duration;
+        //echo "Durations to save<br>\n";
+        //print_r($durations);
+        Metadata::saveKey($albumName, Metadata::DURATION_KEY, $durations);
+
+        return $duration;
     }
 
     private function getVideoDuration($element): string
     {
         $totalSeconds = trim(shell_exec('/usr/local/bin/ffprobe -v error '
-            .' -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 '
-            .' "'.$element.'"'));
+            . ' -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 '
+            . ' "' . $element . '"'));
         if (!is_numeric($totalSeconds)) {
             return '00:00';
         }
