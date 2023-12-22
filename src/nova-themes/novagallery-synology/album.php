@@ -104,7 +104,7 @@
                             </p>
                             <p class="trash-clickable"
                                data-url="/trash/<?php echo $albumLink; ?>/<?php echo $element; ?>" title="Trash">
-                                <span class="icon-trash-<?php echo $filedata['trash'] === 1 ? 'on' : 'off'; ?> icon">&#x2716;</span>
+                                <span class="icon-trash-<?php echo $filedata[Metadata::TRASH_KEY] === 1 ? 'on' : 'off'; ?> icon">&#x2716;</span>
                             </p>
                             <p class="download-clickable"
                                data-url="/download/<?php echo $albumLink; ?>/<?php echo $element; ?>" title="Download">
@@ -121,18 +121,18 @@
                                 <span class="icon-rotateright-off icon">&#x27F3;</span>
                             </p>
                         </div>
-                        <div class="actions-moves">
-                            <p class="moveto-clickable"
-                               data-url="/moveto-houra/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to Houra">
-                                <span class="icon-moveto icon"><img
-                                            src="<?php echo THEME_PATH; ?>/assets/HOURA.png"></span>
-                            </p>
+                        <div class="actions-moves-work">
                             <p class="moveto-clickable"
                                data-url="/moveto-ugap/<?php echo $albumLink; ?>/<?php echo $element; ?>"
                                title="Move to UGAP">
                                 <span class="icon-moveto icon"><img
                                             src="<?php echo THEME_PATH; ?>/assets/UGAP.png"></span>
+                            </p>
+                            <p class="moveto-clickable"
+                               data-url="/moveto-ungi/<?php echo $albumLink; ?>/<?php echo $element; ?>"
+                               title="Move to UNGI">
+                                <span class="icon-moveto icon"><img
+                                            src="<?php echo THEME_PATH; ?>/assets/UNGI.png"></span>
                             </p>
                             <p class="moveto-clickable"
                                data-url="/moveto-celeste/<?php echo $albumLink; ?>/<?php echo $element; ?>"
@@ -141,11 +141,19 @@
                                             src="<?php echo THEME_PATH; ?>/assets/CELESTE.png"></span>
                             </p>
                             <p class="moveto-clickable"
+                               data-url="/moveto-houra/<?php echo $albumLink; ?>/<?php echo $element; ?>"
+                               title="Move to Houra">
+                                <span class="icon-moveto icon"><img
+                                            src="<?php echo THEME_PATH; ?>/assets/HOURA.png"></span>
+                            </p>
+                            <p class="moveto-clickable"
                                data-url="/moveto-openclassrooms/<?php echo $albumLink; ?>/<?php echo $element; ?>"
                                title="Move to OpenClassrooms">
                                 <span class="icon-moveto icon"><img
                                             src="<?php echo THEME_PATH; ?>/assets/OpenClassrooms.png"></span>
                             </p>
+                        </div>
+                        <div class="actions-moves">
                             <p class="moveto-clickable"
                                data-url="/moveto-snapchat/<?php echo $albumLink; ?>/<?php echo $element; ?>"
                                title="Move to Snapchat">

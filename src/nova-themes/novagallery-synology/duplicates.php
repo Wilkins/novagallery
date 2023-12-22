@@ -35,7 +35,7 @@
                 ?>
         <div class="row gallery px-2 mt-4">
             <?php foreach($elementList as $elementSource):
-            $filedata = ['trash' => '0'];
+            $filedata = [Metadata::TRASH_KEY => '0'];
             $albumLocal = dirname($elementSource);
             $element = basename($elementSource);
             ?>

@@ -1,6 +1,5 @@
 <?php
 
-
 class Synology extends Image
 {
     public const COVER = '.COVER.JPG';
@@ -10,6 +9,7 @@ class Synology extends Image
     public const EADIR = '@eaDir';
 
     public const DSSTORE = '.DS_Store';
+
     public const DSSTORE2 = '._.DS_Store';
 
     public const THUMBS = 'Thumbs.db';
@@ -69,7 +69,7 @@ class Synology extends Image
 
     public static function urlLink($album, $image, $filedata, $size = false): string
     {
-        if (!preg_match('/\.('.implode('|', self::VIDEO_FORMATS).')/i', $image)) {
+        if (!preg_match('/\.(' . implode('|', self::VIDEO_FORMATS) . ')/i', $image)) {
             return self::url($album, $image, $filedata, $size);
         }
         return '/video/' . $album . '/' . $image;
@@ -78,7 +78,7 @@ class Synology extends Image
     public static function url($album, $image, $filedata, $size = false): string
     {
         $album = self::cleanAlbumName($album);
-        $prefixDir = isset($filedata['trash']) && $filedata['trash'] ? self::TRASH_DIR . '/' : '';
+        $prefixDir = isset($filedata[Metadata::TRASH_KEY]) && $filedata[Metadata::TRASH_KEY] ? self::TRASH_DIR . '/' : '';
         return IMAGES_URL . '/' . $prefixDir . $album . '/' . self::getThumb($image, $size);
     }
 
@@ -93,7 +93,7 @@ class Synology extends Image
             $image = 'noimage';
         }
 
-        return '@eaDir/' . rawurlencode($image) . '/SYNOPHOTO_THUMB_' . ($size) . '.jpg';
+        return self::EADIR . '/' . rawurlencode($image) . '/SYNOPHOTO_THUMB_' . ($size) . '.jpg';
     }
 
     public static function getThumbFromUrl(string $fullFilename): array
@@ -120,60 +120,13 @@ class Synology extends Image
             $fullAlbum = self::getAlbumDir($fullFilename);
             [$dir, $subCover] = [dirname($fullAlbum), basename($fullAlbum) . '/' . self::COVER];
             $targetCover = self::getAlbumFromurl($fullFilename) . '/' . self::COVER;
-            self::createLink($dir, $subCover, $targetCover);
+            FileSystem::createLink($dir, $subCover, $targetCover);
 
             return;
         }
         [$dir, $thumb] = self::getThumbFromUrl($fullFilename);
         $cover = self::getAlbumCoverFromUrl($fullFilename);
-        self::createLink($dir, $thumb, $cover);
-    }
-
-    private static function createLink($dir, $source, $target): void
-    {
-        $source = urldecode($source);
-        $command = "cd \"$dir\" ; /bin/ln -sf \"$source\" \"$target\"";
-
-        $targetDir = dirname($target);
-        //echo $command."<br>\n";
-        /*
-
-        echo "stat $target<br>\n";
-        //var_dump(stat($target));
-        echo "<br>\n";
-        echo "stat $target<br>\n";
-        var_dump(stat($targetDir));
-
-        */
-        if (!is_writable($targetDir)) {
-            echo "dir !is_writable($targetDir)<br>\n";
-        }
-        if (file_exists($target) && !is_writable($target)) {
-            echo "!is_writable($target)<br>\n";
-        }
-        //echo shell_exec("whoami");
-        exec($command, $output, $result_code);
-        //echo $target;
-        //print_R($output);
-        //echo $result_code;
-
-        //echo "====<br>\n";
-        //echo "$target<br>\n";
-        if (file_exists($target)) {
-            return;
-        }
-        echo $command . "<br>\n";
-
-        throw new Exception("$target should have been created");
-        //print_r($output);
-        /*
-        $output = shell_exec("/bin/readlink $target");
-        print_r($output);
-        if (!is_writable($targetDir)) {
-            //throw new Exception("$targetDir is not writable");
-        }
-        return true;
-        */
+        FileSystem::createLink($dir, $thumb, $cover);
     }
 
     private static function getAlbumDir(string $fullFilename): string
@@ -191,9 +144,7 @@ class Synology extends Image
         $okFile = IMAGES_DIR . '/' . $fullFilename;
         if (file_exists($okFile)) {
             $cleanFile = self::cleanDownloadName($fullFilename);
-            //$content = file_get_contents($okFile);
             //$mime = mime_content_type($okFile);
-//            header("Content-Type: $mime");
             header('Content-Type: application/octet-stream');
 
             header('Content-Description: File Transfer');
@@ -203,7 +154,6 @@ class Synology extends Image
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
             readfile($okFile);
-            //echo $content;
             //exit;
         } else {
             throw new Exception("Fichier introuvable");
@@ -274,7 +224,7 @@ class Synology extends Image
     {
         $thumbDir = dirname($imagePath) . '/' . self::EADIR . '/' . basename($imagePath);
 
-        $thumbs = glob($thumbDir . '/*'.self::getAcceptedFormats(), GLOB_BRACE);
+        $thumbs = glob($thumbDir . '/*' . self::getAcceptedFormats(), GLOB_BRACE);
         foreach ($thumbs as $thumb) {
             unlink($thumb);
         }
@@ -283,11 +233,7 @@ class Synology extends Image
 
     private static function cleanDownloadName(string $okFile)
     {
-        $months = ['JANVIER', 'FEVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN', 'JUILLET',
-            'AOUT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DECEMBRE'];
-        foreach ($months as $month) {
-            $okFile = str_replace('.' . $month, '', $okFile);
-        }
+        $okFile = str_replace(array_values(self::MONTHS), array_keys(self::MONTHS), $okFile);
         return preg_replace('#^(\d\d\d\d)/(\d\d)/.*/(\w+.\w+)$#', '$1_$2_$3', $okFile);
     }
 
@@ -299,18 +245,6 @@ class Synology extends Image
     public static function cleanAlbumTitle(string $album): string
     {
         return ucwords(str_replace('_', ' ', $album));
-    }
-
-    public static function deleteAlbum($album): void
-    {
-        $albumDir = IMAGES_DIR . '/' . $album;
-        FileSystem::unlink($albumDir . "/" . Synology::DSSTORE);
-        FileSystem::unlink($albumDir . "/" . Synology::DSSTORE2);
-        FileSystem::unlink($albumDir . "/" . Synology::THUMBS);
-        FileSystem::unlink($albumDir . "/" . Synology::COVER);
-        FileSystem::unlink($albumDir . "/" . Synology::METADATA);
-        FileSystem::rrmdir($albumDir . "/" . Synology::EADIR);
-        rmdir($albumDir);
     }
 
     public static function moveTo($fullFilename, $destination)
@@ -334,6 +268,7 @@ class Synology extends Image
         );
         return '{' . implode(',', $formats) . '}';
     }
+
     public static function getImageFormats(): string
     {
         $formats = array_merge(

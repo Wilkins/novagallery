@@ -122,4 +122,63 @@ final class FileSystem
             throw new Exception("Le répertoire « $targetDir » n'a pas pu être renommé");
         }
     }
+
+    public static function deleteAlbum($album): void
+    {
+        $albumDir = IMAGES_DIR . '/' . $album;
+        self::unlink($albumDir . "/" . Synology::DSSTORE);
+        self::unlink($albumDir . "/" . Synology::DSSTORE2);
+        self::unlink($albumDir . "/" . Synology::THUMBS);
+        self::unlink($albumDir . "/" . Synology::COVER);
+        self::unlink($albumDir . "/" . Metadata::METADATA);
+        self::rrmdir($albumDir . "/" . Synology::EADIR);
+        rmdir($albumDir);
+    }
+
+    public static function createLink($dir, $source, $target): void
+    {
+        $source = urldecode($source);
+        $command = "cd \"$dir\" ; /bin/ln -sf \"$source\" \"$target\"";
+
+        $targetDir = dirname($target);
+        //echo $command."<br>\n";
+        /*
+
+        echo "stat $target<br>\n";
+        //var_dump(stat($target));
+        echo "<br>\n";
+        echo "stat $target<br>\n";
+        var_dump(stat($targetDir));
+
+        */
+        if (!is_writable($targetDir)) {
+            echo "dir !is_writable($targetDir)<br>\n";
+        }
+        if (file_exists($target) && !is_writable($target)) {
+            echo "!is_writable($target)<br>\n";
+        }
+        //echo shell_exec("whoami");
+        exec($command, $output, $result_code);
+        //echo $target;
+        //print_R($output);
+        //echo $result_code;
+
+        //echo "====<br>\n";
+        //echo "$target<br>\n";
+        if (file_exists($target)) {
+            return;
+        }
+        echo $command . "<br>\n";
+
+        throw new Exception("$target should have been created");
+        //print_r($output);
+        /*
+        $output = shell_exec("/bin/readlink $target");
+        print_r($output);
+        if (!is_writable($targetDir)) {
+            //throw new Exception("$targetDir is not writable");
+        }
+        return true;
+        */
+    }
 }

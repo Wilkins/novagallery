@@ -1,14 +1,5 @@
 <?php
 
-/**
- * core\lib\core\Gallery - List Images and Albums
- * @author novafacile OÜ
- * @copyright Copyright (c) 2021 by novafacile OÜ
- * @license AGPL-3.0
- * @version 1.1.1
- * @link https://novagallery.org
- * to disable cache just set maxCacheAge to 'false' on initialization
- **/
 class GalleryDuplicate extends Gallery
 {
     private const MD5_SEPARATOR = '  ';

@@ -14,6 +14,8 @@ class Metadata
 
     public const DURATION_KEY = 'duration';
 
+    public const TRASH_KEY = 'trash';
+
     public static function toggleFavoriteFromUrl(string $fullFilename): void
     {
         $imageName = basename($fullFilename);

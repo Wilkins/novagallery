@@ -92,7 +92,7 @@ class Gallery
                 $value = $this->getImageCaptureDate($element);
             } else {
                 $value = [
-                    'trash' => preg_match("#" . IMAGES_DIR . '/' . Synology::TRASH_DIR . "#", $element) ? 1 : 0
+                    Metadata::TRASH_KEY => preg_match("#" . IMAGES_DIR . '/' . Synology::TRASH_DIR . "#", $element) ? 1 : 0
                 ];
                 if ($this->isVideo($element)) {
                     $value['filetype'] = 'video';
@@ -103,7 +103,7 @@ class Gallery
             }
             $element = strrchr($element, '/');
             $element = substr($element, 1);
-            if ($value['trash'] === 0) {
+            if ($value[Metadata::TRASH_KEY] === 0) {
                 $fileList[$element] = $value;
             }
         }
