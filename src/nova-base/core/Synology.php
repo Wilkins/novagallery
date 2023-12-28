@@ -58,6 +58,9 @@ class Synology extends Image
         'AVIF',
         'M4A',
         'MP3',
+        'WAV',
+        'ISO',
+        'PPT',
     ];
     public const IMAGE_FORMATS = [
         'JPG',
@@ -79,7 +82,10 @@ class Synology extends Image
     {
         $album = self::cleanAlbumName($album);
         $prefixDir = isset($filedata[Metadata::TRASH_KEY]) && $filedata[Metadata::TRASH_KEY] ? self::TRASH_DIR . '/' : '';
-        return IMAGES_URL . '/' . $prefixDir . $album . '/' . self::getThumb($image, $size);
+        if ($size === 'SM' && ! file_exists(self::path($album, $image, $size))) {
+            $size = 'M';
+        }
+        return IMAGES_URL . '/' . $prefixDir . $album . '/' . self::getThumb($image, $size);;
     }
 
     public static function path($album, $image, $size = false): string
@@ -92,6 +98,9 @@ class Synology extends Image
         if (!$image) {
             $image = 'noimage';
         }
+        if ($size === 'XL') {
+            return $image;
+        }
 
         return self::EADIR . '/' . rawurlencode($image) . '/SYNOPHOTO_THUMB_' . ($size) . '.jpg';
     }
@@ -100,8 +109,12 @@ class Synology extends Image
     {
         $fullFilename = IMAGES_DIR . '/' . $fullFilename;
 
-        return [dirname($fullFilename), self::getThumb(basename($fullFilename))];
-
+        $dirName = dirname($fullFilename);
+        $thumb = self::getThumb(basename($fullFilename));
+        if (!file_exists($dirName.'/'.$thumb)) {
+            $thumb = self::getThumb(basename($fullFilename), 'M');
+        }
+        return [$dirName, $thumb];
     }
 
     public static function getAlbumFromUrl(string $fullFilename): string
