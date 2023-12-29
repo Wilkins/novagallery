@@ -1,5 +1,5 @@
 <?php
 
-Synology::rotateleft($rotateleft);
+Rotate::rotateleft($rotateleft);
 echo '{"message": "ok"}' . "\n";
 return;
