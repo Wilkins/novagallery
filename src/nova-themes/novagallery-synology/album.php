@@ -38,7 +38,9 @@
         </div>
         <?php endif; ?>
 
-        <?php if($gallery->hasAlbums()): ?>
+        <?php
+
+        if($gallery->hasAlbums()): ?>
 
         <div class="row px-2 mt-4">
           <?php $specialDirs = false; ?>
@@ -46,7 +48,7 @@
                 $elementLink = rawurlencode($element);
                 $elementPath = $album ? $album.'/'.$elementLink : $elementLink;
           ?>
-            <?php if ($specialDirs === false && in_array($elementLink, Synology::SPECIAL_DIRS, true)):
+            <?php if ($specialDirs === false && File::isSpecialDir($elementLink)):
                 $specialDirs = true;
                 ?>
                 </div>
@@ -55,7 +57,7 @@
 
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
               <a href="<?php echo Site::basePath().'/album/'.$elementPath; ?>">
-                  <?php if (in_array($elementLink, Synology::SPECIAL_DIRS, true)): ?>
+                  <?php if (File::isSpecialDir($elementLink)): ?>
                       <?php $cover =  THEME_PATH . "/assets/$elementLink.png"; ?>
                   <?php else: ?>
                       <?php $cover = $gallery->coverImage($elementPath, $order); ?>

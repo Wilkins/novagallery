@@ -25,7 +25,7 @@ class Gallery
         $this->root = $root;
         $this->album = $album;
         $this->dir = rtrim($root . '/' . $album, '/');
-        $this->trashDir = rtrim($root . '/' . Synology::TRASH_DIR . '/' . $album, '/');
+        $this->trashDir = rtrim($root . '/' . File::TRASH_DIR . '/' . $album, '/');
         $this->listAlbums();
         $this->processImages();
     }
@@ -94,7 +94,7 @@ class Gallery
                 $value = $this->getImageCaptureDate($element);
             } else {
                 $value = [
-                    Metadata::TRASH_KEY => preg_match("#" . IMAGES_DIR . '/' . Synology::TRASH_DIR . "#", $element) ? 1 : 0,
+                    Metadata::TRASH_KEY => preg_match("#" . IMAGES_DIR . '/' . File::TRASH_DIR . "#", $element) ? 1 : 0,
                     Metadata::FULLNAME_KEY => $this->getRelativePath($element),
                 ];
                 if (FileType::isVideo($element)) {
@@ -284,12 +284,12 @@ class Gallery
 
     public function coverImage($album, $order = 'default'): string
     {
-        return IMAGES_URL . "/$album/" . Synology::COVER;
+        return IMAGES_URL . "/$album/" . File::COVER;
     }
 
     public function hasCoverImage($album, $order = 'default'): string
     {
-        return file_exists(IMAGES_DIR . "/$album/" . Synology::COVER);
+        return file_exists(IMAGES_DIR . "/$album/" . File::COVER);
     }
 
     private function getRelativePath($file): string {

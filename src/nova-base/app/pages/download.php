@@ -1,5 +1,5 @@
 <?php
 
-Synology::download($download);
+File::download($download);
 echo '{"message": "ok"}' . "\n";
 return;

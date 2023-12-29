@@ -84,9 +84,9 @@ final class FileSystem
             throw new Exception("Le fichier « $toFile » existe déjà");
         }
         self::mkdir($targetDir);
-        self::mkdir($targetDir . '/' . Synology::EADIR);
-        $toThumbDir = dirname($toFile) . '/' . Synology::EADIR . '/' . basename($toFile);
-        $fromThumbDir = dirname($fromFile) . '/' . Synology::EADIR . '/' . basename($fromFile);
+        self::mkdir($targetDir . '/' . File::EADIR);
+        $toThumbDir = dirname($toFile) . '/' . File::EADIR . '/' . basename($toFile);
+        $fromThumbDir = dirname($fromFile) . '/' . File::EADIR . '/' . basename($fromFile);
         //echo "mv -i \"$fromFile\" \"$toFile\"<br>\n";
         //echo "mv -i \"$fromThumbDir\" \"$toThumbDir\"<br>\n";
         rename($fromFile, $toFile);
@@ -114,7 +114,7 @@ final class FileSystem
         }
         //echo "mv -i \"$fromDir\" \"$targetDir\"<br>\n";
         $command = "mv -n \"$fromDir\" \"$targetDir\"\n";
-        $fh = fopen(IMAGES_DIR.'/'.Synology::RENAME_ARCHIVE, "a+");
+        $fh = fopen(IMAGES_DIR.'/'.File::RENAME_ARCHIVE, "a+");
         fwrite($fh, $command);
         fclose($fh);
         rename($fromDir, $targetDir);
@@ -126,12 +126,12 @@ final class FileSystem
     public static function deleteAlbum($album): void
     {
         $albumDir = IMAGES_DIR . '/' . $album;
-        self::unlink($albumDir . "/" . Synology::DSSTORE);
-        self::unlink($albumDir . "/" . Synology::DSSTORE2);
-        self::unlink($albumDir . "/" . Synology::THUMBS);
-        self::unlink($albumDir . "/" . Synology::COVER);
+        self::unlink($albumDir . "/" . File::DSSTORE);
+        self::unlink($albumDir . "/" . File::DSSTORE2);
+        self::unlink($albumDir . "/" . File::THUMBS);
+        self::unlink($albumDir . "/" . File::COVER);
         self::unlink($albumDir . "/" . Metadata::METADATA);
-        self::rrmdir($albumDir . "/" . Synology::EADIR);
+        self::rrmdir($albumDir . "/" . File::EADIR);
         rmdir($albumDir);
     }
 

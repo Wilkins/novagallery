@@ -24,7 +24,7 @@
               }
           ?>
 
-            <?php if ($specialDirs === false && in_array($elementLink, Synology::SPECIAL_DIRS, true)):
+            <?php if ($specialDirs === false && File::isSpecialDir($elementLink)):
                 $specialDirs = true;
                 ?>
                 </div>
@@ -32,7 +32,7 @@
             <?php endif; ?>
 
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-                <?php if (in_array($elementLink, Synology::SPECIAL_DIRS, true)): ?>
+                <?php if (File::isSpecialDir($elementLink)): ?>
                     <?php $cover =  THEME_PATH . "/assets/$elementLink.png"; ?>
                 <?php else: ?>
                     <?php $cover = $gallery->coverImage($elementPath, $order); ?>

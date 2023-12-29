@@ -117,7 +117,7 @@ class Metadata
     public static function toggleTrashFromUrl(string $fullFilename): void
     {
         $okFile = IMAGES_DIR . '/' . $fullFilename;
-        $trashFile = IMAGES_DIR . '/' . Synology::TRASH_DIR . '/' . $fullFilename;
+        $trashFile = IMAGES_DIR . '/' . File::TRASH_DIR . '/' . $fullFilename;
         if (file_exists($okFile) && !file_exists($trashFile)) {
             FileSystem::moveFile($okFile, $trashFile);
         } else if (!file_exists($okFile) && file_exists($trashFile)) {
