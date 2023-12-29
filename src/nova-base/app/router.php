@@ -3,7 +3,7 @@
 // Home
 Router::add('/', static function() {
   require 'auth.php';
-  require 'pages/home.php';
+  require 'pages/album.php';
 });
 
 

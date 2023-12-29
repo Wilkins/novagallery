@@ -22,12 +22,14 @@
       <?php endif; ?>
       <div class="container">
           <?php
-          $cover = $gallery->hasCoverImage($album);
-          if (! $cover) {
-              ?><p class="note">Vous devez choisir une cover pour cet album</p><?php
-          }
-          if (! $gallery->isWritable()) {
-              ?><p class="danger">Le répertoire n'est pas accessible en écriture</p><?php
+          if ($album) {
+              $cover = $gallery->hasCoverImage($album);
+              if (! $cover) {
+                  ?><p class="note">Vous devez choisir une cover pour cet album</p><?php
+              }
+              if (! $gallery->isWritable()) {
+                  ?><p class="danger">Le répertoire n'est pas accessible en écriture</p><?php
+              }
           }
           ?>        <!-- albums -->
         <?php if($gallery->isDeletable()): ?>
@@ -47,6 +49,9 @@
           <?php foreach($gallery->getAlbums($order) as $element => $modDate):
                 $elementLink = rawurlencode($element);
                 $elementPath = $album ? $album.'/'.$elementLink : $elementLink;
+                if ($element === date('Y')+1) {
+                    continue;
+                }
           ?>
             <?php if ($specialDirs === false && File::isSpecialDir($elementLink)):
                 $specialDirs = true;
@@ -64,14 +69,16 @@
                   <?php endif; ?>
                 <img src="<?php echo $cover ?>" loading="lazy" class="rounded" alt=""><br>
               </a>
+                <?php if ($album): ?>
                 <span class="icon rename-folder" style="float: right"
                       data-fullname="<?php echo $elementPath; ?>"
                       data-name="<?php echo $element; ?>"
                       data-url="<?php echo Site::basePath() . '/rename-folder/' . $elementPath; ?>">&#9998;
-                        </span>
+                </span>
                   <p class="cover-clickable" data-url="/cover/<?php echo $album; ?>/<?php echo $elementLink; ?>" title="Cover">
                       <i class="icon-cover-off icon">&#9733;</i>
                   </p>
+                <?php endif; ?>
                 <?php echo Synology::cleanAlbumTitle($element); ?>
             </div>
           <?php endforeach ?>

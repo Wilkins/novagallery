@@ -115,4 +115,22 @@ class Synology extends Image
         }
     }
 
+    public static function getTitle($album): string
+    {
+        if (!$album) {
+            return Site::config('siteTitle');
+        }
+        $title = self::cleanAlbumTitle($album);
+        $titleElements = explode('/', $title);
+        $titleOk = [];
+        foreach ($titleElements as $key => $element) {
+            if ($key === count($titleElements) - 1) {
+                $titleOk[] = $element;
+                continue;
+            }
+            $url = implode('/', array_slice($titleElements, 0, $key + 1));
+            $titleOk[$key] = '<a href="/album/'.$url.'">'.$element.'</a>';
+        }
+        return implode(' &raquo; ', $titleOk);
+    }
 }

@@ -1,36 +1,7 @@
 <?php
 
-$title = ucwords($album);
-$title = str_replace('/', ' &raquo; ', $title);
-
-Page::title($title);
+Page::title(Synology::getTitle($album));
 Page::metaTitle(Page::title() . ' | ' . Site::config('siteName'));
-
-$order = 'newest';
-
-if (Site::config('sortImages')) {
-    $order = Site::config('sortImages');
-}
-
-$fileListMaxCacheAge = Site::config('fileListMaxCacheAge');
-$imageCache = Site::config('imageCache');
-
-if (isset($_GET['order'])) {
-    switch ($_GET['order']) {
-        case 'oldest':
-            $order = 'oldest';
-            break;
-        case 'newest':
-            $order = 'newest';
-            break;
-        default:
-            $order = 'default';
-            break;
-    }
-}
-
-// Todo:
-// Some protections for album name
 
 // 404 if album doesn't exists
 if (!file_exists(IMAGES_DIR . '/' . $album)) {
