@@ -73,8 +73,8 @@ class Gallery
     protected function processImages(): void
     {
         $start = microtime(true);
-        $imagesOk = glob($this->dir . '/*.' . Synology::getAcceptedFormats(), GLOB_BRACE);
-        $imagesTrash = glob($this->trashDir . '/*.' . Synology::getAcceptedFormats(), GLOB_BRACE);
+        $imagesOk = glob($this->dir . '/*.' . FileType::getAcceptedFormats(), GLOB_BRACE);
+        $imagesTrash = glob($this->trashDir . '/*.' . FileType::getAcceptedFormats(), GLOB_BRACE);
         $images = array_merge($imagesOk, $imagesTrash);
         if (self::DEBUG) {
             echo "processImages<br>\n";
@@ -97,7 +97,7 @@ class Gallery
                     Metadata::TRASH_KEY => preg_match("#" . IMAGES_DIR . '/' . Synology::TRASH_DIR . "#", $element) ? 1 : 0,
                     Metadata::FULLNAME_KEY => $this->getRelativePath($element),
                 ];
-                if ($this->isVideo($element)) {
+                if (FileType::isVideo($element)) {
                     $value[Metadata::FILETYPE_KEY] = 'video';
                     $value[Metadata::DURATION_KEY] = $this->getVideoDurationWithCache($element);
                 } else {
@@ -327,11 +327,6 @@ class Gallery
     {
         $parent = strrpos($album, '/');
         return ltrim(substr($album, 0, $parent), '/');
-    }
-
-    private function isVideo($element): bool
-    {
-        return preg_match('/\.(' . implode('|', Synology::VIDEO_FORMATS) . ')$/i', $element) === 1;
     }
 
     private function getVideoDurationWithCache($element): string

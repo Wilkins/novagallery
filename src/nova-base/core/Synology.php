@@ -45,43 +45,18 @@ class Synology extends Image
         'Divers',
         'a_trier',
     ];
-    public const VIDEO_FORMATS = [
-        'MOV',
-        'MP4',
-        'MPEG4',
-        'MPG',
-        'AVI',
-        'MTS',
-        'WEBM',
-        'MKV',
-        'VOB',
-        'AVIF',
-        'M4A',
-        'MP3',
-        'WAV',
-        'ISO',
-        'PPT',
-    ];
-    public const IMAGE_FORMATS = [
-        'JPG',
-        'JPEG',
-        'PNG',
-        'GIF',
-        'WEBP',
-    ];
 
     public static function urlLink($album, $image, $filedata, $size = false): string
     {
-        if (!preg_match('/\.(' . implode('|', self::VIDEO_FORMATS) . ')/i', $image)) {
-            return self::url($album, $image, $filedata, $size);
+        if (FileType::isVideo($image)) {
+            return '/video/' . $album . '/' . $image;
         }
-        return '/video/' . $album . '/' . $image;
+        return self::url($album, $image, $filedata, $size);
     }
 
     public static function url($album, $image, $filedata, $size = false): string
     {
         $album = self::cleanAlbumName($album);
-        //echo $album;
         $prefixDir = isset($filedata[Metadata::TRASH_KEY]) && $filedata[Metadata::TRASH_KEY] ? self::TRASH_DIR . '/' : '';
         if ($size === 'SM' && ! file_exists(self::path($album, $image, $size))) {
             $size = 'M';
@@ -91,7 +66,6 @@ class Synology extends Image
 
     public static function path($album, $image, $size = false): string
     {
-        //echo IMAGES_DIR . '/' . $album . '/' . self::getThumb($image, $size);
         return IMAGES_DIR . '/' . $album . '/' . self::getThumb($image, $size);
     }
 
@@ -253,7 +227,7 @@ class Synology extends Image
     {
         $thumbDir = dirname($imagePath) . '/' . self::EADIR . '/' . basename($imagePath);
 
-        $thumbs = glob($thumbDir . '/*' . self::getAcceptedFormats(), GLOB_BRACE);
+        $thumbs = glob($thumbDir . '/*' . FileType::getAcceptedFormats(), GLOB_BRACE);
         foreach ($thumbs as $thumb) {
             unlink($thumb);
         }
@@ -287,25 +261,4 @@ class Synology extends Image
         }
     }
 
-    public static function getAcceptedFormats(): string
-    {
-        $formats = array_merge(
-            self::VIDEO_FORMATS,
-            self::IMAGE_FORMATS,
-            array_map('strtolower', self::VIDEO_FORMATS),
-            array_map('strtolower', self::IMAGE_FORMATS)
-        );
-        return '{' . implode(',', $formats) . '}';
-    }
-
-    public static function getImageFormats(): string
-    {
-        $formats = array_merge(
-            self::VIDEO_FORMATS,
-            self::IMAGE_FORMATS,
-            array_map('strtolower', self::VIDEO_FORMATS),
-            array_map('strtolower', self::IMAGE_FORMATS)
-        );
-        return '{' . implode(',', $formats) . '}';
-    }
 }
