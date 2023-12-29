@@ -31,25 +31,32 @@ class File
         '12' => '12.DECEMBRE',
     ];
 
-    private const SPECIAL_DIRS = [
-        'BestOf',
-        'Maison',
+    private const SPECIAL_WORK_DIRS = [
+        'UGAP',
+        'OpenClassrooms',
         'HOURA',
         'UNGI',
         'CELESTE',
-        'OpenClassrooms',
-        'UGAP',
-        'CELESTE',
-        'UNGI',
+    ];
+
+    private const SPECIAL_GROUP_DIRS = [
+        'BestOf',
         'Maison',
         'Snapchat',
         'Divers',
+    ];
+
+    private const SPECIAL_DIRS = [
         'a_trier',
     ];
 
     public static function isSpecialDir(string $elementLink): bool
     {
-        return in_array($elementLink, self::SPECIAL_DIRS, true);
+        return in_array($elementLink, array_merge(
+            self::SPECIAL_WORK_DIRS,
+            self::SPECIAL_GROUP_DIRS,
+            self::SPECIAL_DIRS,
+        ), true);
     }
 
 
@@ -58,6 +65,7 @@ class File
         return in_array($elementLink, self::MONTH_DIRS, true);
 
     }
+
     public static function download(string $fullFilename): void
     {
         $okFile = IMAGES_DIR . '/' . $fullFilename;
@@ -83,5 +91,33 @@ class File
     {
         $okFile = str_replace(array_values(self::MONTH_DIRS), array_keys(self::MONTH_DIRS), $okFile);
         return preg_replace('#^(\d\d\d\d)/(\d\d)/.*/(\w+.\w+)$#', '$1_$2_$3', $okFile);
+    }
+
+    public static function special(string $string): string
+    {
+        return THEME_PATH . "/assets/specials/$string.png";
+    }
+
+    public static function getSpecialWorkActions(): array
+    {
+        return self::getSpecialActions(self::SPECIAL_WORK_DIRS);
+    }
+
+    public static function getSpecialGroupActions(): array
+    {
+        return self::getSpecialActions(self::SPECIAL_GROUP_DIRS);
+    }
+
+    private static function getSpecialActions(array $dirs): array
+    {
+        $actions = [];
+        foreach ($dirs as $dir) {
+            $actions[] = [
+                'name' => $dir,
+                'url' => 'moveto-'.strtolower($dir),
+                'icon' => self::special($dir),
+            ];
+        }
+        return $actions;
     }
 }

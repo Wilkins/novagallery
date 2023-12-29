@@ -55,6 +55,10 @@ content .element a {
   text-decoration: none;
 }
 
+content .element {
+  margin-bottom: 2rem!important;
+}
+
 @media (max-width: 960px){
   h1 {
     font-size: 2rem;
@@ -193,7 +197,7 @@ p.favorite-clickable {
 .extension-overlay[data-ext="ISO"]
 {
   color: red;
-  background: url('dvd.png');
+  background: url('formats/dvd.png');
   background-size: 250px 250px;
   background-repeat: no-repeat;
   background-position: center;
@@ -203,10 +207,11 @@ p.favorite-clickable {
 }
 
 .extension-overlay[data-ext="M4A"],
+.extension-overlay[data-ext="WAV"],
 .extension-overlay[data-ext="MP3"]
 {
   color: red;
-  background: url('sound.png');
+  background: url('formats/sound.png');
   background-size: 250px 250px;
   background-repeat: no-repeat;
   background-position: center;
@@ -224,7 +229,7 @@ p.favorite-clickable {
 .extension-overlay[data-ext="AVI"]
 {
   color: red;
-  background: url('play.png');
+  background: url('formats/play.png');
   background-size: 100px 100px;
   background-repeat: no-repeat;
   background-position: center;

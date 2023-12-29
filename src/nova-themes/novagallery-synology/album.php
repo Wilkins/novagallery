@@ -58,11 +58,11 @@
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
               <a href="<?php echo Site::basePath().'/album/'.$elementPath; ?>">
                   <?php if (File::isSpecialDir($elementLink)): ?>
-                      <?php $cover =  THEME_PATH . "/assets/$elementLink.png"; ?>
+                      <?php $cover =  THEME_PATH . "/assets/specials/$elementLink.png"; ?>
                   <?php else: ?>
                       <?php $cover = $gallery->coverImage($elementPath, $order); ?>
                   <?php endif; ?>
-                <img src="<?php echo $cover ?>" loading="lazy" class="rounded alt=""><br>
+                <img src="<?php echo $cover ?>" loading="lazy" class="rounded" alt=""><br>
               </a>
                 <span class="icon rename-folder" style="float: right"
                       data-fullname="<?php echo $elementPath; ?>"
@@ -127,62 +127,22 @@
                             </p>
                         </div>
                         <div class="actions-moves-work">
-                            <p class="moveto-clickable"
-                               data-url="/moveto-ugap/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to UGAP">
-                                <span class="icon-moveto icon"><img
-                                            src="<?php echo THEME_PATH; ?>/assets/UGAP.png"></span>
-                            </p>
-                            <p class="moveto-clickable"
-                               data-url="/moveto-ungi/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to UNGI">
-                                <span class="icon-moveto icon"><img
-                                            src="<?php echo THEME_PATH; ?>/assets/UNGI.png"></span>
-                            </p>
-                            <p class="moveto-clickable"
-                               data-url="/moveto-celeste/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to CELESTE">
-                                <span class="icon-moveto icon"><img
-                                            src="<?php echo THEME_PATH; ?>/assets/CELESTE.png"></span>
-                            </p>
-                            <p class="moveto-clickable"
-                               data-url="/moveto-houra/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to Houra">
-                                <span class="icon-moveto icon"><img
-                                            src="<?php echo THEME_PATH; ?>/assets/HOURA.png"></span>
-                            </p>
-                            <p class="moveto-clickable"
-                               data-url="/moveto-openclassrooms/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to OpenClassrooms">
-                                <span class="icon-moveto icon"><img
-                                            src="<?php echo THEME_PATH; ?>/assets/OpenClassrooms.png"></span>
-                            </p>
+                            <?php foreach (File::getSpecialWorkActions() as $dir): ?>
+                                <p class="moveto-clickable"
+                                   data-url="/<?php echo $dir['url']; ?>/<?php echo $albumLink; ?>/<?php echo $element; ?>"
+                                   title="Move to <?php echo $dir['name']; ?>">
+                                    <span class="icon-moveto icon"><img src="<?php echo $dir['icon']; ?>" alt="<?php echo $dir['name']; ?>"></span>
+                                </p>
+                            <?php endforeach ?>
                         </div>
                         <div class="actions-moves">
-                            <p class="moveto-clickable"
-                               data-url="/moveto-snapchat/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to Snapchat">
-                                <span class="icon-moveto icon"><img src="<?php echo THEME_PATH; ?>/assets/Snapchat.png"></span>
-                            </p>
-                            <p class="moveto-clickable"
-                               data-url="/moveto-bestof/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to BestOf">
-                                <span class="icon-moveto icon"><img
-                                            src="<?php echo THEME_PATH; ?>/assets/BestOf.png"></span>
-                            </p>
-                            <p class="moveto-clickable"
-                               data-url="/moveto-maison/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to Maison">
-                                <span class="icon-moveto icon"><img
-                                            src="<?php echo THEME_PATH; ?>/assets/Maison.png"></span>
-                            </p>
-                            <p class="moveto-clickable"
-                               data-url="/moveto-divers/<?php echo $albumLink; ?>/<?php echo $element; ?>"
-                               title="Move to Divers">
-                                <span class="icon-moveto icon"><img
-                                            src="<?php echo THEME_PATH; ?>/assets/Divers.png"></span>
-                            </p>
-
+                            <?php foreach (File::getSpecialGroupActions() as $dir): ?>
+                                <p class="moveto-clickable"
+                                   data-url="/<?php echo $dir['url']; ?>/<?php echo $albumLink; ?>/<?php echo $element; ?>"
+                                   title="Move to <?php echo $dir['name']; ?>">
+                                    <span class="icon-moveto icon"><img src="<?php echo $dir['icon']; ?>" alt="<?php echo $dir['name']; ?>"></span>
+                                </p>
+                            <?php endforeach ?>
                         </div>
                     </div>
                 <?php endforeach ?>
@@ -190,4 +150,3 @@
         <?php endif; ?>
     </div>
 </content>
-<?php # echo "Generated : ".(microtime(true)-$start). " secondes\n"; ?>

@@ -33,7 +33,7 @@
 
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
                 <?php if (File::isSpecialDir($elementLink)): ?>
-                    <?php $cover =  THEME_PATH . "/assets/$elementLink.png"; ?>
+                    <?php $cover =  THEME_PATH . "/assets/specials/$elementLink.png"; ?>
                 <?php else: ?>
                     <?php $cover = $gallery->coverImage($elementPath, $order); ?>
                 <?php endif; ?>
