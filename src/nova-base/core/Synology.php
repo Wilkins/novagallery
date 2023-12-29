@@ -81,6 +81,7 @@ class Synology extends Image
     public static function url($album, $image, $filedata, $size = false): string
     {
         $album = self::cleanAlbumName($album);
+        //echo $album;
         $prefixDir = isset($filedata[Metadata::TRASH_KEY]) && $filedata[Metadata::TRASH_KEY] ? self::TRASH_DIR . '/' : '';
         if ($size === 'SM' && ! file_exists(self::path($album, $image, $size))) {
             $size = 'M';
@@ -90,6 +91,7 @@ class Synology extends Image
 
     public static function path($album, $image, $size = false): string
     {
+        //echo IMAGES_DIR . '/' . $album . '/' . self::getThumb($image, $size);
         return IMAGES_DIR . '/' . $album . '/' . self::getThumb($image, $size);
     }
 
@@ -100,6 +102,20 @@ class Synology extends Image
         }
         if ($size === 'XL') {
             return $image;
+        }
+        $imageArray = explode('/', $image);
+        $imageArray = array_map('rawurlencode', $imageArray);
+        $file = array_pop($imageArray);
+        $imageArray[] = self::EADIR;
+        $imageArray[] = $file;
+        $image = implode('/', $imageArray);
+        $image .= '/SYNOPHOTO_THUMB_' . ($size) . '.jpg';
+        return $image;
+
+        if (strpos($image, '/')) {
+            $dirName = dirname($image) . '/' . self::EADIR . '/'. basename($image);
+        } else {
+            self::EADIR . '/' . rawurlencode($image);
         }
 
         return self::EADIR . '/' . rawurlencode($image) . '/SYNOPHOTO_THUMB_' . ($size) . '.jpg';

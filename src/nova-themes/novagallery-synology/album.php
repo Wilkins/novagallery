@@ -13,8 +13,11 @@
         <div class="col-6 mb-4">
             <a href="<?php echo Site::url().Page::data('parentPage'); ?>" class="text-muted link-back">&laquo; <?php Lang::p('Back'); ?></a>
         </div>
-        <div class="col-6 mb-4" style="text-align: right">
+        <div class="col-4 mb-4" style="text-align: right">
             <a style="text-align:right" href="<?php echo Site::url().'duplicates/'.$album; ?>" target="duplicates" class="text-muted link-back">&#x1F50D; Trouver les doublons</a>
+        </div>
+        <div class="col-2 mb-4" style="text-align: right">
+            <a style="text-align:right" href="<?php echo Site::url().'videos/'.$album; ?>" target="duplicates" class="text-muted link-back">&#x1F50D; Trouver les vidéos</a>
         </div>
       <?php endif; ?>
       <div class="container">
@@ -85,9 +88,9 @@
                            target="_blank">
                             <div class="extension-overlay"
                                  data-ext="<?php echo strtoupper(pathinfo($element)['extension']); ?>"></div>
-                            <?php if ($filedata['filetype'] === 'video'): ?>
+                            <?php if ($filedata[Metadata::FILETYPE_KEY] === 'video'): ?>
                                 <div class="duration-overlay"
-                                     data-ext="<?php echo $filedata['duration']; ?>"><?php echo $filedata['duration']; ?></div>
+                                     data-ext="<?php echo $filedata[Metadata::DURATION_KEY]; ?>"><?php echo $filedata[Metadata::DURATION_KEY]; ?></div>
                             <?php endif; ?>
                             <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>"
                                  loading="lazy" class="rounded" alt=""><br>

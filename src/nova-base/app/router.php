@@ -81,6 +81,11 @@ Router::add('/duplicates/(.*)', static function($var1) {
     $album = rawurldecode($var1);
     require 'pages/duplicates.php';
 });
+Router::add('/videos/(.*)', static function($var1) {
+    require 'auth.php';
+    $album = rawurldecode($var1);
+    require 'pages/videos.php';
+});
 Router::add('/moveto-houra/(.*)', static function($var1) {
     require 'auth.php';
     $image = rawurldecode($var1);

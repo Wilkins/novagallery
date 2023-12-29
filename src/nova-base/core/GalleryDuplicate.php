@@ -138,4 +138,9 @@ class GalleryDuplicate extends Gallery
         $md51 = FileSystem::md5(IMAGES_DIR.'/'.$file1);
         return $md50 === $md51;
     }
+
+    public function parentAlbum($album): string
+    {
+        return $album;
+    }
 }

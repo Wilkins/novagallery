@@ -16,6 +16,10 @@ class Metadata
 
     public const TRASH_KEY = 'trash';
 
+    public const FILETYPE_KEY = 'filetype';
+
+    public const FULLNAME_KEY = 'fullname';
+
     public static function toggleFavoriteFromUrl(string $fullFilename): void
     {
         $imageName = basename($fullFilename);

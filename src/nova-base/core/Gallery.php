@@ -80,7 +80,9 @@ class Gallery
             echo "processImages<br>\n";
             echo "glob($this->dir/*{jpg,jpeg,JPG,JPEG,png,PNG}) (" . (microtime(true) - $start) . " sec)<br>\n";
         }
+        //print_r($images);
         $this->images = $this->fileList($images, false);
+//        print_r($this->images);
     }
 
     // create array of files or dirs without path & with last modification date
@@ -92,13 +94,14 @@ class Gallery
                 $value = $this->getImageCaptureDate($element);
             } else {
                 $value = [
-                    Metadata::TRASH_KEY => preg_match("#" . IMAGES_DIR . '/' . Synology::TRASH_DIR . "#", $element) ? 1 : 0
+                    Metadata::TRASH_KEY => preg_match("#" . IMAGES_DIR . '/' . Synology::TRASH_DIR . "#", $element) ? 1 : 0,
+                    Metadata::FULLNAME_KEY => $this->getRelativePath($element),
                 ];
                 if ($this->isVideo($element)) {
-                    $value['filetype'] = 'video';
-                    $value['duration'] = $this->getVideoDurationWithCache($element);
+                    $value[Metadata::FILETYPE_KEY] = 'video';
+                    $value[Metadata::DURATION_KEY] = $this->getVideoDurationWithCache($element);
                 } else {
-                    $value['filetype'] = 'image';
+                    $value[Metadata::FILETYPE_KEY] = 'image';
                 }
             }
             $element = strrchr($element, '/');
@@ -287,6 +290,10 @@ class Gallery
     public function hasCoverImage($album, $order = 'default'): string
     {
         return file_exists(IMAGES_DIR . "/$album/" . Synology::COVER);
+    }
+
+    private function getRelativePath($file): string {
+        return str_replace($this->dir.'/', '', $file);
     }
 
     public function hasAlbums(): bool
