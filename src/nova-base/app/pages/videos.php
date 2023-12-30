@@ -18,7 +18,6 @@ if ($parentPage) {
 $favorites = Metadata::getKey($album, Metadata::FAVORITES_KEY);
 
 Page::addData('gallery', $gallery);
-Page::addData('order', $order);
 Page::addData('album', $album);
 Page::addData('parentPage', $parentPage);
 Page::addData('favorites', $favorites);

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="fr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,7 +20,7 @@
     <header class="row mt-4">
      <div class="col-md-3 mb-3 logo"><a href="<?php echo Site::url(); ?>"><?php echo Site::config('siteName'); ?></a></div>
      <div class="col-12 col-md-9 mb-3 text-md-right">
-       <?php if(Site::config('pagePassword') && isset($_SESSION['visitorLoggedIn']) && $_SESSION['visitorLoggedIn'] === true): ?>
+       <?php if (Site::config('pagePassword') && isset($_SESSION['visitorLoggedIn']) && $_SESSION['visitorLoggedIn'] === true): ?>
         <a href="<?php echo Site::url().'/logout' ?>" class="btn btn-secondary btn-sm d-none d-md-inline-block"><?php Lang::p('Logout'); ?></a>
       <?php endif; ?>
      </div>

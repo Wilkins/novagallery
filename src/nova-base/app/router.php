@@ -149,6 +149,11 @@ Router::add('/rename-folder/(.*)', static function($var1) {
 
 
 // Auth
+Router::add('/test', static function() {
+  require 'pages/test.php';
+});
+
+// Auth
 Router::add('/login', static function() {
   require 'pages/login.php';
 }, ['get', 'post']);

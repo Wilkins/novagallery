@@ -19,23 +19,24 @@ class GalleryVideo extends Gallery
 
     protected function processImages(): void
     {
-        //echo "processImages";
-        //echo "/usr/bin/find \"".$this->dir."\" -iname \"*.MOV\"";
-        $res = shell_exec("/usr/bin/find \"".$this->dir."\" -iname \"*.MOV\"");
+        $nameParameters = array_map(
+            function ($format) {
+                return ' -iname "*.'.$format.'"';
+            },
+            FileType::getVideoFormats()
+        );
+        $nameArguments = " \( ".implode(' -o ', $nameParameters)." \) ";
+        $command = "/usr/bin/find \"".$this->dir."\" ".$nameArguments;
+        $res = shell_exec($command);
         $lines = explode("\n", $res);
-//        print_r($lines);
         $fileLines = [];
         foreach ($lines as $line) {
             if (empty($line) || preg_match("/@eaDir/", $line)) {
                 continue;
             }
             $fileLines[] = $line;
-            //$video = str_replace($this->dir."/", "", $line);
-            //$this->images[$video] = [Metadata::TRASH_KEY => '0', 'filetype' => 'video', 'duration' => '0'];
         }
-        //print_r($fileLines);
         $this->images = $this->fileList($fileLines);
-        //print_R($this->images);
     }
 
     public function parentAlbum($album): string

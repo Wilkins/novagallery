@@ -2,6 +2,11 @@
 
 class FileType
 {
+    public const READABLE_VIDEO_FORMATS = [
+        'MOV',
+        'M4V',
+    ];
+
     private const VIDEO_FORMATS = [
         'MOV',
         'MP4',
@@ -13,6 +18,10 @@ class FileType
         'MKV',
         'VOB',
         'AVIF',
+        'WMV',
+        'M4V',
+        'OGG',
+        'MOD',
     ];
     private const SOUND_FORMATS = [
         'M4A',
@@ -47,9 +56,18 @@ class FileType
         return '{' . implode(',', $formats) . '}';
     }
 
-
     public static function isVideo($element): bool
     {
         return preg_match('/\.(' . implode('|', self::VIDEO_FORMATS) . ')$/i', $element) === 1;
+    }
+
+    public static function isReadableVideo($element): bool
+    {
+        return preg_match('/\.(' . implode('|', self::READABLE_VIDEO_FORMATS) . ')$/i', $element) === 1;
+    }
+
+    public static function getVideoFormats(): array
+    {
+        return self::VIDEO_FORMATS;
     }
 }

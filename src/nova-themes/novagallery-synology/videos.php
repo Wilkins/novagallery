@@ -2,7 +2,6 @@
 
     $gallery = Page::data('gallery');
       $album = Page::data('album');
-      $order = Page::data('order');
       $favorites = Page::data('favorites');
       $start = microtime(true);
     ?>
@@ -20,7 +19,7 @@
         <!-- images -->
         <?php if ($gallery->hasImages()): ?>
             <div class="row gallery px-2 mt-4">
-                <?php foreach ($gallery->images($order) as $element => $filedata):
+                <?php foreach ($gallery->images() as $element => $filedata):
                     //echo $element;
                     $albumLink = Synology::cleanAlbumName($album);
                     $element = $filedata[Metadata::FULLNAME_KEY];

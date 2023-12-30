@@ -19,6 +19,12 @@ body {
 a.link-back {
   text-decoration: none;
 }
+a {
+  color: #333333;
+}
+a:hover {
+  color: #333333;
+}
 
 p.note {
   display: block;
