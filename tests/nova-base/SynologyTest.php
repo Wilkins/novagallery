@@ -1,7 +1,6 @@
 <?php
 
 
-use lib\Synology;
 use PHPUnit\Framework\TestCase;
 
 class SynologyTest extends TestCase
@@ -49,7 +48,7 @@ class SynologyTest extends TestCase
     public function testGetAlbumCoverFromUrl(): void
     {
         $album = '2013/01.JANVIER/Soirée%20Koh%20Lanta';
-        $resultUrl = Synology::getAlbumCoverFromAlbum($album);
+        $resultUrl = Synology::getAlbumCoverFromUrl($album);
         $expectedUrl = IMAGES_DIR."/$album/.COVER.JPG";
         $this->assertEquals($expectedUrl, $resultUrl);
     }

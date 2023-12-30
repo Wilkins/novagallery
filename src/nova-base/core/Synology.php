@@ -133,27 +133,4 @@ class Synology extends Image
         }
         return implode(' &raquo; ', $titleOk);
     }
-
-    public static function getVideo($video): string
-    {
-        $url = IMAGES_URL_CODE.'/'.$video;
-        $file = IMAGES_DIR.'/'.$video;
-        $possibles = [
-            'SYNOPHOTO_FILM_H264.mp4',
-            'SYNOPHOTO_FILM_M.mov',
-            'SYNOPHOTO_FILM_M.mp4',
-        ];
-        /*
-        if (FileType::isReadableVideo( $url)) {
-            return dirname($url).'/'.File::EADIR.'/'.basename($file).'/SYNOPHOTO_FILM_H264.mp4';
-            return $url;
-        }
-        */
-        foreach ($possibles as $possible) {
-            if (is_file(dirname($file).'/'.File::EADIR.'/'.basename($file).'/'.$possible)) {
-                return dirname($url).'/'.File::EADIR.'/'.basename($file).'/'.$possible;
-            }
-        }
-        return dirname($url).'/'.File::EADIR.'/'.basename($file).'/SYNOPHOTO_FILM_M.mp4';
-    }
 }
