@@ -1,6 +1,6 @@
 <?php
 
-Page::title(Synology::getTitle($album));
+Page::title(Synology::getTitle($album, "Videos"));
 Page::metaTitle(Page::title() . ' | ' . Site::config('siteName'));
 
 // 404 if album doesn't exists

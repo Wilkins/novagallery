@@ -1,6 +1,6 @@
 <?php
 
-Page::title(Synology::getTitle($album));
+Page::title(Synology::getTitle($album, "Doublons"));
 Page::metaTitle(Page::title() . ' | ' . Site::config('siteName'));
 
 if (Site::config('sortImages')) {

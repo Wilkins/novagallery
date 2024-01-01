@@ -22,6 +22,7 @@ class FileType
         'M4V',
         'OGG',
         'MOD',
+        '3GP',
     ];
     private const SOUND_FORMATS = [
         'M4A',

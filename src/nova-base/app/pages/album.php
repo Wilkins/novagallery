@@ -3,7 +3,7 @@
 $album = $album ?? '';
 
 Page::title(Synology::getTitle($album));
-Page::metaTitle(strip_tags(Page::title()) . ' | ' . Site::config('siteName'));
+Page::metaTitle(Page::title() . ' | ' . Site::config('siteName'));
 
 if (Site::config('sortImages')) {
     $order = Site::config('sortImages');

@@ -62,7 +62,7 @@ class Page
     public static function metaTitle($value = false)
     {
         if ($value) {
-            self::$metaTitle = $value;
+            self::$metaTitle = strip_tags($value);
         }
         return self::$metaTitle;
     }
