@@ -146,9 +146,13 @@ Router::add('/rename-folder/(.*)', static function($var1) {
     $newFolder = $_GET['newName'];
     require 'pages/rename-folder.php';
 });
+Router::add('/mode/(.*)', static function($var1) {
+    require 'auth.php';
+    $mode = rawurldecode($var1);
+    require 'pages/mode.php';
+});
 
 
-// Auth
 Router::add('/test', static function() {
   require 'pages/test.php';
 });

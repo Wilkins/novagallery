@@ -13,12 +13,14 @@
         <div class="col-6 mb-4">
             <a href="<?php echo Site::url().Page::data('parentPage'); ?>" class="text-muted link-back">&laquo; <?php Lang::p('Back'); ?></a>
         </div>
+        <?php if (Mode::isEdition()): ?>
         <div class="col-4 mb-4" style="text-align: right">
             <a style="text-align:right" href="<?php echo Site::url().'duplicates/'.$album; ?>" target="duplicates" class="text-muted link-back">&#x1F50D; Trouver les doublons</a>
         </div>
         <div class="col-2 mb-4" style="text-align: right">
             <a style="text-align:right" href="<?php echo Site::url().'videos/'.$album; ?>" target="duplicates" class="text-muted link-back">&#x1F50D; Trouver les vidéos</a>
         </div>
+        <?php endif; // mode edition ?>
       <?php endif; ?>
       <div class="container">
           <?php
@@ -70,6 +72,7 @@
                 <img src="<?php echo $cover ?>" loading="lazy" class="rounded" alt=""><br>
               </a>
                 <?php if ($album): ?>
+                <?php if (Mode::isEdition()): ?>
                 <span class="icon rename-folder" style="float: right"
                       data-fullname="<?php echo $elementPath; ?>"
                       data-name="<?php echo $element; ?>"
@@ -78,7 +81,8 @@
                   <p class="cover-clickable" data-url="/cover/<?php echo $album; ?>/<?php echo $elementLink; ?>" title="Cover">
                       <i class="icon-cover-off icon">&#9733;</i>
                   </p>
-                <?php endif; ?>
+                <?php endif; // Mode Edition ?>
+                <?php endif; // is album ?>
                 <?php echo Synology::cleanAlbumTitle($element); ?>
             </div>
           <?php endforeach ?>
@@ -104,6 +108,7 @@
                             <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>"
                                  loading="lazy" class="rounded" alt=""><br>
                         </a>
+                        <?php if (Mode::isEdition()): ?>
                         <div class="actions">
                             <p class="cover-clickable"
                                data-url="/cover/<?php echo $albumLink; ?>/<?php echo $element; ?>" title="Cover">
@@ -151,6 +156,7 @@
                                 </p>
                             <?php endforeach ?>
                         </div>
+                        <?php endif; // Mode::isEdition() ?>
                     </div>
                 <?php endforeach ?>
             </div>

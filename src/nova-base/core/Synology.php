@@ -136,4 +136,8 @@ class Synology extends Image
         }
         return implode(' &raquo; ', $titleOk);
     }
+
+    public static function mode($mode)
+    {
+    }
 }

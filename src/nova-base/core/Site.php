@@ -15,6 +15,7 @@ class Site
 
     public static function initialize()
     {
+        session_start();
         if (file_exists(ROOT_DIR . '/nova-config/site.php')) {
             self::$config = JsonDB::read(ROOT_DIR . '/nova-config/site.php');
         } else {
