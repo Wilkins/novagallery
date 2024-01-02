@@ -155,3 +155,30 @@ $('.rename-folder').click(function (){
         });
 
 });
+
+$('.info-clickable').click(function () {
+    star = $(this);
+    $.ajax({
+        url: $(this).attr('data-url'),
+        type: 'GET',
+        dataType: 'html',
+    })
+        .done(function (msg) {
+            console.log(msg);
+            $('.popup-content').html(msg);
+            var topValue = window.scrollY + $(window).height() / 4.0;
+            var vheight = $(window).height() / 2.0;
+            $('.popup-overlay, .popup-content').offset({top: topValue, height: vheight});
+            $(".popup-overlay, .popup-content").addClass("active");
+        })
+        .fail(function (msg) {
+            console.log('fail');
+            console.log(msg);
+            //alert('Fail : '+msg);
+        });
+});
+
+//removes the "active" class to .popup and .popup-content when the "Close" button is clicked
+$(".close, .popup-overlay").on("click", function() {
+    $(".popup-overlay, .popup-content").removeClass("active");
+});

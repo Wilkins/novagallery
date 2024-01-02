@@ -151,6 +151,11 @@ Router::add('/mode/(.*)', static function($var1) {
     $mode = rawurldecode($var1);
     require 'pages/mode.php';
 });
+Router::add('/info/(.*)', static function($var1) {
+    require 'auth.php';
+    $image = rawurldecode($var1);
+    require 'pages/info.php';
+});
 
 
 Router::add('/test', static function() {

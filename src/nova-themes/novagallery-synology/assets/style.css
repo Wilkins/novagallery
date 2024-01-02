@@ -98,7 +98,8 @@ p.trash-clickable,
 p.download-clickable,
 p.rotateright-clickable,
 p.rotateleft-clickable,
-p.favorite-clickable {
+p.favorite-clickable,
+p.info-clickable {
   display: inline-block;
 }
 .icon {
@@ -185,6 +186,11 @@ p.favorite-clickable {
   font-family: Times;
   font-size: 30px;
 }
+.icon-info-off {
+  color: #666;
+  font-family: Times;
+  font-size: 20px;
+}
 .icon-moveto img {
   width: 22px;
   height: 22px;
@@ -262,4 +268,36 @@ p.favorite-clickable {
 video {
   height: 600px;
   object-fit: cover;
+}
+
+.popup-overlay {
+  visibility:hidden;
+}
+
+.popup-content {
+  visibility:hidden;
+}
+
+.popup-overlay {
+  visibility: hidden;
+  position: absolute;
+  background: #ffffff;
+  border: 3px solid #666666;
+  width: 50%;
+  height: 50%;
+  left: 25%;
+  top: 100px;
+}
+
+.popup-overlay.active {
+  visibility: visible;
+  text-align: center;
+}
+
+.popup-content {
+  visibility: hidden;
+}
+
+.popup-content.active {
+  visibility: visible;
 }

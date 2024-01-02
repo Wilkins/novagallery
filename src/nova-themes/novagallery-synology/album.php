@@ -137,6 +137,11 @@
                                title="Rotate Right">
                                 <span class="icon-rotateright-off icon">&#x27F3;</span>
                             </p>
+                            <p class="info-clickable"
+                               data-url="/info/<?php echo $albumLink; ?>/<?php echo $element; ?>"
+                               title="Info">
+                                <span class="icon-info-off icon">&#9432;</span>
+                            </p>
                         </div>
                         <div class="actions-moves-work">
                             <?php foreach (File::getSpecialWorkActions() as $dir): ?>
