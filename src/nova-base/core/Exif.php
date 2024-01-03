@@ -17,6 +17,14 @@ class Exif
         ];
     }
 
+    public static function getComment($image): string
+    {
+        $commentFile = preg_replace('#\.[a-zA-Z]$#', '.txt', $image);
+        $okFile = Synology::getFullFilename($image);
+        $exif = exif_read_data($okFile, 0, true);
+        return $exif['IFD0']['ImageDescription'] ?? "";
+    }
+
     public static function getHtmlInfo($image): string
     {
         $infos = self::getInfo($image);

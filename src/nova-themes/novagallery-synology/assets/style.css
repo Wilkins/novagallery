@@ -231,6 +231,21 @@ p.info-clickable {
   height: 250px;
   position: absolute;
 }
+.extension-overlay[data-ext="PPT"],
+.extension-overlay[data-ext="PPTX"],
+.extension-overlay[data-ext="PPSX"],
+.extension-overlay[data-ext="PPS"]
+{
+  color: red;
+  background: url('formats/slideshow.png');
+  background-size: 150px 150px;
+  background-color: #9452ff;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 250px;
+  height: 250px;
+  position: absolute;
+}
 
 .extension-overlay[data-ext="MOV"],
 .extension-overlay[data-ext="MP4"],
@@ -242,7 +257,7 @@ p.info-clickable {
 {
   color: red;
   background: url('formats/play.png');
-  background-size: 100px 100px;
+  background-size: 60px 60px;
   background-repeat: no-repeat;
   background-position: center;
   width: 250px;

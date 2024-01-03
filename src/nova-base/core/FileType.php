@@ -32,6 +32,8 @@ class FileType
     private const OTHER_FORMATS = [
         'ISO',
         'PPT',
+        'PPS',
+        'PPSX',
     ];
     private const IMAGE_FORMATS = [
         'JPG',
@@ -60,11 +62,6 @@ class FileType
     public static function isVideo($element): bool
     {
         return preg_match('/\.(' . implode('|', self::VIDEO_FORMATS) . ')$/i', $element) === 1;
-    }
-
-    public static function isReadableVideo($element): bool
-    {
-        return preg_match('/\.(' . implode('|', self::READABLE_VIDEO_FORMATS) . ')$/i', $element) === 1;
     }
 
     public static function getVideoFormats(): array
