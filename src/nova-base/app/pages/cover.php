@@ -1,6 +1,6 @@
 <?php
 
-Synology::createCoverFromUrl($cover);
+Album::createCoverFromUrl($cover);
 echo '{"message": "ok"}' . "\n";
 return;
 

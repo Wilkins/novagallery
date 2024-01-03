@@ -25,7 +25,7 @@ class Image
     private static function initialize($album, $image, $size = false, $cache = true)
     {
         // set path & name vars
-        self::$filePath = Synology::getFullFilename($album);
+        self::$filePath = Album::getFullFilename($album);
         self::$original = self::$filePath . '/' . $image;
         //echo "original ; ".self::$original."\n";
         self::$cache = $cache;

@@ -4,7 +4,7 @@ class Exif
 {
     public static function getInfo($image): array
     {
-        $okFile = Synology::getFullFilename($image);
+        $okFile = Album::getFullFilename($image);
         $exif = exif_read_data($okFile, 0, true);
         return [
             'Nom' => basename($image),
@@ -19,7 +19,7 @@ class Exif
     public static function getComment($image): string
     {
         $commentFile = preg_replace('#\.[a-zA-Z]$#', '.txt', $image);
-        $okFile = Synology::getFullFilename($image);
+        $okFile = Album::getFullFilename($image);
         $exif = exif_read_data($okFile, 0, true);
         return $exif['IFD0']['ImageDescription'] ?? "";
     }

@@ -31,7 +31,7 @@
                 </a>
             </div>
           <?php foreach($gallery->images() as $md5 => $elementList):
-                $albumLink = Synology::cleanAlbumName($album);
+                $albumLink = Album::cleanAlbumName($album);
                 ?>
         <div class="row gallery px-2 mt-4">
             <?php foreach($elementList as $elementSource):
@@ -40,9 +40,9 @@
             $element = basename($elementSource);
             ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
-              <a href="<?php echo Synology::urlLink($albumLocal, $element, $filedata, Site::config('imageSizeBig')); ?>" target="_blank">
+              <a href="<?php echo Album::urlLink($albumLocal, $element, $filedata, Site::config('imageSizeBig')); ?>" target="_blank">
                 <div class="extension-overlay" data-ext="<?php echo strtoupper(pathinfo($element)['extension']); ?>"></div>
-                <img src="<?php echo Synology::url($albumLocal, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded" alt=""><br>
+                <img src="<?php echo Album::url($albumLocal, $element, $filedata, Site::config('imageSizeThumb')); ?>" loading="lazy" class="rounded" alt=""><br>
               </a>
               <?php echo $elementSource; ?>
             </div>

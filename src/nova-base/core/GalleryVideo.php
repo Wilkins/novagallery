@@ -47,7 +47,7 @@ class GalleryVideo extends Gallery
     public static function getVideo($video): string
     {
         $url = IMAGES_URL_CODE.'/'.$video;
-        $file = Synology::getFullFilename($video);
+        $file = Album::getFullFilename($video);
         $possibles = [
             'SYNOPHOTO_FILM_H264.mp4',
             'SYNOPHOTO_FILM_M.mov',

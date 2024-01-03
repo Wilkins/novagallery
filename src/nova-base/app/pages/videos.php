@@ -1,10 +1,10 @@
 <?php
 
-Page::title(Synology::getTitle($album, "Videos"));
+Page::title(Album::getTitle($album, "Videos"));
 Page::metaTitle(Page::title() . ' | ' . Site::config('siteName'));
 
 // 404 if album doesn't exists
-if (!Synology::fileExists($album)) {
+if (!Album::fileExists($album)) {
     Template::render('404');
     exit;
 }

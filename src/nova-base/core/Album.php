@@ -1,6 +1,6 @@
 <?php
 
-class Synology extends Image
+class Album extends Image
 {
 
     public static function urlLink($album, $image, $filedata, $size = false): string

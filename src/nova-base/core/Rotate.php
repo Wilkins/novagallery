@@ -4,7 +4,7 @@ class Rotate
 {
     public static function rotateleft(string $fullFilename): void
     {
-        $okFile = Synology::getFullFilename($fullFilename);
+        $okFile = Album::getFullFilename($fullFilename);
         self::rotateImage($okFile, 90);
         self::resetThumbs($okFile);
 
@@ -12,7 +12,7 @@ class Rotate
 
     public static function rotateright(string $fullFilename): void
     {
-        $okFile = Synology::getFullFilename($fullFilename);
+        $okFile = Album::getFullFilename($fullFilename);
         self::rotateImage($okFile, -90);
         self::resetThumbs($okFile);
 

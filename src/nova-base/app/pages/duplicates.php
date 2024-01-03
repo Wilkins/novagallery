@@ -1,6 +1,6 @@
 <?php
 
-Page::title(Synology::getTitle($album, "Doublons"));
+Page::title(Album::getTitle($album, "Doublons"));
 Page::metaTitle(Page::title() . ' | ' . Site::config('siteName'));
 
 if (Site::config('sortImages')) {
@@ -8,7 +8,7 @@ if (Site::config('sortImages')) {
 }
 
 // 404 if album doesn't exists
-if (!Synology::fileExists($album)) {
+if (!Album::fileExists($album)) {
     Template::render('404');
     exit;
 }

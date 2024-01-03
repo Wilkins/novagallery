@@ -83,7 +83,7 @@
                   </p>
                 <?php endif; // Mode Edition ?>
                 <?php endif; // is album ?>
-                <?php echo Synology::cleanAlbumTitle($element); ?>
+                <?php echo Album::cleanAlbumTitle($element); ?>
             </div>
           <?php endforeach ?>
         </div>
@@ -93,11 +93,11 @@
         <?php if ($gallery->hasImages()): ?>
             <div class="row gallery px-2 mt-4">
                 <?php foreach ($gallery->images($order) as $element => $filedata):
-                    $albumLink = Synology::cleanAlbumName($album);
+                    $albumLink = Album::cleanAlbumName($album);
                     ?>
                     <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-5 element">
 
-                        <a href="<?php echo Synology::urlLink($album, $element, $filedata, Site::config('imageSizeBig')); ?>"
+                        <a href="<?php echo Album::urlLink($album, $element, $filedata, Site::config('imageSizeBig')); ?>"
                            target="_blank">
                             <div class="extension-overlay"
                                  data-ext="<?php echo strtoupper(pathinfo($element)['extension']); ?>"></div>
@@ -105,7 +105,7 @@
                                 <div class="duration-overlay"
                                      data-ext="<?php echo $filedata[Metadata::DURATION_KEY]; ?>"><?php echo $filedata[Metadata::DURATION_KEY]; ?></div>
                             <?php endif; ?>
-                            <img src="<?php echo Synology::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>"
+                            <img src="<?php echo Album::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>"
                                  loading="lazy" class="rounded" alt=""><br>
                         </a>
                         <?php if (Mode::isEdition()): ?>

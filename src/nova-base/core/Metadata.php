@@ -46,8 +46,8 @@ class Metadata
 
     private static function getMetadataFilename(string $fullFilename): string
     {
-        $dirName = Synology::isAlbum($fullFilename) ? $fullFilename : dirname($fullFilename);
-        return Synology::getFullFilename($dirName . '/' . self::METADATA);
+        $dirName = Album::isAlbum($fullFilename) ? $fullFilename : dirname($fullFilename);
+        return Album::getFullFilename($dirName . '/' . self::METADATA);
     }
 
     /**
@@ -116,8 +116,8 @@ class Metadata
 
     public static function toggleTrashFromUrl(string $fullFilename): void
     {
-        $okFile = Synology::getFullFilename($fullFilename);
-        $trashFile = Synology::getFullFilename(File::TRASH_DIR . '/' . $fullFilename);
+        $okFile = Album::getFullFilename($fullFilename);
+        $trashFile = Album::getFullFilename(File::TRASH_DIR . '/' . $fullFilename);
         if (file_exists($okFile) && !file_exists($trashFile)) {
             FileSystem::moveFile($okFile, $trashFile);
         } else if (!file_exists($okFile) && file_exists($trashFile)) {

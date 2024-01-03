@@ -68,7 +68,7 @@ class File
 
     public static function download(string $relativeName): void
     {
-        $okFile = Synology::getFullFilename($relativeName);
+        $okFile = Album::getFullFilename($relativeName);
         if (file_exists($okFile)) {
             $cleanFile = self::cleanDownloadName($relativeName);
             //$mime = mime_content_type($okFile);

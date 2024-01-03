@@ -1,5 +1,5 @@
 <?php
 
-Synology::moveTo($image, $destination);
+Album::moveTo($image, $destination);
 echo '{"message": "ok"}' . "\n";
 return;

@@ -92,7 +92,7 @@ class Gallery
                 $value = $this->getImageCaptureDate($element);
             } else {
                 $value = [
-                    Metadata::TRASH_KEY => preg_match("#" . Synology::getFullFilename(File::TRASH_DIR) . "#", $element) ? 1 : 0,
+                    Metadata::TRASH_KEY => preg_match("#" . Album::getFullFilename(File::TRASH_DIR) . "#", $element) ? 1 : 0,
                     Metadata::FULLNAME_KEY => $this->getRelativePath($element),
                 ];
                 if (FileType::isVideo($element)) {
@@ -287,7 +287,7 @@ class Gallery
 
     public function hasCoverImage($album, $order = 'default'): string
     {
-        return file_exists(Synology::getFullFilename("/$album/" . File::COVER));
+        return file_exists(Album::getFullFilename("/$album/" . File::COVER));
     }
 
     private function getRelativePath($file): string {
