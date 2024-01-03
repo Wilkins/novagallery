@@ -2,10 +2,9 @@
 
 class Exif
 {
-
     public static function getInfo($image): array
     {
-        $okFile = IMAGES_DIR . '/' . $image;
+        $okFile = Synology::getFullFilename($image);
         $exif = exif_read_data($okFile, 0, true);
         return [
             'Nom' => basename($image),

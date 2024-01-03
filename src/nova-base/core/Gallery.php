@@ -289,7 +289,7 @@ class Gallery
 
     public function hasCoverImage($album, $order = 'default'): string
     {
-        return file_exists(IMAGES_DIR . "/$album/" . File::COVER);
+        return file_exists(Synology::getFullFilename("/$album/" . File::COVER));
     }
 
     private function getRelativePath($file): string {

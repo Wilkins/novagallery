@@ -103,7 +103,7 @@ final class FileSystem
 
     public static function renameFolder(string $fromDir, string $toDir): void
     {
-        $fromDir = IMAGES_DIR.'/'.$fromDir;
+        $fromDir = Synology::getFullFilename($fromDir);
         $baseDir = dirname($fromDir);
         $targetDir = $baseDir.'/'.$toDir;
         if (file_exists($targetDir) && !is_dir($targetDir)) {
@@ -114,7 +114,7 @@ final class FileSystem
         }
         //echo "mv -i \"$fromDir\" \"$targetDir\"<br>\n";
         $command = "mv -n \"$fromDir\" \"$targetDir\"\n";
-        $fh = fopen(IMAGES_DIR.'/'.File::RENAME_ARCHIVE, "a+");
+        $fh = fopen(Synology::getFullFilename(File::RENAME_ARCHIVE), "a+");
         fwrite($fh, $command);
         fclose($fh);
         rename($fromDir, $targetDir);
@@ -125,7 +125,7 @@ final class FileSystem
 
     public static function deleteAlbum($album): void
     {
-        $albumDir = IMAGES_DIR . '/' . $album;
+        $albumDir = Synology::getFullFilename($album);
         self::unlink($albumDir . "/" . File::DSSTORE);
         self::unlink($albumDir . "/" . File::DSSTORE2);
         self::unlink($albumDir . "/" . File::THUMBS);

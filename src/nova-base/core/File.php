@@ -66,11 +66,11 @@ class File
 
     }
 
-    public static function download(string $fullFilename): void
+    public static function download(string $relativeName): void
     {
-        $okFile = IMAGES_DIR . '/' . $fullFilename;
+        $okFile = Synology::getFullFilename($relativeName);
         if (file_exists($okFile)) {
-            $cleanFile = self::cleanDownloadName($fullFilename);
+            $cleanFile = self::cleanDownloadName($relativeName);
             //$mime = mime_content_type($okFile);
             header('Content-Type: application/octet-stream');
 

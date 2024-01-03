@@ -46,14 +46,10 @@ class GalleryVideoTest extends TestCase
     public function testGetVideo($video, $file): void
     {
         $file = str_replace(" ", "%20", $file);
-        $url = IMAGES_URL_CODE . '/' . $video;
-        //$file = IMAGES_DIR . '/' . $video;
         $result = GalleryVideo::getVideo($video);
         echo $video . "\n";
         echo $result . "\n";
         $this->assertStringContainsStringIgnoringCase('SYNOPHOTO_FILM', $result);
         $this->assertEquals($file, $result);
-        //$this->assertTrue(is_file());
-        //$this->assertStringContainsStringIgnoringCase('SYNOPHOTO_FILM', $result);
     }
 }

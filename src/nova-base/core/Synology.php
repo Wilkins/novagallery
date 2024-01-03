@@ -23,7 +23,7 @@ class Synology extends Image
 
     public static function path($album, $image, $size = false): string
     {
-        return IMAGES_DIR . '/' . $album . '/' . self::getThumb($image, $size);
+        return self::getFullFilename($album . '/' . self::getThumb($image, $size));
     }
 
     public static function getThumb($image, $size = 'SM'): string
@@ -49,7 +49,7 @@ class Synology extends Image
 
     public static function getThumbFromUrl(string $fullFilename): array
     {
-        $fullFilename = IMAGES_DIR . '/' . $fullFilename;
+        $fullFilename = self::getFullFilename($fullFilename);
 
         $dirName = dirname($fullFilename);
         $thumb = self::getThumb(basename($fullFilename));
@@ -61,7 +61,7 @@ class Synology extends Image
 
     public static function getAlbumFromUrl(string $fullFilename): string
     {
-        return IMAGES_DIR . '/' . dirname($fullFilename);
+        return self::getFullFilename(dirname($fullFilename));
     }
 
     public static function getAlbumCoverFromUrl(string $fullFilename): string
@@ -72,7 +72,7 @@ class Synology extends Image
     public static function createCoverFromUrl(string $fullFilename): void
     {
         if (self::isAlbum($fullFilename)) {
-            $fullAlbum = self::getAlbumDir($fullFilename);
+            $fullAlbum = self::getFullFilename($fullFilename);
             [$dir, $subCover] = [dirname($fullAlbum), basename($fullAlbum) . '/' . File::COVER];
             $targetCover = self::getAlbumFromurl($fullFilename) . '/' . File::COVER;
             FileSystem::createLink($dir, $subCover, $targetCover);
@@ -84,14 +84,14 @@ class Synology extends Image
         FileSystem::createLink($dir, $thumb, $cover);
     }
 
-    private static function getAlbumDir(string $fullFilename): string
+    public static function getFullFilename(string $relativeName): string
     {
-        return IMAGES_DIR . '/' . $fullFilename;
+        return IMAGES_DIR . '/' . $relativeName;
     }
 
-    private static function isAlbum(string $fullFilename): bool
+    public static function isAlbum(string $fullFilename): bool
     {
-        return is_dir(self::getAlbumDir($fullFilename));
+        return is_dir(self::getFullFilename($fullFilename));
     }
 
     public static function cleanAlbumName(string $album): string
@@ -106,12 +106,12 @@ class Synology extends Image
 
     public static function moveTo($fullFilename, $destination)
     {
-        $currentFile = IMAGES_DIR . '/' . $fullFilename;
+        $currentFile = self::getFullFilename($fullFilename);
         $dirs = explode('/', $fullFilename);
         if (File::isMonthDir($dirs[1])
             || File::isSpecialDir($dirs[1])) {
-            $newFile = IMAGES_DIR . '/' . implode("/", [$dirs[0], $dirs[1], $destination, basename($fullFilename)]);
-            FileSystem::moveFile($currentFile, $newFile);
+            $relativeFile = implode("/", [$dirs[0], $dirs[1], $destination, basename($fullFilename)]);
+            FileSystem::moveFile($currentFile, self::getFullFilename($relativeFile));
         }
     }
 
