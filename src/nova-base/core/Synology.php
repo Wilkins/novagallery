@@ -89,6 +89,11 @@ class Synology extends Image
         return IMAGES_DIR . '/' . $relativeName;
     }
 
+    public static function fileExists(string $relativeName): string
+    {
+        return file_exists(self::getFullFilename($relativeName));
+    }
+
     public static function isAlbum(string $fullFilename): bool
     {
         return is_dir(self::getFullFilename($fullFilename));

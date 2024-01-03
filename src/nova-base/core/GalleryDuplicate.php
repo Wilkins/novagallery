@@ -56,7 +56,7 @@ class GalleryDuplicate extends Gallery
     }
     public function filterMissing($file): bool
     {
-        return file_exists(Synology::getFullFilename($file));
+        return Synology::fileExists($file);
     }
 
     private function processDelete($duplicates): void
@@ -125,11 +125,11 @@ class GalleryDuplicate extends Gallery
             // It's the same file, we don't want to delete it
             throw new Exception("Both files are the same files : $file0 <==> $file1");
         }
-        if (!file_exists(Synology::getFullFilename($file0))) {
+        if (!Synology::fileExists($file0)) {
             echo "file0 not exists $file0<br>\n";
             return false;
         }
-        if (!file_exists(Synology::getFullFilename($file1))) {
+        if (!Synology::fileExists($file1)) {
             echo "file1 not exists $file1<br>\n";
             return false;
         }

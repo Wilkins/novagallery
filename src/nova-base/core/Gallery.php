@@ -80,9 +80,7 @@ class Gallery
             echo "processImages<br>\n";
             echo "glob($this->dir/*{jpg,jpeg,JPG,JPEG,png,PNG}) (" . (microtime(true) - $start) . " sec)<br>\n";
         }
-        //print_r($images);
         $this->images = $this->fileList($images, false);
-//        print_r($this->images);
     }
 
     // create array of files or dirs without path & with last modification date
@@ -94,7 +92,7 @@ class Gallery
                 $value = $this->getImageCaptureDate($element);
             } else {
                 $value = [
-                    Metadata::TRASH_KEY => preg_match("#" . IMAGES_DIR . '/' . File::TRASH_DIR . "#", $element) ? 1 : 0,
+                    Metadata::TRASH_KEY => preg_match("#" . Synology::getFullFilename(File::TRASH_DIR) . "#", $element) ? 1 : 0,
                     Metadata::FULLNAME_KEY => $this->getRelativePath($element),
                 ];
                 if (FileType::isVideo($element)) {

@@ -10,7 +10,7 @@ if (Site::config('sortImages')) {
 }
 
 // 404 if album doesn't exists
-if (!file_exists(Synology::getFullFilename($album))) {
+if (!Synology::fileExists($album)) {
     Template::render('404');
     exit;
 }
