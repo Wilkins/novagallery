@@ -13,25 +13,31 @@ class Exif
             'Date' => preg_replace('/(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})/', '$3/$2/$1 $4:$5:$6', $exif['EXIF']['DateTimeOriginal'] ?? ""),
             'Appareil' => ($exif['IFD0']['Make'] ?? "")." ".($exif['IFD0']['Model'] ?? ""),
             'Format' => $exif['FILE']['MimeType'],
+            'Commentaire' => self::getComment($image),
         ];
+    }
+
+    public static function saveComment($image, $comment): void
+    {
+        $commentFile = self::getCommentFile($image);
+        $commentFullFilename = Album::getFullFilename($commentFile);
+        file_put_contents($commentFullFilename, $comment);
+    }
+
+    public static function getCommentFile($image): string
+    {
+        return  preg_replace('#\.[a-zA-Z]+$#', '.txt', $image);
     }
 
     public static function getComment($image): string
     {
-        $commentFile = preg_replace('#\.[a-zA-Z]$#', '.txt', $image);
-        $okFile = Album::getFullFilename($image);
-        $exif = exif_read_data($okFile, 0, true);
-        return $exif['IFD0']['ImageDescription'] ?? "";
-    }
-
-    public static function getHtmlInfo($image): string
-    {
-        $infos = self::getInfo($image);
-        $html = "<table cellpadding='3' border='1'>\n";
-        foreach ($infos as $info => $value) {
-            $html .= "<tr><th style='text-align: left'>$info</th><td style='text-align: left'>$value</td></tr>\n";
+        $commentFile = self::getCommentFile($image);
+        if (!Album::fileExists($commentFile)) {
+            return "";
         }
-        $html .= "</table>\n";
-        return $html;
+        $commentFullFilename = Album::getFullFilename($commentFile);
+        $content = file_get_contents($commentFullFilename);
+        $encodings = ['UTF-8', 'ISO-8859-1', 'ASCII'];
+        return iconv(mb_detect_encoding($content, $encodings, true), "UTF-8", $content);
     }
 }

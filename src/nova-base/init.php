@@ -38,4 +38,5 @@ define('THEME_PATH', BASE_PATH.'/nova-themes/'.Site::theme());
 Lang::initialize(Site::config('language'));
 
 // load routes
-require 'app/router.php';
+require 'app/routerActions.php';
+require 'app/routerPages.php';

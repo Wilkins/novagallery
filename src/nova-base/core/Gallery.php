@@ -70,10 +70,22 @@ class Gallery
         //unset($this->albums["@eaDir"]);
     }
 
+    private function sortByDate(array $files): array
+    {
+
+        $filesWithTimes = [];
+        foreach ($files as $file) {
+            $filesWithTimes[filemtime($file)] = $file;
+        }
+        ksort($filesWithTimes);
+        return array_values($filesWithTimes);
+
+    }
+
     protected function processImages(): void
     {
         $start = microtime(true);
-        $imagesOk = glob($this->dir . '/*.' . FileType::getAcceptedFormats(), GLOB_BRACE);
+        $imagesOk = $this->sortByDate(glob($this->dir . '/*.' . FileType::getAcceptedFormats(), GLOB_BRACE));
         $imagesTrash = glob($this->trashDir . '/*.' . FileType::getAcceptedFormats(), GLOB_BRACE);
         $images = array_merge($imagesOk, $imagesTrash);
         if (self::DEBUG) {
@@ -192,6 +204,7 @@ class Gallery
 
     protected function order($list, $order): array
     {
+        return $list;
         switch ($order) {
             case 'oldest':
                 asort($list);

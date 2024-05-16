@@ -285,34 +285,45 @@ video {
   object-fit: cover;
 }
 
-.popup-overlay {
-  visibility:hidden;
-}
-
 .popup-content {
-  visibility:hidden;
+  visibility: hidden;
+  overflow: auto;
+  height: 480px;
 }
 
 .popup-overlay {
   visibility: hidden;
   position: absolute;
+  text-align: center;
   background: #ffffff;
   border: 3px solid #666666;
   width: 50%;
-  height: 50%;
+  /*height: 500px;*/
   left: 25%;
   top: 100px;
 }
 
 .popup-overlay.active {
   visibility: visible;
-  text-align: center;
-}
-
-.popup-content {
-  visibility: hidden;
 }
 
 .popup-content.active {
   visibility: visible;
+}
+
+.popup-banner {
+  padding: 0;
+  text-align: right;
+}
+
+.popup-close {
+  font-size: 40px;
+  margin-right: 20px;
+  z-index: 1000;
+  position: relative;
+  cursor: pointer;
+}
+
+.popup-close:hover {
+  text-decoration: none;
 }

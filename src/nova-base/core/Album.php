@@ -28,6 +28,7 @@ class Album extends Image
 
     public static function getThumb($image, $size = 'SM'): string
     {
+        #$size = "PREVIEW";
         if (!$image) {
             $image = 'noimage';
         }

@@ -1,3 +1,14 @@
+AuthUserFile /var/www/nous.taillandier.name/_nonpasla_/nouspass
+AuthName "Acces securise"
+AuthType Basic
+##<LIMIT GET POST>
+Require valid-user
+##</LIMIT>
+<FilesMatch "^wiki$">
+    ForceType application/x-httpd-php
+</FilesMatch>
+#
+
 RewriteEngine on
 RewriteBase /
 

@@ -166,9 +166,9 @@ $('.info-clickable').click(function () {
         .done(function (msg) {
             console.log(msg);
             $('.popup-content').html(msg);
-            var topValue = window.scrollY + $(window).height() / 4.0;
-            var vheight = $(window).height() / 2.0;
-            $('.popup-overlay, .popup-content').offset({top: topValue, height: vheight});
+            var topValue = window.scrollY + 100;
+            var vheight = 500;
+            $('.popup-overlay, .popup-content').offset({top: topValue});
             $(".popup-overlay, .popup-content").addClass("active");
         })
         .fail(function (msg) {
@@ -178,7 +178,28 @@ $('.info-clickable').click(function () {
         });
 });
 
+function saveComment() {
+    star = $(this);
+    console.log($(this).attr('data-url') + '?comment=' + $('#comment').val());
+    $.ajax({
+        url: $(this).attr('data-url') + '?comment=' + $('#comment').val(),
+        type: 'GET',
+        dataType: 'html',
+    })
+        .done(function (msg) {
+            console.log(msg);
+            //$('.popup-content').html(msg);
+            $(".popup-overlay, .popup-content").removeClass("active");
+        })
+        .fail(function (msg) {
+            console.log('fail');
+            console.log(msg);
+        });
+}
+
+$(document).on('click', '.save-comment-clickable', saveComment);
+
 //removes the "active" class to .popup and .popup-content when the "Close" button is clicked
-$(".close, .popup-overlay").on("click", function() {
+$(".popup-close").on("click", function() {
     $(".popup-overlay, .popup-content").removeClass("active");
 });

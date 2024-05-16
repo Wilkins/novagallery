@@ -10,6 +10,9 @@
     </footer>  
   </div>
     <div class="popup-overlay">
+        <div class="popup-banner">
+            <span class="popup-close">&times;</span>
+        </div>
         <div class="popup-content">
         </div>
     </div>
