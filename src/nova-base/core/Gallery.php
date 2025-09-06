@@ -75,10 +75,10 @@ class Gallery
 
         $filesWithTimes = [];
         foreach ($files as $file) {
-            $filesWithTimes[filemtime($file)] = $file;
+            $filesWithTimes[$file] = filemtime($file);
         }
-        ksort($filesWithTimes);
-        return array_values($filesWithTimes);
+        asort($filesWithTimes);
+        return array_keys($filesWithTimes);
 
     }
 

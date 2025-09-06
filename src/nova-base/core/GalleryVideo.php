@@ -60,4 +60,9 @@ class GalleryVideo extends Gallery
         }
         return dirname($url).'/'.File::EADIR.'/'.basename($file).'/SYNOPHOTO_FILM_M.mp4';
     }
+
+    public static function getVideo2($video): string
+    {
+        return self::getVideo($video);
+    }
 }

@@ -108,7 +108,6 @@
                             <img src="<?php echo Album::url($album, $element, $filedata, Site::config('imageSizeThumb')); ?>"
                                  loading="lazy" class="rounded" alt=""><br>
                         </a>
-                        <?php if (Mode::isEdition()): ?>
                         <div class="actions">
                             <p class="cover-clickable"
                                data-url="/cover/<?php echo $albumLink; ?>/<?php echo $element; ?>" title="Cover">
@@ -161,6 +160,7 @@
                                 </p>
                             <?php endforeach ?>
                         </div>
+                        <?php if (Mode::isEdition()): ?>
                         <?php endif; // Mode::isEdition() ?>
                     </div>
                 <?php endforeach ?>

@@ -14,6 +14,16 @@ Router::add('/info', static function() {
     phpinfo();
 });
 
+Router::add('/faces', static function() {
+    require 'auth.php';
+    require 'pages/faces.php';
+});
+
+Router::add('/faces2', static function() {
+    require 'auth.php';
+    require 'faces/recognize_face_catalog.php';
+});
+
 Router::add('/galleries/(.*)/(.*)', static function($var1, $var2) {
   require 'auth.php';
   $album = rawurldecode($var1);
